@@ -19,7 +19,7 @@ const headers = computed(() => [
   { title: 'ETD', key: 'time', align: 'end' }
 ])
 
-const mockData = Array.from({ length: 500 }, (_, i) => ({
+const mockData = Array.from({ length: 600 }, (_, i) => ({
   flight: `FL${1000 + i}`,
   onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
