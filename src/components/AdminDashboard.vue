@@ -4,6 +4,7 @@ import BarRaceChart from './BarRaceChart.vue'
 import HeatmapChart from './HeatmapChart.vue'
 import PieChart from './PieChart.vue'
 import RunwayOccupancyChart from './RunwayOccupancyChart.vue'
+import GanttChart from './GanttChart.vue'
 </script>
 
 <template>
@@ -27,8 +28,11 @@ import RunwayOccupancyChart from './RunwayOccupancyChart.vue'
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="12" md="6">
             <RunwayOccupancyChart />
+          </v-col>
+          <v-col cols="12" md="6">
+            <GanttChart />
           </v-col>
         </v-row>
       </v-container>
