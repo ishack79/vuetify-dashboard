@@ -28,9 +28,6 @@ export default {
     initChart() {
       const chart = echarts.init(this.$refs.chart);
       const options = {
-        title: {
-          text: 'Volume of Departures and Arrivals'
-        },
         tooltip: {
           trigger: 'axis'
         },

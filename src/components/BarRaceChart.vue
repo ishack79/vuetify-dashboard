@@ -29,9 +29,6 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$refs.chart);
       this.options = {
-        title: {
-          text: 'Number of Aircrafts per Type'
-        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {

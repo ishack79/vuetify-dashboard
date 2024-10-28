@@ -28,10 +28,6 @@
       initChart() {
         const chart = echarts.init(this.$refs.chart);
         const options = {
-          title: {
-            text: 'Flight and Towing Status',
-            left: 'center'
-          },
           tooltip: {
             trigger: 'item'
           },
