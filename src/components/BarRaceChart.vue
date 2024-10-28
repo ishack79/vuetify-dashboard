@@ -75,10 +75,11 @@ export default {
       }, 3000);
     },
     updateData() {
-      const newData = this.options.series[0].data.map(value => value + Math.floor(Math.random() * 50));
+      const newData = this.options.series[0].data.map(value => value + Math.floor(Math.random() * 75));
       const categories = ['Boeing 737', 'Airbus A320', 'Boeing 777', 'Airbus A380', 'Boeing 787'];
       const sortedData = newData.map((value, index) => ({ value, category: categories[index] }))
-                                .sort((a, b) => b.value - a.value);
+                                .sort((a, b) => b.value - a.value)
+                                .reverse(); // Reverse the sorted data
 
       this.options.series[0].data = sortedData.map(item => item.value);
       this.options.yAxis.data = sortedData.map(item => item.category);
