@@ -1,5 +1,6 @@
 <script setup>
 import ChartComponent from './ChartComponent.vue'
+import BarRaceChart from './BarRaceChart.vue'
 </script>
 
 <template>
@@ -7,6 +8,7 @@ import ChartComponent from './ChartComponent.vue'
     <v-card-title>Admin Dashboard</v-card-title>
     <v-card-text>
       <ChartComponent />
+      <BarRaceChart />
     </v-card-text>
   </v-card>
 </template>
