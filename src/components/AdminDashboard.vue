@@ -1,6 +1,7 @@
 <script setup>
 import ChartComponent from './ChartComponent.vue'
 import BarRaceChart from './BarRaceChart.vue'
+import HeatmapChart from './HeatmapChart.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import BarRaceChart from './BarRaceChart.vue'
     <v-card-text>
       <ChartComponent />
       <BarRaceChart />
+      <HeatmapChart />
     </v-card-text>
   </v-card>
 </template>
