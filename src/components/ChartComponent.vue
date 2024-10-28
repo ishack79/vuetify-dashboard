@@ -35,7 +35,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['Departures', 'Arrivals']
+          data: ['Departures', 'Arrivals', 'Average']
         },
         xAxis: {
           type: 'category',
@@ -54,6 +54,15 @@ export default {
             name: 'Arrivals',
             type: 'bar',
             data: [90, 180, 130, 100, 60, 90, 120]
+          },
+          {
+            name: 'Average',
+            type: 'line',
+            data: [105, 190, 140, 90, 65, 100, 125],
+            smooth: true,
+            lineStyle: {
+              color: '#FF0000'
+            }
           }
         ]
       };
