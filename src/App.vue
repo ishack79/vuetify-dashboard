@@ -1,0 +1,16 @@
+<script setup>
+import { ref } from 'vue'
+import StatusBar from './components/StatusBar.vue'
+import NavigationMenu from './components/NavigationMenu.vue'
+import DashboardContent from './components/DashboardContent.vue'
+
+const selectedMenu = ref('Traffic')
+</script>
+
+<template>
+  <v-app>
+    <StatusBar />
+    <NavigationMenu v-model:selected="selectedMenu" />
+    <DashboardContent :selected-menu="selectedMenu" />
+  </v-app>
+</template>

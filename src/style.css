@@ -1,0 +1,71 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  
+  color-scheme: dark;
+  background-color: #1a1b2e;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.v-application {
+  background: linear-gradient(135deg, #1a1b2e 0%, #232442 100%) !important;
+}
+
+.v-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(10px);
+  background: rgba(35, 36, 66, 0.95) !important;
+}
+
+.status-bar-chip {
+  font-weight: 500 !important;
+  letter-spacing: 0.3px;
+  background: rgba(35, 36, 66, 0.95) !important;
+}
+
+.nav-item-active {
+  background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%) !important;
+  color: white !important;
+}
+
+.dashboard-content {
+  padding: 24px;
+}
+
+.v-data-table {
+  border-radius: 12px !important;
+  overflow: hidden;
+  background: rgba(35, 36, 66, 0.95) !important;
+}
+
+.v-navigation-drawer {
+  background: rgba(35, 36, 66, 0.95) !important;
+  border-right: 1px solid rgba(99, 102, 241, 0.1) !important;
+}
+
+.v-app-bar {
+  background: rgba(35, 36, 66, 0.95) !important;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1) !important;
+}
+
+.v-list {
+  background: transparent !important;
+}
+
+.v-list-item--active {
+  color: #6366f1 !important;
+}
+
+.v-tab {
+  color: #e2e8f0 !important;
+}
+
+.v-tab--selected {
+  color: #6366f1 !important;
+}
