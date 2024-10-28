@@ -10,6 +10,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const menuItems = [
+  { title: 'Dashboard', icon: 'mdi-view-dashboard' },
   { title: 'Towing', icon: 'mdi-truck' },
   { title: 'Deicing', icon: 'mdi-snowflake' },
   { title: 'LVP', icon: 'mdi-weather-fog' },

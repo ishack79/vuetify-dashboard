@@ -4,7 +4,7 @@ import StatusBar from './components/StatusBar.vue'
 import NavigationMenu from './components/NavigationMenu.vue'
 import DashboardContent from './components/DashboardContent.vue'
 
-const selectedMenu = ref('Traffic')
+const selectedMenu = ref('Dashboard')
 </script>
 
 <template>

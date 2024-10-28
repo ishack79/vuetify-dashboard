@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import DataTable from './DataTable.vue'
+import AdminDashboard from './AdminDashboard.vue'
 
 const props = defineProps({
   selectedMenu: {
@@ -52,12 +53,14 @@ const getTabNames = computed(() => {
     <v-card class="mb-6" elevation="0">
       <v-card-title class="text-h5 font-weight-bold pb-2">
         {{ selectedMenu }}
+        <span v-if="selectedMenu === 'Deicing'"> - {{ deicingOperationsCount }} Operations</span>
       </v-card-title>
       <v-tabs
         v-model="tab"
         color="primary"
         slider-color="primary"
         class="mb-2"
+        v-if="selectedMenu !== 'Dashboard'"
       >
         <v-tab
           v-for="(name, i) in getTabNames"
@@ -69,7 +72,7 @@ const getTabNames = computed(() => {
         </v-tab>
       </v-tabs>
       
-      <v-window v-model="tab">
+      <v-window v-model="tab" v-if="selectedMenu !== 'Dashboard'">
         <v-window-item
           v-for="(name, i) in getTabNames"
           :key="i"
@@ -86,6 +89,8 @@ const getTabNames = computed(() => {
           </v-card>
         </v-window-item>
       </v-window>
+
+      <AdminDashboard v-if="selectedMenu === 'Dashboard'" />
     </v-card>
   </v-main>
 </template>

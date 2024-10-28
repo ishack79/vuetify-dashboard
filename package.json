@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "echarts": "^5.5.1",
     "vue": "^3.5.12",
-    "vuetify": "^3.5.1",
-    "@mdi/font": "^7.4.47"
+    "vue-echarts": "^7.0.3",
+    "vuetify": "^3.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
