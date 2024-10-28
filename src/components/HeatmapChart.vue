@@ -33,24 +33,16 @@ export default {
       const data = [];
       for (let i = 0; i < 7; i++) {
         for (let j = 0; j < 24; j++) {
-          let value;
-          if (j >= 6 && j <= 12) {
-            value = Math.floor(Math.random() * 100) + 50; // More traffic in the morning
-          } else if (j >= 0 && j < 6 || j > 12 && j < 18) {
-            value = Math.floor(Math.random() * 50) + 20; // Moderate traffic during the day
-          } else {
-            value = Math.floor(Math.random() * 20); // Less traffic at night
-          }
-          if (i === 0 || i === 6) {
-            value += 30; // More traffic on weekends
-          }
-          data.push([j, i, value]);
+          data.push([j, i, Math.floor(Math.random() * 100)]);
         }
       }
 
       const options = {
         tooltip: {
-          position: 'top'
+          position: 'top',
+          textStyle: {
+            color: '#e2e8f0'
+          }
         },
         grid: {
           height: '50%',
@@ -61,6 +53,9 @@ export default {
           data: hours,
           splitArea: {
             show: true
+          },
+          axisLabel: {
+            color: '#e2e8f0'
           }
         },
         yAxis: {
@@ -68,22 +63,29 @@ export default {
           data: days,
           splitArea: {
             show: true
+          },
+          axisLabel: {
+            color: '#e2e8f0'
           }
         },
         visualMap: {
           min: 0,
-          max: 200,
+          max: 100,
           calculable: true,
           orient: 'horizontal',
           left: 'center',
-          bottom: '15%'
+          bottom: '15%',
+          textStyle: {
+            color: '#e2e8f0'
+          }
         },
         series: [{
           name: 'Flight Plan Traffic Volume',
           type: 'heatmap',
           data: data,
           label: {
-            show: true
+            show: true,
+            color: '#e2e8f0'
           },
           emphasis: {
             itemStyle: {

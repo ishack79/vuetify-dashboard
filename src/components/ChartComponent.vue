@@ -29,17 +29,29 @@ export default {
       const chart = echarts.init(this.$refs.chart);
       const options = {
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          textStyle: {
+            color: '#e2e8f0'
+          }
         },
         legend: {
-          data: ['Departures', 'Arrivals', 'Average']
+          data: ['Departures', 'Arrivals', 'Average'],
+          textStyle: {
+            color: '#e2e8f0'
+          }
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          axisLabel: {
+            color: '#e2e8f0'
+          }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            color: '#e2e8f0'
+          }
         },
         series: [
           {

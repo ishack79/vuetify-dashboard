@@ -32,10 +32,17 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
+          },
+          backgroundColor: '#333', // Dark background for better contrast
+          textStyle: {
+            color: '#fff' // White text for better readability
           }
         },
         legend: {
-          data: ['Runway 01L/19R', 'Runway 01R/19L']
+          data: ['Runway 01L/19R', 'Runway 01R/19L'],
+          textStyle: {
+            color: '#e2e8f0'
+          }
         },
         grid: {
           left: '3%',
@@ -45,23 +52,35 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p']
+          data: ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'],
+          axisLabel: {
+            color: '#e2e8f0'
+          }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            color: '#e2e8f0'
+          }
         },
         series: [
           {
             name: 'Runway 01L/19R',
             type: 'bar',
             stack: 'total',
-            data: this.generateRunwayData()
+            data: this.generateRunwayData(),
+            itemStyle: {
+              color: '#5470C6'
+            }
           },
           {
             name: 'Runway 01R/19L',
             type: 'bar',
             stack: 'total',
-            data: this.generateRunwayData()
+            data: this.generateRunwayData(),
+            itemStyle: {
+              color: '#91CC75'
+            }
           }
         ]
       };
