@@ -19,13 +19,16 @@ const headers = computed(() => [
   { title: 'Time', key: 'time', align: 'end' }
 ])
 
-const mockData = [
-  { flight: 'AA123', origin: 'JFK', destination: 'LAX', status: 'On Time', time: '14:30' },
-  { flight: 'UA456', origin: 'LAX', destination: 'JFK', status: 'Delayed', time: '15:45' },
-  { flight: 'DL789', origin: 'ORD', destination: 'JFK', status: 'On Time', time: '16:15' },
-  { flight: 'B6012', origin: 'JFK', destination: 'MIA', status: 'On Time', time: '17:00' },
-  { flight: 'WN345', origin: 'DFW', destination: 'JFK', status: 'Delayed', time: '18:30' }
-]
+const mockData = Array.from({ length: 40 }, (_, i) => ({
+  flight: `FL${1000 + i}`,
+  origin: `City ${i % 10 + 1}`,
+  destination: `City ${i % 10 + 11}`,
+  status: i % 2 === 0 ? 'On Time' : 'Delayed',
+  time: `${14 + (i % 10)}:${(i % 2 === 0 ? '30' : '45')}`,
+  raw: {
+    status: i % 2 === 0 ? 'On Time' : 'Delayed'
+  }
+}))
 
 const getTabNames = computed(() => {
   const tabMapping = {
