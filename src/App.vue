@@ -10,7 +10,7 @@ const selectedMenu = ref('Traffic')
 <template>
   <v-app>
     <StatusBar />
-    <NavigationMenu v-model:selected="selectedMenu" />
+    <NavigationMenu v-model="selectedMenu" />
     <DashboardContent :selected-menu="selectedMenu" />
   </v-app>
 </template>

@@ -1,4 +1,14 @@
 <script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true
+  }
+})
+const emit = defineEmits(['update:modelValue'])
+
 const menuItems = [
   { title: 'Towing', icon: 'mdi-truck' },
   { title: 'Deicing', icon: 'mdi-snowflake' },
@@ -12,7 +22,11 @@ const menuItems = [
   { title: 'Runway Maintenance', icon: 'mdi-tools' }
 ]
 
-const emit = defineEmits(['update:selected'])
+const selected = ref(props.modelValue)
+
+watch(selected, (newValue) => {
+  emit('update:modelValue', newValue)
+})
 </script>
 
 <template>
@@ -30,8 +44,8 @@ const emit = defineEmits(['update:selected'])
         :prepend-icon="item.icon"
         class="mb-2 mx-2"
         rounded="lg"
-        :class="{ 'nav-item-active': item.title === 'Traffic' }"
-        @click="emit('update:selected', item.title)"
+        :class="{ 'nav-item-active': item.title === selected }"
+        @click="selected = item.title"
       />
     </v-list>
   </v-navigation-drawer>
