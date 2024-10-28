@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 
 const time = ref(new Date().toUTCString())
-const weather = ref({ temp: 'LVP', condition: 'Snow' })
+const weather = ref({ temp: 'Snow', condition: '- LVP' })
 const airportStats = ref({
   name: 'Oslo Airport',
   delayTime: '15 mins',
@@ -50,7 +50,7 @@ onMounted(() => {
         variant="elevated"
         label
       >
-        <v-icon start icon="mdi-weather-cloudy" />
+        <v-icon start icon="mdi-weather-snowy" />
         {{ weather.temp }} {{ weather.condition }}
       </v-chip>
       
