@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="1200">
-    <v-card-title>Flight Plan Traffic Volume Heatmap</v-card-title>
+    <v-card-title>Volume of Flight Plan Traffic</v-card-title>
     <v-card-text>
       <v-container>
         <v-row>
@@ -27,47 +27,16 @@ export default {
   methods: {
     initChart() {
       const chart = echarts.init(this.$refs.chart);
-      const hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
-      const days = ['Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday', 'Sunday'];
-
-      const data = [];
-      for (let i = 0; i < 7; i++) {
-        for (let j = 0; j < 24; j++) {
-          data.push([j, i, Math.floor(Math.random() * 100)]);
-        }
-      }
-
-      const options = {
-        tooltip: {
-          position: 'top',
-          backgroundColor: '#333', // Dark background for better contrast
-          textStyle: {
-            color: '#fff' // White text for better readability
-          }
-        },
-        grid: {
-          height: '50%',
-          top: '10%'
-        },
+      const data = this.generateTrafficData();
+      const option = {
+        tooltip: {},
         xAxis: {
           type: 'category',
-          data: hours,
-          splitArea: {
-            show: true
-          },
-          axisLabel: {
-            color: '#e2e8f0'
-          }
+          data: this.get24HourFormat()
         },
         yAxis: {
           type: 'category',
-          data: days,
-          splitArea: {
-            show: true
-          },
-          axisLabel: {
-            color: '#e2e8f0'
-          }
+          data: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         },
         visualMap: {
           min: 0,
@@ -75,18 +44,14 @@ export default {
           calculable: true,
           orient: 'horizontal',
           left: 'center',
-          bottom: '15%',
-          textStyle: {
-            color: '#e2e8f0'
-          }
+          bottom: '2%' // Adjusted to move the slider more to the bottom
         },
         series: [{
-          name: 'Flight Plan Traffic Volume',
+          name: 'Traffic Volume',
           type: 'heatmap',
           data: data,
           label: {
-            show: true,
-            color: '#e2e8f0'
+            show: true
           },
           emphasis: {
             itemStyle: {
@@ -96,8 +61,31 @@ export default {
           }
         }]
       };
-
-      chart.setOption(options);
+      chart.setOption(option);
+    },
+    generateTrafficData() {
+      const data = [];
+      for (let day = 0; day < 7; day++) {
+        for (let hour = 0; hour < 24; hour++) {
+          let value = Math.floor(Math.random() * 20); // Base traffic
+          if (hour >= 7 && hour <= 23) {
+            value += Math.floor(Math.random() * 30); // Increase traffic during daylight hours
+          }
+          if (day === 0 || day === 6) {
+            value += Math.floor(Math.random() * 50); // Increase traffic during weekends
+          }
+          data.push([hour, day, value]);
+        }
+      }
+      return data;
+    },
+    get24HourFormat() {
+      const hours = [];
+      for (let i = 0; i < 24; i++) {
+        const hour = i.toString().padStart(2, '0');
+        hours.push(`${hour}:00`);
+      }
+      return hours;
     }
   }
 };

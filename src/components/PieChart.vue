@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="1200">
-    <v-card-title>Flight and Towing Status</v-card-title>
+    <v-card-title>Flight Plan Distribution</v-card-title>
     <v-card-text>
       <v-container>
         <v-row>
