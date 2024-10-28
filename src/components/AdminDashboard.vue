@@ -7,8 +7,7 @@ import RunwayOccupancyChart from './RunwayOccupancyChart.vue'
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="1600">
-    <v-card-title>Admin Dashboard</v-card-title>
+  <v-card class="mx-auto" max-width="3000">
     <v-card-text>
       <v-container>
         <v-row>
@@ -28,7 +27,7 @@ import RunwayOccupancyChart from './RunwayOccupancyChart.vue'
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="12">
+          <v-col cols="12">
             <RunwayOccupancyChart />
           </v-col>
         </v-row>

@@ -30,8 +30,9 @@ export default {
       const options = {
         tooltip: {
           trigger: 'axis',
+          backgroundColor: '#333', // Dark background for better contrast
           textStyle: {
-            color: '#e2e8f0'
+            color: '#fff' // White text for better readability
           }
         },
         legend: {

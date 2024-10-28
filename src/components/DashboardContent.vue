@@ -24,10 +24,10 @@ const mockData = Array.from({ length: 600 }, (_, i) => ({
   flight: `FL${1000 + i}`,
   onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  status: i % 2 === 0 ? 'On Time' : 'Delayed',
-  time: `${14 + (i % 10)}:${(i % 2 === 0 ? '30' : '45')}`,
+  status: Math.random() > 0.5 ? 'On Time' : 'Delayed',
+  time: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   raw: {
-    status: i % 2 === 0 ? 'On Time' : 'Delayed'
+    status: Math.random() > 0.5 ? 'On Time' : 'Delayed'
   }
 }))
 

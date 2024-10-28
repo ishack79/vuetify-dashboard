@@ -34,8 +34,9 @@ export default {
           axisPointer: {
             type: 'shadow'
           },
+          backgroundColor: '#333', // Dark background for better contrast
           textStyle: {
-            color: '#e2e8f0'
+            color: '#fff' // White text for better readability
           }
         },
         xAxis: {
@@ -79,8 +80,16 @@ export default {
       }, 3000);
     },
     updateData() {
-      const newData = this.options.series[0].data.map(value => value + Math.floor(Math.random() * 50));
-      this.options.series[0].data = newData;
+      const newData = this.options.series[0].data.map((value, index) => ({
+        value: value + Math.floor(Math.random() * 50),
+        category: this.options.yAxis.data[index]
+      }));
+
+      newData.sort((a, b) => b.value - a.value).reverse(); // Reverse the sorted data
+
+      this.options.series[0].data = newData.map(item => item.value);
+      this.options.yAxis.data = newData.map(item => item.category);
+
       this.chart.setOption(this.options);
     }
   }
