@@ -2,11 +2,11 @@
 import { ref, onMounted } from 'vue'
 
 const time = ref(new Date().toUTCString())
-const weather = ref({ temp: '12°C', condition: 'Cloudy' })
+const weather = ref({ temp: 'LVP', condition: 'Snow' })
 const airportStats = ref({
-  name: 'JFK International',
+  name: 'Oslo Airport',
   delayTime: '15 mins',
-  deicingOps: 'Active',
+  deicingOps: '234',
   onTimePerformance: '87%'
 })
 
@@ -61,7 +61,7 @@ onMounted(() => {
         label
       >
         <v-icon start icon="mdi-timer-outline" />
-        Delay: {{ airportStats.delayTime }}
+        Average Delay: {{ airportStats.delayTime }}
       </v-chip>
       
       <v-chip
@@ -71,7 +71,7 @@ onMounted(() => {
         label
       >
         <v-icon start icon="mdi-snowflake" />
-        Deicing: {{ airportStats.deicingOps }}
+        Deicing Operations: {{ airportStats.deicingOps }}
       </v-chip>
       
       <v-chip
@@ -81,7 +81,7 @@ onMounted(() => {
         label
       >
         <v-icon start icon="mdi-airplane-check" />
-        On-Time: {{ airportStats.onTimePerformance }}
+        Departures-On-Time: {{ airportStats.onTimePerformance }}
       </v-chip>
     </v-container>
   </v-app-bar>

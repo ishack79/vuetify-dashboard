@@ -12,17 +12,17 @@ const props = defineProps({
 const tab = ref(0)
 
 const headers = computed(() => [
-  { title: 'Flight', key: 'flight', align: 'start' },
-  { title: 'Origin', key: 'origin', align: 'center' },
-  { title: 'Destination', key: 'destination', align: 'center' },
-  { title: 'Status', key: 'status', align: 'center' },
-  { title: 'Time', key: 'time', align: 'end' }
+  { title: 'CALLSIGN', key: 'flight', align: 'start' },
+  { title: 'ONBT', key: 'onbt', align: 'center' },
+  { title: 'OFBT', key: 'ofbt', align: 'center' },
+  { title: 'STATUS', key: 'status', align: 'center' },
+  { title: 'ETD', key: 'time', align: 'end' }
 ])
 
-const mockData = Array.from({ length: 40 }, (_, i) => ({
+const mockData = Array.from({ length: 500 }, (_, i) => ({
   flight: `FL${1000 + i}`,
-  origin: `City ${i % 10 + 1}`,
-  destination: `City ${i % 10 + 11}`,
+  onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   status: i % 2 === 0 ? 'On Time' : 'Delayed',
   time: `${14 + (i % 10)}:${(i % 2 === 0 ? '30' : '45')}`,
   raw: {
