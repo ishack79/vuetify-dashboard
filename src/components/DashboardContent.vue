@@ -11,6 +11,9 @@ const props = defineProps({
 })
 
 const tab = ref(0)
+const showDatePicker = ref(false) // Initialize showDatePicker
+const date = ref(new Date().toISOString().substr(0, 10)) // Initialize date
+
 const headers = computed(() => [
   { title: 'DATE', key: 'date', align: 'start' },
   { title: 'CALLSIGN', key: 'flight', align: 'start' },
@@ -101,7 +104,28 @@ const getTabNames = computed(() => {
             class="mt-4"
             elevation="0"
           >
-            <v-toolbar flat>
+            <v-toolbar flat class="custom-toolbar">
+              <!-- Date Picker Menu -->
+              <v-menu
+                v-model="showDatePicker"
+                :close-on-content-click="false"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-calendar</v-icon>
+                  </v-btn>
+                </template>
+                <v-date-picker
+                  v-model="date"
+                  no-title
+                  color="primary"
+                  @input="showDatePicker = false"
+                >
+                </v-date-picker>
+              </v-menu>
+              <!-- Other Toolbar Buttons -->
               <v-spacer></v-spacer>
               <v-btn icon>
                 <v-icon color="info">mdi-information</v-icon>
@@ -113,6 +137,7 @@ const getTabNames = computed(() => {
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </v-toolbar>
+            <!-- DataTable Component -->
             <DataTable
               :headers="headers"
               :items="mockData"
@@ -125,3 +150,22 @@ const getTabNames = computed(() => {
     </v-card>
   </v-main>
 </template>
+
+<style scoped>
+.custom-toolbar {
+  background-color: #383052;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: none;
+}
+
+/* Adjust the menu to appear over the toolbar */
+.v-menu__content--fixed {
+  position: absolute !important;
+}
+
+/* Optional: Style the date picker */
+.v-date-picker {
+  max-width: 290px;
+}
+</style>
