@@ -102,10 +102,15 @@ const getTabNames = computed(() => {
             elevation="0"
           >
             <v-toolbar flat>
-              <v-toolbar-title>Data Table</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
-          <v-icon>mdi-refresh</v-icon>
+                <v-icon color="info">mdi-information</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon color="success">mdi-file-excel-box</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </v-toolbar>
             <DataTable
