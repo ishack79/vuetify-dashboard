@@ -78,6 +78,13 @@ export default {
           },
           axisPointer: {
             type: 'shadow'
+          },
+          formatter: function (params) {
+            let result = params[0].axisValueLabel + '<br/>';
+            params.forEach(item => {
+                result += item.marker + ': ' + item.data.name + ' (' + new Date(item.data.value[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ')<br/>';
+            });
+            return result;
           }
         },
         legend: {
