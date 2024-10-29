@@ -92,29 +92,36 @@ export default {
           name: 'Time',
           nameLocation: 'middle',
           nameTextStyle: {
-            color: '#e2e8f0',
+            color: '#fff',
             padding: 20
           },
           axisLabel: {
-            color: '#e2e8f0'
+            color: '#fff'
           },
           splitLine: {
             show: true,
             lineStyle: {
-              color: '#444'
+              color: '#fff'
             }
           }
         },
         yAxis: {
           type: 'category',
+          name: 'Airline',
+          nameLocation: 'middle',
+          nameRotate: 0,
+          nameTextStyle: {
+            color: '#fff',
+            padding: 20
+          },
           data: airlines,
           axisLabel: {
-            color: '#e2e8f0' // Show y-axis labels
+            color: '#fff' // Show y-axis labels
           },
           splitLine: {
             show: true,
             lineStyle: {
-              color: '#444'
+              color: '#fff'
             }
           }
         },
