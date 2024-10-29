@@ -80,6 +80,12 @@ export default {
             type: 'shadow'
           }
         },
+        legend: {
+          data: ['Departure', 'Landing'],
+          textStyle: {
+            color: '#e2e8f0'
+          }
+        },
         xAxis: {
           type: 'time',
           boundaryGap: false
