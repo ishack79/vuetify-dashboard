@@ -116,15 +116,27 @@ const getTabNames = computed(() => {
               ></v-text-field>
               <!-- Other Toolbar Buttons -->
               <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon color="info">mdi-information</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon color="success">mdi-file-excel-box</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
+              <v-tooltip text="Info" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-btn v-bind="props" icon>
+                    <v-icon color="info">mdi-information</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+              <v-tooltip text="Excel" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-btn v-bind="props" icon>
+                    <v-icon color="success">mdi-file-excel-box</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+              <v-tooltip text="Refresh" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-btn v-bind="props" icon>
+                    <v-icon>mdi-refresh</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
             </v-toolbar>
             <!-- DataTable Component -->
             <DataTable
