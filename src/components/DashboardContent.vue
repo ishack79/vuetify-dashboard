@@ -72,7 +72,7 @@ const getTabNames = computed(() => {
     <v-card class="mb-6" elevation="0">
       <v-card-title class="text-h5 font-weight-bold pb-2">
         {{ selectedMenu }}
-        <span v-if="selectedMenu === 'Deicing'"> - {{ deicingOperationsCount }} Operations</span>
+        <span v-if="selectedMenu === 'Deicing'"></span>
       </v-card-title>
       <v-tabs
         v-model="tab"

@@ -5,9 +5,9 @@ const time = ref(new Date().toUTCString())
 const weather = ref({ temp: 'Snow', condition: '- LVP' })
 const airportStats = ref({
   name: 'Oslo Airport',
-  delayTime: '15 mins',
-  deicingOps: '234',
-  onTimePerformance: '87%'
+  delayTime: '55 mins',
+  deicingOps: '120',
+  onTimePerformance: '55%'
 })
 
 onMounted(() => {
@@ -29,7 +29,6 @@ onMounted(() => {
         variant="elevated"
         label
         size="large"
-        text-color="white"
         style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-airport" />
@@ -41,7 +40,6 @@ onMounted(() => {
         color="info"
         variant="elevated"
         label
-        text-color="white"
         style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-clock-outline" />
@@ -50,10 +48,9 @@ onMounted(() => {
       
       <v-chip
         class="status-bar-chip"
-        color="secondary"
         variant="elevated"
+        :color="weather.temp !== 'Snow' ? 'success' : 'error'"
         label
-        text-color="white"
         style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-weather-snowy" />
@@ -62,7 +59,7 @@ onMounted(() => {
       
       <v-chip
         class="status-bar-chip"
-        :color="airportStats.delayTime === '0 mins' ? 'success' : 'warning'"
+        :color="airportStats.delayTime === '0 mins' ? 'success' : 'error'"
         variant="elevated"
         label
         style="font-size: 1.2em; padding: 0.5em;"
@@ -84,7 +81,7 @@ onMounted(() => {
       
       <v-chip
         class="status-bar-chip"
-        color="success"
+        :color="airportStats.onTimePerformance === '100%' ? 'success' : 'error'"
         variant="elevated"
         label
         style="font-size: 1.2em; padding: 0.5em;"
