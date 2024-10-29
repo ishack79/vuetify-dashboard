@@ -39,7 +39,7 @@ export default {
           }
         },
         legend: {
-          data: ['Runway 01L/19R', 'Runway 01R/19L'],
+          data: ['01L/19R', '01R/19L'],
           textStyle: {
             color: '#e2e8f0'
           }
@@ -65,7 +65,7 @@ export default {
         },
         series: [
           {
-            name: 'Runway 01L/19R',
+            name: '01L/19R',
             type: 'bar',
             stack: 'total',
             data: this.generateRunwayData(),
@@ -74,7 +74,7 @@ export default {
             }
           },
           {
-            name: 'Runway 01R/19L',
+            name: '01R/19L',
             type: 'bar',
             stack: 'total',
             data: this.generateRunwayData(),

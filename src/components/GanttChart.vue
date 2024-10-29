@@ -21,26 +21,9 @@
 import * as echarts from 'echarts';
 
 export default {
-  mounted() {
-    this.initChart();
-  },
-  methods: {
-    initChart() {
-      const chart = echarts.init(this.$refs.chart);
-
-      const data = [
-        { name: 'AA101', type: 'landing', time: '2023-10-01 00:30' },
-        { name: 'BA202', type: 'landing', time: '2023-10-01 01:45' },
-        { name: 'CA303', type: 'departure', time: '2023-10-01 02:00' },
-        { name: 'DA404', type: 'departure', time: '2023-10-01 03:15' },
-        { name: 'AA505', type: 'departure', time: '2023-10-01 04:30' },
-        { name: 'BA606', type: 'landing', time: '2023-10-01 05:45' },
-        { name: 'CA707', type: 'departure', time: '2023-10-01 06:00' },
-        { name: 'DA808', type: 'landing', time: '2023-10-01 07:15' },
-        { name: 'AA909', type: 'departure', time: '2023-10-01 08:30' },
-        { name: 'BA010', type: 'landing', time: '2023-10-01 09:45' },
-        { name: 'CA111', type: 'departure', time: '2023-10-01 10:00' },
-        { name: 'DA212', type: 'departure', time: '2023-10-01 11:15' },
+  data() {
+    return {
+      data: [
         { name: 'AA313', type: 'departure', time: '2023-10-01 12:30' },
         { name: 'BA414', type: 'landing', time: '2023-10-01 13:45' },
         { name: 'CA515', type: 'departure', time: '2023-10-01 14:00' },
@@ -53,101 +36,75 @@ export default {
         { name: 'BA222', type: 'landing', time: '2023-10-01 21:45' },
         { name: 'CA323', type: 'landing', time: '2023-10-01 22:00' },
         { name: 'DA424', type: 'landing', time: '2023-10-01 23:15' }
-      ];
-
-      const airlines = [...new Set(data.map(item => item.name.slice(0, 2)))];
-      const departureData = data.filter(item => item.type === 'departure').map(item => ({
+      ],
+      thresholds: {
+        landing: ['01L', '19R'],
+        departure: ['01R', '19L']
+      }
+    };
+  },
+  computed: {
+    departureData() {
+      return this.data.filter(item => item.type === 'departure').map(item => ({
         name: item.name,
         value: [
           new Date(item.time).getTime(),
-          item.name.slice(0, 2)
+          this.thresholds.departure[Math.floor(Math.random() * this.thresholds.departure.length)]
         ]
       }));
-      const landingData = data.filter(item => item.type === 'landing').map(item => ({
+    },
+    landingData() {
+      return this.data.filter(item => item.type === 'landing').map(item => ({
         name: item.name,
         value: [
           new Date(item.time).getTime(),
-          item.name.slice(0, 2)
+          this.thresholds.landing[Math.floor(Math.random() * this.thresholds.landing.length)]
         ]
       }));
-
-      const options = {
+    }
+  },
+  mounted() {
+    this.initChart();
+  },
+  methods: {
+    initChart() {
+      const chart = echarts.init(this.$refs.chart);
+      const option = {
         tooltip: {
-          formatter: function (params) {
-            return `${params.marker} ${params.name}: ${new Date(params.value[0]).toLocaleString()}`;
-          },
+          trigger: 'axis',
           backgroundColor: '#333', // Dark background for better contrast
           textStyle: {
-            color: '#fff' // White text for better readability
-          }
-        },
-        legend: {
-          data: ['Departure', 'Landing'],
-          textStyle: {
-            color: '#e2e8f0'
+            color: '#fff' // White text for tooltip
+          },
+          axisPointer: {
+            type: 'shadow'
           }
         },
         xAxis: {
           type: 'time',
-          name: 'Time',
-          nameLocation: 'middle',
-          nameTextStyle: {
-            color: '#fff',
-            padding: 20
-          },
-          axisLabel: {
-            color: '#fff'
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#fff'
-            }
-          }
+          boundaryGap: false
         },
         yAxis: {
           type: 'category',
-          name: 'Airline',
-          nameLocation: 'middle',
-          nameRotate: 0,
-          nameTextStyle: {
-            color: '#fff',
-            padding: 20
-          },
-          data: airlines,
+          data: ['01L', '19R', '01R', '19L'],
           axisLabel: {
-            color: '#fff' // Show y-axis labels
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#fff'
-            }
+            formatter: '{value}'
           }
         },
         series: [
           {
             name: 'Departure',
             type: 'scatter',
-            data: departureData,
-            symbolSize: 10, // Adjust point size
-            itemStyle: {
-              color: '#5470C6'
-            }
+            data: this.departureData
           },
           {
             name: 'Landing',
             type: 'scatter',
-            data: landingData,
-            symbolSize: 10, // Adjust point size
-            itemStyle: {
-              color: '#91CC75'
-            }
+            data: this.landingData
           }
         ]
       };
-
-      chart.setOption(options);
+      chart.setOption(option);
     }
   }
 };
