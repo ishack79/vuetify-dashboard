@@ -11,21 +11,38 @@ const props = defineProps({
 })
 
 const tab = ref(0)
-
 const headers = computed(() => [
+  { title: 'DATE', key: 'date', align: 'start' },
   { title: 'CALLSIGN', key: 'flight', align: 'start' },
+  { title: 'G-H', key: 'groundHandler', align: 'center' },
+  { title: 'TYP', key: 'type', align: 'center' },
+  { title: 'I-C', key: 'ic', align: 'center' },
   { title: 'ONBT', key: 'onbt', align: 'center' },
   { title: 'OFBT', key: 'ofbt', align: 'center' },
+  { title: 'A-O', key: 'ao', align: 'center' },
+  { title: 'RWY', key: 'rwy', align: 'center' },
+  { title: 'ETD', key: 'time', align: 'end' },
+  { title: 'LVP', key: 'lvp', align: 'center' },
   { title: 'STATUS', key: 'status', align: 'center' },
-  { title: 'ETD', key: 'time', align: 'end' }
 ])
 
+const aircraftTypes = ['A320', 'B737', 'A380', 'B777', 'A350', 'B787']
+const groundHandlers = ['AAP', 'KAS', 'SHP', 'JAS']
+const runways = ['01L', '01R', '19L', '19R']
+
 const mockData = Array.from({ length: 600 }, (_, i) => ({
+  date: new Date().toISOString().split('T')[0],
   flight: `FL${1000 + i}`,
   onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   status: Math.random() > 0.5 ? 'On Time' : 'Delayed',
   time: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  lvp: Math.random() > 0.5 ? 'Y' : 'N',
+  type: aircraftTypes[Math.floor(Math.random() * aircraftTypes.length)],
+  groundHandler: groundHandlers[Math.floor(Math.random() * groundHandlers.length)],
+  ao: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  rwy: runways[Math.floor(Math.random() * runways.length)],
+  ic: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`, // Added new data field
   raw: {
     status: Math.random() > 0.5 ? 'On Time' : 'Delayed'
   }
