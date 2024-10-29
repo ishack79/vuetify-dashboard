@@ -105,26 +105,15 @@ const getTabNames = computed(() => {
             elevation="0"
           >
             <v-toolbar flat class="custom-toolbar">
-              <!-- Date Picker Menu -->
-              <v-menu
-                v-model="showDatePicker"
-                :close-on-content-click="false"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-calendar</v-icon>
-                  </v-btn>
-                </template>
-                <v-date-picker
-                  v-model="date"
-                  no-title
-                  color="primary"
-                  @input="showDatePicker = false"
-                >
-                </v-date-picker>
-              </v-menu>
+              <!-- Display Selected Date -->
+              <v-text-field
+                v-model="date"
+                label="Selected Date"
+                prepend-icon="mdi-calendar"
+                readonly
+                class="mr-4"
+                style="max-width: 200px;"
+              ></v-text-field>
               <!-- Other Toolbar Buttons -->
               <v-spacer></v-spacer>
               <v-btn icon>
