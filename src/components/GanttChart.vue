@@ -29,45 +29,45 @@ export default {
       const chart = echarts.init(this.$refs.chart);
 
       const data = [
-        { name: 'AA101', type: 'departure', time: '2023-10-01 00:30' },
+        { name: 'AA101', type: 'landing', time: '2023-10-01 00:30' },
         { name: 'BA202', type: 'landing', time: '2023-10-01 01:45' },
         { name: 'CA303', type: 'departure', time: '2023-10-01 02:00' },
-        { name: 'DA404', type: 'landing', time: '2023-10-01 03:15' },
-        { name: 'EA505', type: 'departure', time: '2023-10-01 04:30' },
-        { name: 'FA606', type: 'landing', time: '2023-10-01 05:45' },
-        { name: 'GA707', type: 'departure', time: '2023-10-01 06:00' },
-        { name: 'HA808', type: 'landing', time: '2023-10-01 07:15' },
-        { name: 'IA909', type: 'departure', time: '2023-10-01 08:30' },
-        { name: 'JA010', type: 'landing', time: '2023-10-01 09:45' },
-        { name: 'KA111', type: 'departure', time: '2023-10-01 10:00' },
-        { name: 'LA212', type: 'landing', time: '2023-10-01 11:15' },
-        { name: 'MA313', type: 'departure', time: '2023-10-01 12:30' },
-        { name: 'NA414', type: 'landing', time: '2023-10-01 13:45' },
-        { name: 'OA515', type: 'departure', time: '2023-10-01 14:00' },
-        { name: 'PA616', type: 'landing', time: '2023-10-01 15:15' },
-        { name: 'QA717', type: 'departure', time: '2023-10-01 16:30' },
-        { name: 'RA818', type: 'landing', time: '2023-10-01 17:45' },
-        { name: 'SA919', type: 'departure', time: '2023-10-01 18:00' },
-        { name: 'TA020', type: 'landing', time: '2023-10-01 19:15' },
-        { name: 'UA121', type: 'departure', time: '2023-10-01 20:30' },
-        { name: 'VA222', type: 'landing', time: '2023-10-01 21:45' },
-        { name: 'WA323', type: 'departure', time: '2023-10-01 22:00' },
-        { name: 'XA424', type: 'landing', time: '2023-10-01 23:15' }
+        { name: 'DA404', type: 'departure', time: '2023-10-01 03:15' },
+        { name: 'AA505', type: 'departure', time: '2023-10-01 04:30' },
+        { name: 'BA606', type: 'landing', time: '2023-10-01 05:45' },
+        { name: 'CA707', type: 'departure', time: '2023-10-01 06:00' },
+        { name: 'DA808', type: 'landing', time: '2023-10-01 07:15' },
+        { name: 'AA909', type: 'departure', time: '2023-10-01 08:30' },
+        { name: 'BA010', type: 'landing', time: '2023-10-01 09:45' },
+        { name: 'CA111', type: 'departure', time: '2023-10-01 10:00' },
+        { name: 'DA212', type: 'departure', time: '2023-10-01 11:15' },
+        { name: 'AA313', type: 'departure', time: '2023-10-01 12:30' },
+        { name: 'BA414', type: 'landing', time: '2023-10-01 13:45' },
+        { name: 'CA515', type: 'departure', time: '2023-10-01 14:00' },
+        { name: 'DA616', type: 'landing', time: '2023-10-01 15:15' },
+        { name: 'AA717', type: 'landing', time: '2023-10-01 16:30' },
+        { name: 'BA818', type: 'departure', time: '2023-10-01 17:45' },
+        { name: 'CA919', type: 'departure', time: '2023-10-01 18:00' },
+        { name: 'DA020', type: 'landing', time: '2023-10-01 19:15' },
+        { name: 'AA121', type: 'departure', time: '2023-10-01 20:30' },
+        { name: 'BA222', type: 'landing', time: '2023-10-01 21:45' },
+        { name: 'CA323', type: 'landing', time: '2023-10-01 22:00' },
+        { name: 'DA424', type: 'landing', time: '2023-10-01 23:15' }
       ];
 
-      const categories = data.map(item => item.name);
+      const airlines = [...new Set(data.map(item => item.name.slice(0, 2)))];
       const departureData = data.filter(item => item.type === 'departure').map(item => ({
         name: item.name,
         value: [
           new Date(item.time).getTime(),
-          item.name
+          item.name.slice(0, 2)
         ]
       }));
       const landingData = data.filter(item => item.type === 'landing').map(item => ({
         name: item.name,
         value: [
           new Date(item.time).getTime(),
-          item.name
+          item.name.slice(0, 2)
         ]
       }));
 
@@ -107,7 +107,7 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: categories,
+          data: airlines,
           axisLabel: {
             color: '#e2e8f0' // Show y-axis labels
           },
