@@ -29,14 +29,25 @@ export default {
       const chart = echarts.init(this.$refs.chart);
       const data = this.generateTrafficData();
       const option = {
-        tooltip: {},
+        tooltip: {
+          backgroundColor: '#333', // Dark background for better contrast
+          textStyle: {
+            color: '#fff' // White text for tooltip
+          }
+        },
         xAxis: {
           type: 'category',
-          data: this.get24HourFormat()
+          data: this.get24HourFormat(),
+          axisLabel: {
+            color: '#fff' // White text for x-axis labels
+          }
         },
         yAxis: {
           type: 'category',
-          data: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+          data: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          axisLabel: {
+            color: '#fff' // White text for y-axis labels
+          }
         },
         visualMap: {
           min: 0,
@@ -44,14 +55,18 @@ export default {
           calculable: true,
           orient: 'horizontal',
           left: 'center',
-          bottom: '2%' // Adjusted to move the slider more to the bottom
+          bottom: '-1%', // Adjusted to move the slider more to the bottom
+          textStyle: {
+            color: '#fff' // White text for visualMap
+          }
         },
         series: [{
           name: 'Traffic Volume',
           type: 'heatmap',
-          data: data,
-          label: {
-            show: true
+            data: data,
+            label: {
+            show: true,
+            color: '#000' // Black text for heatmap labels
           },
           emphasis: {
             itemStyle: {
@@ -80,12 +95,7 @@ export default {
       return data;
     },
     get24HourFormat() {
-      const hours = [];
-      for (let i = 0; i < 24; i++) {
-        const hour = i.toString().padStart(2, '0');
-        hours.push(`${hour}:00`);
-      }
-      return hours;
+      return ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
     }
   }
 };
