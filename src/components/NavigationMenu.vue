@@ -11,12 +11,12 @@ const emit = defineEmits(['update:modelValue'])
 
 const menuItems = [
   { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-  { title: 'Towing', icon: 'mdi-truck' },
+  { title: 'Towing', icon: 'mdi-airplane-takeoff' },
   { title: 'Deicing', icon: 'mdi-snowflake' },
   { title: 'LVP', icon: 'mdi-weather-fog' },
   { title: 'Delay', icon: 'mdi-clock-alert' },
   { title: 'Traffic', icon: 'mdi-airplane' },
-  { title: 'Occupancy', icon: 'mdi-gate' },
+  { title: 'Occupancy', icon: 'mdi-map-marker' },
   { title: 'Total Traffic', icon: 'mdi-chart-bar' },
   { title: 'Taxi Time', icon: 'mdi-road-variant' },
   { title: 'Snow', icon: 'mdi-weather-snowy' },
