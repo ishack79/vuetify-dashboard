@@ -19,6 +19,7 @@ const headers = computed(() => [
   { title: 'I-C', key: 'ic', align: 'center' },
   { title: 'ONBT', key: 'onbt', align: 'center' },
   { title: 'OFBT', key: 'ofbt', align: 'center' },
+  { title: 'P-B', key: 'pb', align: 'center' },
   { title: 'A-O', key: 'ao', align: 'center' },
   { title: 'RWY', key: 'rwy', align: 'center' },
   { title: 'ETD', key: 'time', align: 'end' },
@@ -42,7 +43,8 @@ const mockData = Array.from({ length: 600 }, (_, i) => ({
   groundHandler: groundHandlers[Math.floor(Math.random() * groundHandlers.length)],
   ao: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   rwy: runways[Math.floor(Math.random() * runways.length)],
-  ic: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`, // Added new data field
+  ic: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  pb: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   raw: {
     status: Math.random() > 0.5 ? 'On Time' : 'Delayed'
   }
