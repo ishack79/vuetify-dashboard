@@ -101,6 +101,13 @@ const getTabNames = computed(() => {
             class="mt-4"
             elevation="0"
           >
+            <v-toolbar flat>
+              <v-toolbar-title>Data Table</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon>
+          <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+            </v-toolbar>
             <DataTable
               :headers="headers"
               :items="mockData"
