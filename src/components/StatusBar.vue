@@ -29,6 +29,8 @@ onMounted(() => {
         variant="elevated"
         label
         size="large"
+        text-color="white"
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-airport" />
         {{ airportStats.name }}
@@ -39,6 +41,8 @@ onMounted(() => {
         color="info"
         variant="elevated"
         label
+        text-color="white"
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-clock-outline" />
         {{ time }}
@@ -49,6 +53,8 @@ onMounted(() => {
         color="secondary"
         variant="elevated"
         label
+        text-color="white"
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-weather-snowy" />
         {{ weather.temp }} {{ weather.condition }}
@@ -59,6 +65,7 @@ onMounted(() => {
         :color="airportStats.delayTime === '0 mins' ? 'success' : 'warning'"
         variant="elevated"
         label
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-timer-outline" />
         Average Delay: {{ airportStats.delayTime }}
@@ -69,6 +76,7 @@ onMounted(() => {
         :color="airportStats.deicingOps === 'Active' ? 'warning' : 'success'"
         variant="elevated"
         label
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-snowflake" />
         Deicing Operations: {{ airportStats.deicingOps }}
@@ -79,6 +87,7 @@ onMounted(() => {
         color="success"
         variant="elevated"
         label
+        style="font-size: 1.2em; padding: 0.5em;"
       >
         <v-icon start icon="mdi-airplane-check" />
         Departures-On-Time: {{ airportStats.onTimePerformance }}
