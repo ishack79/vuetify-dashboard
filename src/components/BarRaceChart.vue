@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="1200">
-    <v-card-title>Volume of Aircrafts per Type</v-card-title>
+    <v-card-title>Volume of Traffic per Airline</v-card-title>
     <v-card-text>
       <v-container>
         <v-row>
@@ -47,24 +47,28 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['B737', 'A320', 'B777', 'A380', 'B787'],
+          data: ['AA', 'BA', 'CA', 'DA', 'EA'], // Updated to airlines
           axisLabel: {
             color: '#e2e8f0'
+          },
+          name: 'Airline',
+          nameTextStyle: {
+            color: '#fff' // White color for label
           }
         },
         series: [
           {
-            name: 'Aircrafts',
+            name: 'Airlines',
             type: 'bar',
             data: [320, 240, 180, 150, 130],
             itemStyle: {
               color: function(params) {
                 const colorMap = {
-                  'B737': '#5470C6',
-                  'A320': '#91CC75',
-                  'B777': '#FAC858',
-                  'A380': '#EE6666',
-                  'B787': '#73C0DE'
+                  'AA': '#5470C6',
+                  'BA': '#91CC75',
+                  'CA': '#FAC858',
+                  'DA': '#EE6666',
+                  'EA': '#73C0DE'
                 };
                 return colorMap[params.name];
               }

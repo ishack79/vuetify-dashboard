@@ -106,6 +106,10 @@ export default {
           axisLabel: {
             formatter: '{value}',
             color: '#fff' // White color for labels
+          },
+          name: 'Threshold',
+          nameTextStyle: {
+            color: '#fff' // White color for label
           }
         },
         series: [
