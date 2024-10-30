@@ -28,6 +28,13 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$refs.chart);
+      const airlineNames = {
+        'AA': 'American Airlines',
+        'BA': 'British Airways',
+        'CA': 'China Airlines',
+        'DA': 'Delta Airlines',
+        'EA': 'Emirates Airlines'
+      };
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -37,6 +44,11 @@ export default {
           backgroundColor: '#333', // Dark background for better contrast
           textStyle: {
             color: '#fff' // White text for better readability
+          },
+          formatter: function (params) {
+            const airlineCode = params[0].name;
+            const airlineName = airlineNames[airlineCode];
+            return `${params[0].marker} ${airlineName}: ${params[0].value}`;
           }
         },
         xAxis: {
