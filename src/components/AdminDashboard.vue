@@ -8,34 +8,30 @@ import GanttChart from './GanttChart.vue'
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="3000">
-    <v-card-text>
-      <v-container>
-        <v-row>
-          <v-col cols="12" md="6">
-            <ChartComponent />
-          </v-col>
-          <v-col cols="12" md="6">
-            <BarRaceChart />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="6">
-            <HeatmapChart />
-          </v-col>
-          <v-col cols="12" md="6">
-            <PieChart />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="6">
-            <RunwayOccupancyChart />
-          </v-col>
-          <v-col cols="12" md="6">
-            <GanttChart />
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card-text>
-  </v-card>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" md="6">
+        <ChartComponent />
+      </v-col>
+      <v-col cols="12" md="6">
+        <BarRaceChart />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6">
+        <HeatmapChart />
+      </v-col>
+      <v-col cols="12" md="6">
+        <PieChart />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6">
+        <RunwayOccupancyChart />
+      </v-col>
+      <v-col cols="12" md="6">
+        <GanttChart />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
