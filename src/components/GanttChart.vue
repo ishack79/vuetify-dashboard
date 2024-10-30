@@ -95,13 +95,17 @@ export default {
         },
         xAxis: {
           type: 'time',
-          boundaryGap: false
+          boundaryGap: false,
+          axisLabel: {
+            color: '#fff' // White color for labels
+          }
         },
         yAxis: {
           type: 'category',
           data: ['01L', '19R', '01R', '19L'],
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: '#fff' // White color for labels
           }
         },
         series: [

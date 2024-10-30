@@ -70,7 +70,7 @@ onMounted(() => {
       
       <v-chip
         class="status-bar-chip"
-        :color="airportStats.deicingOps === 'Active' ? 'warning' : 'success'"
+        :color="airportStats.deicingOps === 'Active' ? 'warning' : 'info'"
         variant="elevated"
         label
         style="font-size: 1.2em; padding: 0.5em;"

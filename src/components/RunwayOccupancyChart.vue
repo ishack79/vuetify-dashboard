@@ -52,7 +52,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'],
+          data: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
           axisLabel: {
             color: '#e2e8f0'
           }
@@ -88,12 +88,12 @@ export default {
     },
     generateRunwayData() {
       const data = [];
-      for (let i = 0; i < 24; i++) {
-        let value;
-        if (i >= 6 && i <= 18) {
-          value = Math.floor(Math.random() * 100) + 50; // More traffic during daylight hours
+      for (let i = 0; i < 7; i++) {
+        let value = Math.floor(Math.random() * 100); // Base traffic
+        if (i >= 1 && i <= 5) {
+          value += Math.floor(Math.random() * 50); // Increase traffic during weekdays
         } else {
-          value = Math.floor(Math.random() * 50); // Less traffic during night hours
+          value += Math.floor(Math.random() * 30); // Increase traffic during weekends
         }
         data.push(value);
       }
