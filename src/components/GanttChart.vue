@@ -65,8 +65,20 @@ export default {
   },
   mounted() {
     this.initChart();
+    window.addEventListener('resize', this.resizeChart);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeChart);
+    if (this.chart) {
+      this.chart.dispose();
+    }
   },
   methods: {
+    resizeChart() {
+      if (this.chart) {
+        this.chart.resize();
+      }
+    },
     initChart() {
       const chart = echarts.init(this.$refs.chart);
       const option = {

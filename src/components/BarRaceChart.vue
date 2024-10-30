@@ -24,8 +24,20 @@ export default {
   mounted() {
     this.initChart();
     this.startUpdatingData();
+    window.addEventListener('resize', this.resizeChart);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeChart);
+    if (this.chart) {
+      this.chart.dispose();
+    }
   },
   methods: {
+    resizeChart() {
+      if (this.chart) {
+        this.chart.resize();
+      }
+    },
     initChart() {
       this.chart = echarts.init(this.$refs.chart);
       const airlineNames = {

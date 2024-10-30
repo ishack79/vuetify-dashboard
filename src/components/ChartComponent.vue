@@ -23,6 +23,13 @@ import * as echarts from 'echarts';
 export default {
   mounted() {
     this.initChart();
+    window.addEventListener('resize', this.resizeChart);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeChart);
+    if (this.chart) {
+      this.chart.dispose();
+    }
   },
   methods: {
     initChart() {
@@ -77,6 +84,11 @@ export default {
         ]
       };
       chart.setOption(options);
+    },
+    resizeChart() {
+      if (this.chart) {
+        this.chart.resize();
+      }
     }
   }
 };
