@@ -1,8 +1,7 @@
-import { createApp } from 'vue'
-import './style.css'
+import { createApp, defineCustomElement } from 'vue'
 import App from './App.vue'
 
-// Vuetify
+// Import Vuetify components, directives, and styles
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -10,9 +9,7 @@ import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import '@mdi/font/css/materialdesignicons.css'
 
-// ECharts
-import 'echarts'
-
+// Create Vuetify instance
 const vuetify = createVuetify({
   components,
   directives,
@@ -20,8 +17,8 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
     aliases,
     sets: {
-      mdi
-    }
+      mdi,
+    },
   },
   theme: {
     defaultTheme: 'darkTheme',
@@ -39,11 +36,27 @@ const vuetify = createVuetify({
           background: '#1a1b2e',
           surface: '#232442',
           'surface-bright': '#2a2b4d',
-          'on-surface': '#e2e8f0'
-        }
-      }
-    }
-  }
+          'on-surface': '#e2e8f0',
+        },
+      },
+    },
+  },
 })
 
-createApp(App).use(vuetify).mount('#app')
+// Create a Vue app instance
+const app = createApp({})
+
+// Use Vuetify plugin
+app.use(vuetify)
+
+// Get the app's context
+const appContext = app._context
+
+// Define the custom element from App.vue
+const MyAppElement = defineCustomElement(App)
+
+// Attach the app context to the custom element
+MyAppElement.appContext = appContext
+
+// Register the custom element
+customElements.define('reports-vue3', MyAppElement)
