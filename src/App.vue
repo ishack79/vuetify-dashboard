@@ -1,18 +1,5 @@
-<template>
-  <v-app>
-    <StatusBar />
-    <NavigationMenu v-model="selectedMenu" />
-    <DashboardContent :selected-menu="selectedMenu" />
-  </v-app>
-</template>
-
 <script setup>
-import { ref } from 'vue'
-import StatusBar from './components/StatusBar.vue'
-import NavigationMenu from './components/NavigationMenu.vue'
-import DashboardContent from './components/DashboardContent.vue'
-
-const selectedMenu = ref('Dashboard')
+import Reports from './components/Reports.vue'
 </script>
 
 <script>
@@ -23,3 +10,9 @@ export default {
 
 <style>
 </style>
+
+<template>
+  <v-app>
+    <Reports />
+  </v-app>
+</template>
