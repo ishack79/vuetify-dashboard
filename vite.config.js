@@ -14,8 +14,8 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: './src/App.vue',
-      name: 'ReportsVue3',
+      entry: './src/components/Reports.vue',
+      name: 'reports-vue3',
       fileName: (format) => `reports-vue3.${format}.js`,
       formats: ['es', 'umd'], // Output formats
     },

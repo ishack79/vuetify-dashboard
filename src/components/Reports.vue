@@ -7,8 +7,16 @@ import DashboardContent from './DashboardContent.vue'
 const selectedMenu = ref('Dashboard')
 </script>
 
+<script>
+export default {
+  shadow: false,
+}
+</script>
+
 <template>
-    <StatusBar />
-    <NavigationMenu v-model="selectedMenu" />
-    <DashboardContent :selected-menu="selectedMenu" />
+    <div>
+        <StatusBar />
+        <NavigationMenu v-model="selectedMenu" />
+        <DashboardContent :selected-menu="selectedMenu" />
+    </div>
 </template>

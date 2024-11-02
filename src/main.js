@@ -1,5 +1,5 @@
 import { createApp, defineCustomElement } from 'vue'
-import App from './App.vue'
+import Reports from './components/Reports.vue'
 
 // Import Vuetify components, directives, and styles
 import 'vuetify/styles'
@@ -53,7 +53,7 @@ app.use(vuetify)
 const appContext = app._context
 
 // Define the custom element from App.vue
-const MyAppElement = defineCustomElement(App)
+const MyAppElement = defineCustomElement(Reports)
 
 // Attach the app context to the custom element
 MyAppElement.appContext = appContext
