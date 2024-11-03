@@ -43,20 +43,24 @@ const vuetify = createVuetify({
   },
 })
 
-// Create a Vue app instance
-const app = createApp({})
+// Wrap the component with Vuetify
+const wrapComponent = (component) => {
+  const app = createApp(component)
+  app.use(vuetify)
+  const el = document.createElement('div')
+  document.body.appendChild(el)
+  app.mount(el)
+  return el
+}
 
-// Use Vuetify plugin
-app.use(vuetify)
-
-// Get the app's context
-const appContext = app._context
-
-// Define the custom element from App.vue
-const MyAppElement = defineCustomElement(Reports)
-
-// Attach the app context to the custom element
-MyAppElement.appContext = appContext
+// Define the custom element from Reports.vue
+const MyAppElement = defineCustomElement({
+  ...Reports,
+  setup() {
+    const el = wrapComponent(Reports)
+    return () => el
+  }
+})
 
 // Register the custom element
 customElements.define('reports-vue3', MyAppElement)

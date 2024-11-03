@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [
     vue({
       customElement: true, // Enable custom elements mode
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => tag.startsWith('reports-')
+        }
+      }
     }),
   ],
   server: {
@@ -14,19 +19,18 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: './src/components/Reports.vue',
+      entry: './src/main.js',
       name: 'reports-vue3',
       fileName: (format) => `reports-vue3.${format}.js`,
-      formats: ['es', 'umd'], // Output formats
+      formats: ['es'],
     },
     rollupOptions: {
       // Externalize dependencies you don't want to bundle
-      external: ['vue', 'vuetify', 'echarts'],
+      external: ['vue', 'vuetify'],
       output: {
         globals: {
           vue: 'Vue',
           vuetify: 'Vuetify',
-          echarts: 'echarts',
         },
       },
     },
