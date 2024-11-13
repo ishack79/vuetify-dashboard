@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import DataTable from './DataTable.vue'
 import AdminDashboard from './AdminDashboard.vue'
+import Datepicker from './Datepicker.vue';
 
 const props = defineProps({
   selectedMenu: {
@@ -106,14 +107,14 @@ const getTabNames = computed(() => {
           >
             <v-toolbar flat class="custom-toolbar">
               <!-- Display Selected Date -->
-              <v-text-field
+              <Datepicker
                 v-model="date"
-                label="Selected Date"
-                prepend-icon="mdi-calendar"
-                readonly
-                class="mr-4"
-                style="max-width: 200px;"
-              ></v-text-field>
+                :rules="[(v) => !!v || 'Date is required!']"
+                clearable
+                hide-details="auto"
+                color="primary"
+                label="Date"
+              ></Datepicker> 
               <!-- Other Toolbar Buttons -->
               <v-spacer></v-spacer>
               <v-tooltip text="Info" location="top">
@@ -166,7 +167,7 @@ const getTabNames = computed(() => {
 }
 
 /* Optional: Style the date picker */
-.v-date-picker {
+.Datepicker {
   max-width: 290px;
 }
 </style>
