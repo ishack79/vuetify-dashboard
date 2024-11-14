@@ -73,33 +73,42 @@ const toggleChart = (chart) => {
 <style scoped>
 .settings-modal {
   background: rgba(35, 36, 66, 0.95) !important;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .settings-card {
   background: rgba(42, 43, 77, 0.95) !important;
   border: 1px solid rgba(99, 102, 241, 0.1);
+  padding: 16px;
+  border-radius: 8px;
 }
 
 .v-toolbar {
   background: transparent !important;
   border: none !important;
+  padding: 0 16px;
 }
 
 .close-btn {
-  background-color: rgba(239, 68, 68, 0.1) !important;
-  color: rgb(239, 68, 68) !important;
-  border: 2px solid rgb(239, 68, 68) !important;
+  background-color: rgb(239, 68, 68) !important;
+  color: white !important;
   transition: all 0.3s ease;
+  margin-right: 8px;
+  filter: brightness(1);
 }
 
 .close-btn:hover {
-  background-color: rgb(239, 68, 68) !important;
-  color: white !important;
-  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.close-btn:active {
+  filter: brightness(1.4);
 }
 
 .chart-checkbox {
   width: 100%;
+  margin-bottom: 8px;
 }
 
 :deep(.v-selection-control__input) {
@@ -108,5 +117,12 @@ const toggleChart = (chart) => {
 
 :deep(.v-selection-control) {
   min-height: 40px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+:deep(.v-selection-control:hover) {
+  background-color: rgba(99, 102, 241, 0.1);
 }
 </style>
