@@ -20,8 +20,6 @@ const toggleChart = (chart) => {
   <v-dialog
     :model-value="modelValue"
     @update:model-value="emit('update:modelValue', $event)"
-    fullscreen
-    :scrim="false"
     transition="dialog-bottom-transition"
   >
     <v-card class="settings-modal">
