@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import ChartComponent from './ChartComponent.vue';
 import BarRaceChart from './BarRaceChart.vue';
 import HeatmapChart from './HeatmapChart.vue';
@@ -20,6 +20,31 @@ const chartSettings = ref([
   { id: 6, name: 'Airport Flight Schedule', component: 'GanttChart', enabled: true, icon: 'mdi-calendar-clock' },
 ]);
 
+const enabledCharts = computed(() => {
+  return chartSettings.value.filter(chart => chart.enabled);
+});
+
+const chartRows = computed(() => {
+  const charts = enabledCharts.value;
+  const rows = [];
+  let currentRow = [];
+
+  charts.forEach((chart, index) => {
+    if (currentRow.length === 2) {
+      rows.push([...currentRow]);
+      currentRow = [];
+    }
+    currentRow.push(chart);
+
+    // Push the last row if we're at the end
+    if (index === charts.length - 1 && currentRow.length > 0) {
+      rows.push([...currentRow]);
+    }
+  });
+
+  return rows;
+});
+
 const updateOrientation = () => {
   isHorizontal.value = window.innerWidth > window.innerHeight;
 };
@@ -31,9 +56,16 @@ const updateChartSetting = (updatedChart) => {
   }
 };
 
-const isChartEnabled = (component) => {
-  const chart = chartSettings.value.find(c => c.component === component);
-  return chart ? chart.enabled : false;
+const getChartComponent = (componentName) => {
+  const components = {
+    ChartComponent,
+    BarRaceChart,
+    HeatmapChart,
+    PieChart,
+    RunwayOccupancyChart,
+    GanttChart
+  };
+  return components[componentName];
 };
 
 onMounted(() => {
@@ -63,60 +95,26 @@ onUnmounted(() => {
     />
 
     <!-- Dashboard Content -->
-    <v-row v-if="isHorizontal">
-      <v-col cols="12" md="6" v-if="isChartEnabled('ChartComponent')">
-        <ChartComponent />
-      </v-col>
-      <v-col cols="12" md="6" v-if="isChartEnabled('BarRaceChart')">
-        <BarRaceChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="isHorizontal">
-      <v-col cols="12" md="6" v-if="isChartEnabled('HeatmapChart')">
-        <HeatmapChart />
-      </v-col>
-      <v-col cols="12" md="6" v-if="isChartEnabled('PieChart')">
-        <PieChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="isHorizontal">
-      <v-col cols="12" md="6" v-if="isChartEnabled('RunwayOccupancyChart')">
-        <RunwayOccupancyChart />
-      </v-col>
-      <v-col cols="12" md="6" v-if="isChartEnabled('GanttChart')">
-        <GanttChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('ChartComponent')">
-        <ChartComponent />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('BarRaceChart')">
-        <BarRaceChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('HeatmapChart')">
-        <HeatmapChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('PieChart')">
-        <PieChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('RunwayOccupancyChart')">
-        <RunwayOccupancyChart />
-      </v-col>
-    </v-row>
-    <v-row v-if="!isHorizontal">
-      <v-col cols="12" v-if="isChartEnabled('GanttChart')">
-        <GanttChart />
-      </v-col>
-    </v-row>
+    <template v-if="isHorizontal">
+      <v-row v-for="(row, rowIndex) in chartRows" :key="rowIndex" class="mb-6">
+        <v-col
+          v-for="chart in row"
+          :key="chart.id"
+          :cols="12"
+          :md="row.length === 1 ? 12 : 6"
+        >
+          <component :is="getChartComponent(chart.component)" />
+        </v-col>
+      </v-row>
+    </template>
+
+    <template v-else>
+      <v-row v-for="chart in enabledCharts" :key="chart.id">
+        <v-col cols="12">
+          <component :is="getChartComponent(chart.component)" />
+        </v-col>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
