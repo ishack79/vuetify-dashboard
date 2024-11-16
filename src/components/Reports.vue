@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import StatusBar from './StatusBar.vue'
 import NavigationMenu from './NavigationMenu.vue'
-import DashboardContent from './DashboardContent.vue'
+import MainContent from './MainContent.vue'
 
 const selectedMenu = ref('Dashboard')
 </script>
@@ -10,5 +10,5 @@ const selectedMenu = ref('Dashboard')
 <template>
     <StatusBar />
     <NavigationMenu v-model="selectedMenu" />
-    <DashboardContent :selected-menu="selectedMenu" />
+    <MainContent :selected-menu="selectedMenu" />
 </template>

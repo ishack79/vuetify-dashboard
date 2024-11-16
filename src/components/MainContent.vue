@@ -12,8 +12,7 @@ const props = defineProps({
 })
 
 const tab = ref(0)
-const showDatePicker = ref(false) // Initialize showDatePicker
-const date = ref(new Date().toISOString().substr(0, 10)) // Initialize date
+const date = ref(new Date().toISOString().substr(0, 10))
 
 const headers = computed(() => [
   { title: 'DATE', key: 'date', align: 'start' },
@@ -106,7 +105,6 @@ const getTabNames = computed(() => {
             elevation="0"
           >
             <v-toolbar flat class="custom-toolbar">
-              <!-- Display Selected Date -->
               <Datepicker
                 v-model="date"
                 :rules="[(v) => !!v || 'Date is required!']"
@@ -115,7 +113,6 @@ const getTabNames = computed(() => {
                 color="primary"
                 label="Date"
               ></Datepicker> 
-              <!-- Other Toolbar Buttons -->
               <v-spacer></v-spacer>
               <v-tooltip text="Info" location="top">
                 <template v-slot:activator="{ props }">
@@ -139,7 +136,6 @@ const getTabNames = computed(() => {
                 </template>
               </v-tooltip>
             </v-toolbar>
-            <!-- DataTable Component -->
             <DataTable
               :headers="headers"
               :items="mockData"
@@ -161,12 +157,10 @@ const getTabNames = computed(() => {
   box-shadow: none;
 }
 
-/* Adjust the menu to appear over the toolbar */
 .v-menu__content--fixed {
   position: absolute !important;
 }
 
-/* Optional: Style the date picker */
 .Datepicker {
   max-width: 290px;
 }
