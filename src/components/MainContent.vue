@@ -12,7 +12,8 @@ const props = defineProps({
 })
 
 const tab = ref(0)
-const date = ref(new Date().toISOString().substr(0, 10))
+const toDate = ref(new Date().toISOString().substr(0, 10))
+const fromDate = ref(new Date().toISOString().substr(0, 10))
 
 const headers = computed(() => [
   { title: 'DATE', key: 'date', align: 'start' },
@@ -106,13 +107,21 @@ const getTabNames = computed(() => {
           >
             <v-toolbar flat class="custom-toolbar">
               <Datepicker
-                v-model="date"
-                :rules="[(v) => !!v || 'Date is required!']"
+                v-model="toDate"
+                :rules="[(v) => !!v || 'To date is required!']"
                 clearable
                 hide-details="auto"
                 color="primary"
-                label="Date"
-              ></Datepicker> 
+                label="To Date"
+              ></Datepicker>
+              <Datepicker
+                v-model="fromDate"
+                :rules="[(v) => !!v || 'From date is required!']"
+                clearable
+                hide-details="auto"
+                color="primary"
+                label="From Date"
+              ></Datepicker>
               <v-spacer></v-spacer>
               <v-tooltip text="Info" location="top">
                 <template v-slot:activator="{ props }">
