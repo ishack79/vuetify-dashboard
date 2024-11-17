@@ -34,7 +34,7 @@ watch(selected, (newValue) => {
   <v-navigation-drawer
     permanent
     elevation="0"
-    width="280"
+    width="300"
   >
     <v-list class="py-4">
       <v-list-item
