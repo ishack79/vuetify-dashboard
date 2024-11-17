@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="1200">
+  <v-card class="mx-auto" style="max-width: 100%">
     <v-card-title>Volume of Departures and Arrivals</v-card-title>
     <v-card-text>
       <v-container>
@@ -7,7 +7,7 @@
           <v-col>
             <v-card>
               <v-card-text>
-                <div id="chart" ref="chart" style="height: 400px;"></div>
+                <div id="chart" ref="chart" style="height: 33vh;"></div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -37,9 +37,9 @@ export default {
       const options = {
         tooltip: {
           trigger: 'axis',
-          backgroundColor: '#333', // Dark background for better contrast
+          backgroundColor: '#333',
           textStyle: {
-            color: '#fff' // White text for better readability
+            color: '#fff'
           }
         },
         legend: {

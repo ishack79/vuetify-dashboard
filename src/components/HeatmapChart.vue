@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="1200">
+  <v-card class="mx-auto" style="max-width: 100%">
     <v-card-title>Volume of Flight Plan Traffic</v-card-title>
     <v-card-text>
       <v-container>
@@ -7,7 +7,7 @@
           <v-col>
             <v-card>
               <v-card-text>
-                <div id="heatmap-chart" ref="chart" style="height: 400px;"></div>
+                <div id="heatmap-chart" ref="chart" style="height: 33vh;"></div>
               </v-card-text>
             </v-card>
           </v-col>

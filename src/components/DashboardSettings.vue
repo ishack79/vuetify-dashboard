@@ -21,7 +21,7 @@ const toggleChart = (chart) => {
     :model-value="modelValue"
     @update:model-value="emit('update:modelValue', $event)"
     transition="dialog-bottom-transition"
-    max-width="800"
+    max-width="20%"
   >
     <v-card class="settings-modal">
       <v-toolbar density="compact" class="pe-3">
@@ -39,12 +39,12 @@ const toggleChart = (chart) => {
       
       <v-card-text>
         <h2 class="text-h4 mb-6">Select charts to display</h2>
-        <v-card class="settings-card mx-auto" max-width="600">
+        <v-card class="settings-card mx-auto" style="max-width: 80%">
           <v-card-text>
             <v-virtual-scroll
               :items="settings"
-              height="400"
-              item-height="64"
+              height="50%"
+              item-height="8%"
             >
               <template v-slot:default="{ item }">
                 <v-list-item>
