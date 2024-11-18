@@ -122,7 +122,13 @@ const getTabNames = computed(() => {
                 color="primary"
                 label="From Date"
               ></Datepicker>
-              <v-spacer></v-spacer>
+              <v-tooltip text="Refresh" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-btn v-bind="props" icon>
+                    <v-icon>mdi-refresh</v-icon>
+                  </v-btn>
+                </template>
+              </v-tooltip>
               <v-tooltip text="Info" location="top">
                 <template v-slot:activator="{ props }">
                   <v-btn v-bind="props" icon>
@@ -134,13 +140,6 @@ const getTabNames = computed(() => {
                 <template v-slot:activator="{ props }">
                   <v-btn v-bind="props" icon>
                     <v-icon color="success">mdi-file-excel-box</v-icon>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-              <v-tooltip text="Refresh" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-btn v-bind="props" icon>
-                    <v-icon>mdi-refresh</v-icon>
                   </v-btn>
                 </template>
               </v-tooltip>
