@@ -121,7 +121,7 @@ onUnmounted(() => {
 <style scoped>
 .settings-btn {
   position: absolute;
-  top: 1rem;
+  top: -2.5rem;
   right: 1rem;
   z-index: 100;
 }

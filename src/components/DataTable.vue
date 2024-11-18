@@ -15,7 +15,7 @@ defineProps({
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page="10"
+    :items-per-page="25"
     hover
     class="elevation-1 rounded-lg"
   >
