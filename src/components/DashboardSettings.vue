@@ -21,7 +21,7 @@ const toggleChart = (chart) => {
     :model-value="modelValue"
     @update:model-value="emit('update:modelValue', $event)"
     transition="dialog-bottom-transition"
-    max-width="20%"
+    max-width="35%"
   >
     <v-card class="settings-modal">
       <v-toolbar density="compact" class="pe-3">
