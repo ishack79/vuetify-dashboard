@@ -25,30 +25,28 @@ const toggleChart = (chart) => {
   <div class="settings-content">
     <h2 class="text-h4 mb-6">Select charts</h2>
     <v-card class="settings-card mx-auto">
-      <v-card-text>
-        <v-virtual-scroll
-          :items="settings"
-          height="50%"
-          item-height="8%"
-        >
-          <template v-slot:default="{ item }">
-            <v-list-item>
-              <v-checkbox
-                :model-value="item.enabled"
-                :label="item.name"
-                :disabled="!item.enabled && enabledCount >= 4"
-                color="primary"
-                hide-details
-                class="chart-checkbox"
-                @change="toggleChart(item)"
-              >
-                <template v-slot:prepend>
-                  <v-icon :icon="item.icon" class="me-2" />
-                </template>
-              </v-checkbox>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
+      <v-card-text class="settings-container">
+        <v-list class="settings-list">
+          <v-list-item
+            v-for="item in settings"
+            :key="item.id"
+            class="mb-2"
+          >
+            <v-checkbox
+              :model-value="item.enabled"
+              :label="item.name"
+              :disabled="!item.enabled && enabledCount >= 4"
+              color="primary"
+              hide-details
+              class="chart-checkbox"
+              @change="toggleChart(item)"
+            >
+              <template v-slot:prepend>
+                <v-icon :icon="item.icon" class="me-2" />
+              </template>
+            </v-checkbox>
+          </v-list-item>
+        </v-list>
       </v-card-text>
     </v-card>
   </div>
@@ -56,8 +54,10 @@ const toggleChart = (chart) => {
 
 <style scoped>
 .settings-content {
-  height: 100%;
+  height: 100vh;
   color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
 }
 
 .settings-card {
@@ -65,11 +65,24 @@ const toggleChart = (chart) => {
   border: 1px solid rgba(99, 102, 241, 0.1);
   padding: 16px;
   border-radius: 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-container {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100vh - 200px);
+}
+
+.settings-list {
+  background: transparent !important;
+  height: 100%;
 }
 
 .chart-checkbox {
   width: 100%;
-  margin-bottom: 8px;
 }
 
 :deep(.v-selection-control__input) {
@@ -85,5 +98,10 @@ const toggleChart = (chart) => {
 
 :deep(.v-selection-control:hover) {
   background-color: rgba(99, 102, 241, 0.1);
+}
+
+:deep(.v-card-text) {
+  height: 100%;
+  padding: 0;
 }
 </style>

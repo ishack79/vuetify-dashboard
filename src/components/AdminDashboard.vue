@@ -126,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <v-container fluid class="position-relative">
+  <v-container fluid class="dashboard-container">
     <!-- Settings Panel -->
     <div 
       class="settings-panel"
@@ -142,52 +142,82 @@ onUnmounted(() => {
     </div>
 
     <!-- Dashboard Content -->
-    <template v-if="isHorizontal">
-      <v-row v-for="(row, rowIndex) in chartRows" :key="rowIndex" class="mb-6">
-        <v-col
-          v-for="chart in row"
-          :key="chart.id"
-          cols="12"
-          md="6"
-        >
-          <div
-            class="chart-container"
-            draggable="true"
-            @dragstart="handleDragStart(chart, chart.order)"
-            @dragover="handleDragOver"
-            @drop="handleDrop(chart)"
+    <div class="dashboard-content" :class="{ 'empty': enabledCharts.length === 0 }">
+      <template v-if="isHorizontal">
+        <v-row v-for="(row, rowIndex) in chartRows" :key="rowIndex" class="mb-6">
+          <v-col
+            v-for="chart in row"
+            :key="chart.id"
+            cols="12"
+            md="6"
           >
-            <component :is="getChartComponent(chart.component)" />
-            <div class="drag-handle">
-              <v-icon icon="mdi-drag" />
+            <div
+              class="chart-container"
+              draggable="true"
+              @dragstart="handleDragStart(chart, chart.order)"
+              @dragover="handleDragOver"
+              @drop="handleDrop(chart)"
+            >
+              <component :is="getChartComponent(chart.component)" />
+              <div class="drag-handle">
+                <v-icon icon="mdi-drag" />
+              </div>
             </div>
-          </div>
-        </v-col>
-      </v-row>
-    </template>
+          </v-col>
+        </v-row>
+      </template>
 
-    <template v-else>
-      <v-row v-for="chart in enabledCharts" :key="chart.id">
-        <v-col cols="12">
-          <div
-            class="chart-container"
-            draggable="true"
-            @dragstart="handleDragStart(chart, chart.order)"
-            @dragover="handleDragOver"
-            @drop="handleDrop(chart)"
-          >
-            <component :is="getChartComponent(chart.component)" />
-            <div class="drag-handle">
-              <v-icon icon="mdi-drag" />
+      <template v-else>
+        <v-row v-for="chart in enabledCharts" :key="chart.id">
+          <v-col cols="12">
+            <div
+              class="chart-container"
+              draggable="true"
+              @dragstart="handleDragStart(chart, chart.order)"
+              @dragover="handleDragOver"
+              @drop="handleDrop(chart)"
+            >
+              <component :is="getChartComponent(chart.component)" />
+              <div class="drag-handle">
+                <v-icon icon="mdi-drag" />
+              </div>
             </div>
-          </div>
-        </v-col>
-      </v-row>
-    </template>
+          </v-col>
+        </v-row>
+      </template>
+
+      <div v-if="enabledCharts.length === 0" class="empty-state">
+        <v-icon icon="mdi-chart-box-outline" size="64" color="grey-darken-1" />
+        <p class="text-grey-darken-1 text-h6 mt-4">No charts selected</p>
+        <p class="text-grey-darken-1">Enable charts from the settings panel to view them here</p>
+      </div>
+    </div>
   </v-container>
 </template>
 
 <style scoped>
+.dashboard-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.dashboard-content {
+  min-height: calc(100vh - 32px);
+  position: relative;
+}
+
+.dashboard-content.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px;
+}
+
 .settings-panel {
   position: fixed;
   top: 0;
