@@ -94,7 +94,7 @@ const handleDrop = (targetChart) => {
 };
 
 const handleMouseMove = (e) => {
-  if (e.clientX <= 10) {
+  if (e.clientX >= window.innerWidth - 10) {
     showSettings.value = true;
   }
 };
@@ -191,18 +191,18 @@ onUnmounted(() => {
 .settings-panel {
   position: fixed;
   top: 0;
-  left: -400px;
+  right: -400px;
   width: 400px;
   height: 100vh;
   background: rgba(35, 36, 66, 0.95);
   z-index: 1000;
   transition: transform 0.3s ease-in-out;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
   padding: 2rem;
 }
 
 .show-settings {
-  transform: translateX(400px);
+  transform: translateX(-400px);
 }
 
 .chart-container {

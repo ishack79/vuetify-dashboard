@@ -23,7 +23,7 @@ const toggleChart = (chart) => {
 
 <template>
   <div class="settings-content">
-    <h2 class="text-h4 mb-6">Select charts to display (max 4)</h2>
+    <h2 class="text-h4 mb-6">Select charts</h2>
     <v-card class="settings-card mx-auto">
       <v-card-text>
         <v-virtual-scroll
