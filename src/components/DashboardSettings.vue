@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, computed } from 'vue';
 
 const props = defineProps({
   modelValue: Boolean,
@@ -11,7 +11,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'updateSetting']);
 
+const enabledCount = computed(() => props.settings.filter(s => s.enabled).length);
+
 const toggleChart = (chart) => {
+  if (!chart.enabled && enabledCount.value >= 4) {
+    return;
+  }
   emit('updateSetting', { ...chart, enabled: !chart.enabled });
 };
 </script>
@@ -38,7 +43,7 @@ const toggleChart = (chart) => {
       </v-toolbar>
       
       <v-card-text>
-        <h2 class="text-h4 mb-6">Select charts to display</h2>
+        <h2 class="text-h4 mb-6">Select charts to display (max 4)</h2>
         <v-card class="settings-card mx-auto" style="max-width: 80%">
           <v-card-text>
             <v-virtual-scroll
@@ -51,6 +56,7 @@ const toggleChart = (chart) => {
                   <v-checkbox
                     :model-value="item.enabled"
                     :label="item.name"
+                    :disabled="!item.enabled && enabledCount >= 4"
                     color="primary"
                     hide-details
                     class="chart-checkbox"
