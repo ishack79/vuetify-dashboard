@@ -12,6 +12,7 @@ const isHorizontal = ref(window.innerWidth > window.innerHeight);
 const showSettings = ref(false);
 const draggedChart = ref(null);
 const draggedIndex = ref(null);
+const settingsTimeout = ref(null);
 
 const chartSettings = ref([
   { id: 1, name: 'Volume of Departures and Arrivals', component: 'ChartComponent', enabled: true, icon: 'mdi-chart-line', order: 0 },
@@ -78,7 +79,6 @@ const handleDrop = (targetChart) => {
   const draggedOrder = draggedChart.value.order;
   const targetOrder = targetChart.order;
 
-  // Update orders in chartSettings
   chartSettings.value = chartSettings.value.map(chart => {
     if (chart.id === draggedChart.value.id) {
       return { ...chart, order: targetOrder };
@@ -93,31 +93,53 @@ const handleDrop = (targetChart) => {
   draggedIndex.value = null;
 };
 
+const handleMouseMove = (e) => {
+  if (e.clientX <= 10) {
+    showSettings.value = true;
+  }
+};
+
+const handleSettingsMouseLeave = () => {
+  settingsTimeout.value = setTimeout(() => {
+    showSettings.value = false;
+  }, 300);
+};
+
+const handleSettingsMouseEnter = () => {
+  if (settingsTimeout.value) {
+    clearTimeout(settingsTimeout.value);
+  }
+};
+
 onMounted(() => {
   window.addEventListener('resize', updateOrientation);
+  window.addEventListener('mousemove', handleMouseMove);
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateOrientation);
+  window.removeEventListener('mousemove', handleMouseMove);
+  if (settingsTimeout.value) {
+    clearTimeout(settingsTimeout.value);
+  }
 });
 </script>
 
 <template>
   <v-container fluid class="position-relative">
-    <!-- Settings Button -->
-    <v-btn
-      icon="mdi-cog"
-      color="primary"
-      class="settings-btn"
-      @click="showSettings = true"
-    />
-
-    <!-- Settings Modal -->
-    <DashboardSettings
-      v-model="showSettings"
-      :settings="chartSettings"
-      @update-setting="updateChartSetting"
-    />
+    <!-- Settings Panel -->
+    <div 
+      class="settings-panel"
+      :class="{ 'show-settings': showSettings }"
+      @mouseleave="handleSettingsMouseLeave"
+      @mouseenter="handleSettingsMouseEnter"
+    >
+      <DashboardSettings
+        :model-value="showSettings"
+        :settings="chartSettings"
+        @update-setting="updateChartSetting"
+      />
+    </div>
 
     <!-- Dashboard Content -->
     <template v-if="isHorizontal">
@@ -166,11 +188,21 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.settings-btn {
-  position: absolute;
-  top: -2.5rem;
-  right: 1rem;
-  z-index: 100;
+.settings-panel {
+  position: fixed;
+  top: 0;
+  left: -400px;
+  width: 400px;
+  height: 100vh;
+  background: rgba(35, 36, 66, 0.95);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+.show-settings {
+  transform: translateX(400px);
 }
 
 .chart-container {
