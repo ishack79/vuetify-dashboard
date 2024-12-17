@@ -33,7 +33,7 @@ defineProps({
     <template #[`item.flight`]="{ item }">
       <v-chip
         v-if="item.flight"
-        :color='info'
+        :color="'info'"
         size="small"
         label
       >
@@ -44,7 +44,7 @@ defineProps({
     <template #[`item.groundHandler`]="{ item }">
       <v-chip
         v-if="item.groundHandler"
-        :color='info'
+        :color="'info'"
         size="small"
         label
       >
@@ -55,7 +55,7 @@ defineProps({
     <template #[`item.rwy`]="{ item }">
       <v-chip
         v-if="item.rwy"
-        :color='info'
+        :color="'info'"
         size="small"
         label
       >
@@ -66,7 +66,7 @@ defineProps({
     <template #[`item.type`]="{ item }">
       <v-chip
         v-if="item.type"
-        :color='info'
+        :color="'info'"
         size="small"
         label
       >
