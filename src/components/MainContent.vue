@@ -56,16 +56,17 @@ const mockData = Array.from({ length: 600 }, (_, i) => ({
 
 const getTabNames = computed(() => {
   const tabMapping = {
-    'Towing': ['Active Tows', 'Completed Tows'],
-    'Deicing': ['Current Operations', 'Scheduled Operations'],
-    'LVP': ['Active Procedures', 'Historical Data'],
-    'Delay': ['Current Delays', 'Delay Analysis'],
-    'Traffic': ['Arrivals', 'Departures'],
-    'Occupancy': ['Terminal Gates', 'Remote Stands'],
-    'Total Traffic': ['Daily Summary', 'Weekly Trends'],
-    'Taxi Time': ['Departure Times', 'Arrival Times'],
-    'Snow': ['Current Operations', 'Forecast'],
-    'Runway Maintenance': ['Active Work', 'Scheduled Work']
+    'Towing': ['Towing', 'GroundHandler'],
+    'Deicing': ['DeicingInfo', 'DeicingTime', 'VolumeGeneral', 'VolumeAirlineHandlerByTime', 'VolumeAirlineHandlerByZone'],
+    'LVP': ['Lvp'],
+    'Delay': ['DelayTime', 'DelayTimePerUser', 'DepartureDelay', 'ArrivalDelay'],
+    'Traffic': ['ApronControlDep', 'ApronControlArr', 'ControlVolume', 'HourlyControlVolume', 'GateDepArrTime', 'RunwayVolume', 'RwyDepArrTime', 'WakeTurbulanceSeparation'],
+    'Occupancy': ['StandOccupancy', 'EstimatedStandOccupancy', 'OccupancyTime', 'VehicleOccupancy'],
+    'Position Operation': ['OperationTimeByCjs', 'OperationTimeByController', 'VolumeByController'],
+    'Total Traffic': ['TotalTraffic'],
+    'Taxi Time': ['TaxiTime', 'ReturnTime'],
+    'Snow': ['SnowForecast', 'SnowActual'],
+    'Runway Maintenance': ['RwyMaintenance']
   }
   return tabMapping[props.selectedMenu] || ['Tab 1', 'Tab 2']
 })
