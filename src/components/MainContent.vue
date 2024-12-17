@@ -28,7 +28,6 @@ const headers = computed(() => [
   { title: 'RWY', key: 'rwy', align: 'center' },
   { title: 'ETD', key: 'time', align: 'end' },
   { title: 'LVP', key: 'lvp', align: 'center' },
-  { title: 'STATUS', key: 'status', align: 'center' },
 ])
 
 const aircraftTypes = ['A320', 'B737', 'A380', 'B777', 'A350', 'B787']
@@ -40,7 +39,6 @@ const mockData = Array.from({ length: 600 }, (_, i) => ({
   flight: `FL${1000 + i}`,
   onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  status: Math.random() > 0.5 ? 'On Time' : 'Delayed',
   time: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   lvp: Math.random() > 0.5 ? 'Y' : 'N',
   type: aircraftTypes[Math.floor(Math.random() * aircraftTypes.length)],
@@ -48,10 +46,7 @@ const mockData = Array.from({ length: 600 }, (_, i) => ({
   ao: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
   rwy: runways[Math.floor(Math.random() * runways.length)],
   ic: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  pb: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  raw: {
-    status: Math.random() > 0.5 ? 'On Time' : 'Delayed'
-  }
+  pb: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`
 }))
 
 const getTabNames = computed(() => {
@@ -68,7 +63,7 @@ const getTabNames = computed(() => {
     'Snow': ['SnowForecast', 'SnowActual'],
     'Runway Maintenance': ['RwyMaintenance']
   }
-  return tabMapping[props.selectedMenu] || ['Tab 1', 'Tab 2']
+  return tabMapping[props.selectedMenu]
 })
 </script>
 
@@ -77,7 +72,6 @@ const getTabNames = computed(() => {
     <v-card class="mb-6" elevation="0">
       <v-card-title class="text-h5 font-weight-bold pb-2">
         {{ selectedMenu }}
-        <span v-if="selectedMenu === 'Deicing'"></span>
       </v-card-title>
       <v-tabs
         v-model="tab"
