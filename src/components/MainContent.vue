@@ -102,20 +102,20 @@ const getTabNames = computed(() => {
           >
             <v-toolbar flat class="custom-toolbar">
               <Datepicker
-                v-model="toDate"
-                :rules="[(v) => !!v || 'To date is required!']"
-                clearable
-                hide-details="auto"
-                color="primary"
-                label="To Date"
-              ></Datepicker>
-              <Datepicker
                 v-model="fromDate"
                 :rules="[(v) => !!v || 'From date is required!']"
                 clearable
                 hide-details="auto"
                 color="primary"
                 label="From Date"
+              ></Datepicker>
+              <Datepicker
+                v-model="toDate"
+                :rules="[(v) => !!v || 'To date is required!']"
+                clearable
+                hide-details="auto"
+                color="primary"
+                label="To Date"
               ></Datepicker>
               <v-spacer></v-spacer>
               <v-tooltip text="Refresh" location="top">
