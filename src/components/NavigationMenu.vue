@@ -34,20 +34,34 @@ watch(selected, (newValue) => {
   <v-navigation-drawer
     permanent
     elevation="0"
-    width="300"
+    width="75"
   >
     <v-list class="py-4">
-      <v-list-item
+      <v-tooltip
         v-for="item in menuItems"
         :key="item.title"
-        :value="item.title"
-        :title="item.title"
-        :prepend-icon="item.icon"
-        class="mb-2 mx-2"
-        rounded="lg"
-        :class="{ 'nav-item-active': item.title === selected }"
-        @click="selected = item.title"
-      />
+        :text="item.title"
+        location="right"
+      >
+        <template v-slot:activator="{ props: tooltipProps }">
+          <v-list-item
+            :value="item.title"
+            :prepend-icon="item.icon"
+            class="mb-2 mx-2"
+            rounded="lg"
+            :class="{ 'nav-item-active': item.title === selected }"
+            v-bind="tooltipProps"
+            @click="selected = item.title"
+          />
+        </template>
+      </v-tooltip>
     </v-list>
   </v-navigation-drawer>
 </template>
+
+<style scoped>
+.nav-item-active {
+  background-color: #3a3a3a;
+  color: white;
+}
+</style>

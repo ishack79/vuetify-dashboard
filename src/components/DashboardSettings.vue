@@ -61,8 +61,8 @@ const toggleChart = (chart) => {
 }
 
 .settings-card {
-  background: rgba(42, 43, 77, 0.95) !important;
-  border: 1px solid rgba(99, 102, 241, 0.1);
+  background: rgba(65, 65, 65, 0.95) !important;
+  border: 1px solid rgba(131, 131, 131, 0.1);
   padding: 16px;
   border-radius: 8px;
   flex: 1;
@@ -97,7 +97,7 @@ const toggleChart = (chart) => {
 }
 
 :deep(.v-selection-control:hover) {
-  background-color: rgba(99, 102, 241, 0.1);
+  background-color: rgba(36, 36, 36, 0.9);
 }
 
 :deep(.v-card-text) {

@@ -29,16 +29,16 @@ const vuetify = createVuetify({
       darkTheme: {
         dark: true,
         colors: {
-          primary: '#6366f1',
-          secondary: '#818cf8',
-          accent: '#4f46e5',
+          primary: '#bdbdbd',
+          secondary: '#dfdfdf',
+          accent: '#4b4b4b',
           success: '#10b981',
           warning: '#f59e0b',
           error: '#ef4444',
           info: '#3b82f6',
-          background: '#1a1b2e',
-          surface: '#232442',
-          'surface-bright': '#2a2b4d',
+          background: '#363636',
+          surface: '#4b4b4b',
+          'surface-bright': '#bdbdbd',
           'on-surface': '#e2e8f0'
         }
       }

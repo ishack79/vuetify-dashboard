@@ -159,7 +159,7 @@ const getTabNames = computed(() => {
 
 <style scoped>
 .custom-toolbar {
-  background-color: #383052;
+  background-color: #3a3a3a;
   border-radius: 8px;
   padding: 8px;
   box-shadow: none;

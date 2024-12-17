@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import ChartComponent from './ChartComponent.vue';
-import BarRaceChart from './BarRaceChart.vue';
-import HeatmapChart from './HeatmapChart.vue';
-import PieChart from './PieChart.vue';
-import RunwayOccupancyChart from './RunwayOccupancyChart.vue';
-import GanttChart from './GanttChart.vue';
+import ChartComponent from './charts/ChartComponent.vue';
+import BarRaceChart from './charts/BarRaceChart.vue';
+import HeatmapChart from './charts/HeatmapChart.vue';
+import PieChart from './charts/PieChart.vue';
+import RunwayOccupancyChart from './charts/RunwayOccupancyChart.vue';
+import GanttChart from './charts/GanttChart.vue';
 import DashboardSettings from './DashboardSettings.vue';
 
 const isHorizontal = ref(window.innerWidth > window.innerHeight);
@@ -224,7 +224,7 @@ onUnmounted(() => {
   right: -400px;
   width: 400px;
   height: 100vh;
-  background: rgba(35, 36, 66, 0.95);
+  background: rgba(36, 36, 36, 0.95);
   z-index: 1000;
   transition: transform 0.3s ease-in-out;
   box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
@@ -251,12 +251,12 @@ onUnmounted(() => {
   padding: 0.5rem;
   opacity: 0;
   transition: opacity 0.2s ease;
-  background: rgba(35, 36, 66, 0.9);
+  background: rgba(36, 36, 36, 0.9);
   border-radius: 4px;
   z-index: 1;
 }
 
 .drag-handle .v-icon {
-  color: #e2e8f0;
+  color: #a5a5a5;
 }
 </style>
