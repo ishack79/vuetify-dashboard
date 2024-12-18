@@ -2,69 +2,43 @@
 import { ref, computed } from 'vue'
 import DataTable from './DataTable.vue'
 import AdminDashboard from './AdminDashboard.vue'
-import Datepicker from './Datepicker.vue';
+import { getToolbarComponent } from './toolbars'
+import { TAB_MAPPINGS } from '../constants/tabMappings'
+import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData'
 
 const props = defineProps({
   selectedMenu: {
     type: String,
     required: true
   }
-})
+});
 
-const tab = ref(0)
-const toDate = ref(new Date().toISOString().substr(0, 10))
-const fromDate = ref(new Date().toISOString().substr(0, 10))
+const tab = ref(0);
+const toDate = ref(new Date().toISOString().substr(0, 10));
+const fromDate = ref(new Date().toISOString().substr(0, 10));
+const useMockData = ref(true);
 
-const headers = computed(() => [
-  { title: 'DATE', key: 'date', align: 'start' },
-  { title: 'CALLSIGN', key: 'flight', align: 'start' },
-  { title: 'G-H', key: 'groundHandler', align: 'center' },
-  { title: 'TYP', key: 'type', align: 'center' },
-  { title: 'I-C', key: 'ic', align: 'center' },
-  { title: 'ONBT', key: 'onbt', align: 'center' },
-  { title: 'OFBT', key: 'ofbt', align: 'center' },
-  { title: 'P-B', key: 'pb', align: 'center' },
-  { title: 'A-O', key: 'ao', align: 'center' },
-  { title: 'RWY', key: 'rwy', align: 'center' },
-  { title: 'ETD', key: 'time', align: 'end' },
-  { title: 'LVP', key: 'lvp', align: 'center' },
-])
+const mockHeaders = computed(() => {
+  return useMockData.value ? getFlightTableHeaders() : [];
+});
 
-const aircraftTypes = ['A320', 'B737', 'A380', 'B777', 'A350', 'B787']
-const groundHandlers = ['AAP', 'KAS', 'SHP', 'JAS']
-const runways = ['01L', '01R', '19L', '19R']
-
-const mockData = Array.from({ length: 600 }, (_, i) => ({
-  date: new Date().toISOString().split('T')[0],
-  flight: `FL${1000 + i}`,
-  onbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  ofbt: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  time: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  lvp: Math.random() > 0.5 ? 'Y' : 'N',
-  type: aircraftTypes[Math.floor(Math.random() * aircraftTypes.length)],
-  groundHandler: groundHandlers[Math.floor(Math.random() * groundHandlers.length)],
-  ao: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  rwy: runways[Math.floor(Math.random() * runways.length)],
-  ic: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  pb: `${Math.floor(Math.random() * 24).toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`
-}))
+const mockData = computed(() => {
+  return useMockData.value ? generateMockFlightData() : [];
+});
 
 const getTabNames = computed(() => {
-  const tabMapping = {
-    'Towing': ['Towing', 'GroundHandler'],
-    'Deicing': ['DeicingInfo', 'DeicingTime', 'VolumeGeneral', 'VolumeAirlineHandlerByTime', 'VolumeAirlineHandlerByZone'],
-    'LVP': ['Lvp'],
-    'Delay': ['DelayTime', 'DelayTimePerUser', 'DepartureDelay', 'ArrivalDelay'],
-    'Traffic': ['ApronControlDep', 'ApronControlArr', 'ControlVolume', 'HourlyControlVolume', 'GateDepArrTime', 'RunwayVolume', 'RwyDepArrTime', 'WakeTurbulanceSeparation'],
-    'Occupancy': ['StandOccupancy', 'EstimatedStandOccupancy', 'OccupancyTime', 'VehicleOccupancy'],
-    'Position Operation': ['OperationTimeByCjs', 'OperationTimeByController', 'VolumeByController'],
-    'Total Traffic': ['TotalTraffic'],
-    'Taxi Time': ['TaxiTime', 'ReturnTime'],
-    'Snow': ['SnowForecast', 'SnowActual'],
-    'Runway Maintenance': ['RwyMaintenance']
-  }
-  return tabMapping[props.selectedMenu]
-})
+  return TAB_MAPPINGS[props.selectedMenu] || [];
+});
+
+const currentToolbar = computed(() => {
+  if (props.selectedMenu === 'Dashboard') return null;
+  return getToolbarComponent(props.selectedMenu, getTabNames.value[tab.value]);
+});
+
+const handleRefresh = () => {
+  // Implement refresh logic here
+  console.log('Refreshing data...');
+};
 </script>
 
 <template>
@@ -100,48 +74,14 @@ const getTabNames = computed(() => {
             class="mt-4"
             elevation="0"
           >
-            <v-toolbar flat class="custom-toolbar">
-              <Datepicker
-                v-model="fromDate"
-                :rules="[(v) => !!v || 'From date is required!']"
-                clearable
-                hide-details="auto"
-                color="primary"
-                label="From Date"
-              ></Datepicker>
-              <Datepicker
-                v-model="toDate"
-                :rules="[(v) => !!v || 'To date is required!']"
-                clearable
-                hide-details="auto"
-                color="primary"
-                label="To Date"
-              ></Datepicker>
-              <v-spacer></v-spacer>
-              <v-tooltip text="Refresh" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-btn v-bind="props" icon>
-                    <v-icon>mdi-refresh</v-icon>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-              <v-tooltip text="Info" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-btn v-bind="props" icon>
-                    <v-icon color="info">mdi-information</v-icon>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-              <v-tooltip text="Excel" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-btn v-bind="props" icon>
-                    <v-icon color="success">mdi-file-excel-box</v-icon>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-toolbar>
+            <component 
+              :is="currentToolbar"
+              v-model:from-date="fromDate"
+              v-model:to-date="toDate"
+              @refresh="handleRefresh"
+            />
             <DataTable
-              :headers="headers"
+              :headers="mockHeaders"
               :items="mockData"
             />
           </v-card>
@@ -154,13 +94,6 @@ const getTabNames = computed(() => {
 </template>
 
 <style scoped>
-.custom-toolbar {
-  background-color: #3a3a3a;
-  border-radius: 8px;
-  padding: 8px;
-  box-shadow: none;
-}
-
 .v-menu__content--fixed {
   position: absolute !important;
 }

@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
   headers: {
     type: Array,
     required: true
@@ -8,7 +10,23 @@ defineProps({
     type: Array,
     required: true
   }
-})
+});
+
+// Define color mappings
+const colorMappings = {
+  flight: 'info',
+  groundHandler: 'info',
+  rwy: 'info',
+  type: 'info',
+  lvp: (value) => value === 'Y' ? 'success' : 'warning'
+};
+
+const getChipColor = (key, value) => {
+  const colorMapping = colorMappings[key];
+  return typeof colorMapping === 'function' ? colorMapping(value) : colorMapping;
+};
+
+const shouldRenderChip = (key) => key in colorMappings;
 </script>
 
 <template>
@@ -19,59 +37,18 @@ defineProps({
     hover
     class="elevation-1 rounded-lg"
   >
-    <template #[`item.lvp`]="{ item }">
+    <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ item }">
       <v-chip
-        v-if="item.lvp"
-        :color="item.lvp === 'Y' ? 'success' : 'warning'"
+        v-if="shouldRenderChip(header.key) && item[header.key]"
+        :color="getChipColor(header.key, item[header.key])"
         size="small"
         label
       >
-        {{ item.lvp }}
+        {{ item[header.key] }}
       </v-chip>
-    </template>
-
-    <template #[`item.flight`]="{ item }">
-      <v-chip
-        v-if="item.flight"
-        :color="'info'"
-        size="small"
-        label
-      >
-        {{ item.flight }}
-      </v-chip>
-    </template>
-
-    <template #[`item.groundHandler`]="{ item }">
-      <v-chip
-        v-if="item.groundHandler"
-        :color="'info'"
-        size="small"
-        label
-      >
-        {{ item.groundHandler }}
-      </v-chip>
-    </template>
-
-    <template #[`item.rwy`]="{ item }">
-      <v-chip
-        v-if="item.rwy"
-        :color="'info'"
-        size="small"
-        label
-      >
-        {{ item.rwy }}
-      </v-chip>
-    </template>
-
-    <template #[`item.type`]="{ item }">
-      <v-chip
-        v-if="item.type"
-        :color="'info'"
-        size="small"
-        label
-      >
-        {{ item.type }}
-      </v-chip>
+      <template v-else>
+        {{ item[header.key] }}
+      </template>
     </template>
   </v-data-table>
 </template>
