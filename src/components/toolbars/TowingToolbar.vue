@@ -2,8 +2,14 @@
 import BaseToolbar from './BaseToolbar.vue';
 
 defineProps({
-  fromDate: String,
-  toDate: String
+  fromDate: {
+    type: Date,
+    required: true
+  },
+  toDate: {
+    type: Date,
+    required: true
+  }
 });
 
 const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh']);
@@ -11,20 +17,10 @@ const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh']);
 
 <template>
   <BaseToolbar
-    :from-date="fromDate"
-    :to-date="toDate"
-    @update:from-date="$emit('update:fromDate', $event)"
-    @update:to-date="$emit('update:toDate', $event)"
+    :fromDate="fromDate"
+    :toDate="toDate"
+    @update:fromDate="$emit('update:fromDate', $event)"
+    @update:toDate="$emit('update:toDate', $event)"
     @refresh="$emit('refresh')"
-  >
-    <template #actions>
-      <v-tooltip text="Filter" location="top">
-        <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" icon>
-            <v-icon>mdi-filter</v-icon>
-          </v-btn>
-        </template>
-      </v-tooltip>
-    </template>
-  </BaseToolbar>
+  />
 </template>

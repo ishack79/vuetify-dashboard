@@ -14,8 +14,8 @@ const props = defineProps({
 });
 
 const tab = ref(0);
-const toDate = ref(new Date().toISOString().substr(0, 10));
-const fromDate = ref(new Date().toISOString().substr(0, 10));
+const fromDate = ref(new Date());
+const toDate = ref(new Date());
 const useMockData = ref(true);
 
 const mockHeaders = computed(() => {
@@ -76,8 +76,8 @@ const handleRefresh = () => {
           >
             <component 
               :is="currentToolbar"
-              v-model:from-date="fromDate"
-              v-model:to-date="toDate"
+              v-model:fromDate="fromDate"
+              v-model:toDate="toDate"
               @refresh="handleRefresh"
             />
             <DataTable

@@ -14,10 +14,6 @@ const props = defineProps({
 
 // Define color mappings
 const colorMappings = {
-  flight: 'info',
-  groundHandler: 'info',
-  rwy: 'info',
-  type: 'info',
   lvp: (value) => value === 'Y' ? 'success' : 'warning'
 };
 

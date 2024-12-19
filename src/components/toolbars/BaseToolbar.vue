@@ -3,11 +3,11 @@ import Datepicker from '../Datepicker.vue';
 
 defineProps({
   fromDate: {
-    type: String,
+    type: Date,
     required: true
   },
   toDate: {
-    type: String,
+    type: Date,
     required: true
   }
 });
@@ -17,6 +17,13 @@ const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh']);
 
 <template>
   <v-toolbar flat class="custom-toolbar">
+    <v-tooltip text="Filter" location="top">
+      <template v-slot:activator="{ props }">
+        <v-btn v-bind="props" icon>
+          <v-icon>mdi-filter</v-icon>
+        </v-btn>
+      </template>
+    </v-tooltip>
     <Datepicker
       :model-value="fromDate"
       :rules="[(v) => !!v || 'From date is required!']"

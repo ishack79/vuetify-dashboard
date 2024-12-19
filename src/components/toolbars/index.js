@@ -1,12 +1,19 @@
-export { default as BaseToolbar } from './BaseToolbar.vue';
-export { default as TowingToolbar } from './TowingToolbar.vue';
+// Import toolbar components
+import BaseToolbar from './BaseToolbar.vue';
+import TowingToolbar from './TowingToolbar.vue';
+
+// Export components
+export {
+  BaseToolbar,
+  TowingToolbar,
+};
 
 export const getToolbarComponent = (menu, tab) => {
   const toolbarMapping = {
     'Towing': {
-      'Towing': 'TowingToolbar'
+      'Towing': TowingToolbar
     }
   };
 
-  return toolbarMapping[menu]?.[tab] || 'BaseToolbar';
+  return toolbarMapping[menu]?.[tab] || BaseToolbar;
 };
