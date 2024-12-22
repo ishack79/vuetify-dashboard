@@ -36,10 +36,6 @@
   color: white !important;
 }
 
-.dashboard-content {
-  padding: 24px;
-}
-
 .v-data-table {
   border-radius: 12px !important;
   overflow: hidden;

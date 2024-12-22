@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
 import DataTable from './DataTable.vue';
-import AdminDashboard from './AdminDashboard.vue';
 import { getToolbarComponent } from './toolbars';
 import { TAB_MAPPINGS } from '../constants/tabMappings';
 import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData';
@@ -33,7 +32,6 @@ const getTabNames = computed(() => {
 });
 
 const currentToolbar = computed(() => {
-  if (props.selectedMenu === 'Dashboard') return null;
   return getToolbarComponent(props.selectedMenu, getTabNames.value[tab.value]);
 });
 
@@ -47,10 +45,9 @@ const handleTabSelect = (index) => {
 </script>
 
 <template>
-  <div class="dashboard-content">
+  <div class="main-content">
     <v-card class="mb-1" elevation="0">
       <TabGroup
-        v-if="selectedMenu !== 'Dashboard'"
         variant="sub"
         class="mb-1"
       >
@@ -63,7 +60,7 @@ const handleTabSelect = (index) => {
         />
       </TabGroup>
       
-      <v-window v-model="tab" v-if="selectedMenu !== 'Dashboard'">
+      <v-window v-model="tab">
         <v-window-item
           v-for="(name, i) in getTabNames"
           :key="i"
@@ -86,14 +83,12 @@ const handleTabSelect = (index) => {
           </v-card>
         </v-window-item>
       </v-window>
-
-      <AdminDashboard v-if="selectedMenu === 'Dashboard'" />
     </v-card>
   </div>
 </template>
 
 <style scoped>
-.dashboard-content {
-  padding: 16px;
+.main-content {
+  padding: 1px;
 }
 </style>
