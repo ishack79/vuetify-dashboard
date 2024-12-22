@@ -43,12 +43,12 @@ const handleRefresh = () => {
 
 <template>
   <div class="dashboard-content">
-    <v-card class="mb-6" elevation="0">
+    <v-card class="mb-1" elevation="0">
       <v-tabs
         v-model="tab"
         color="primary"
         slider-color="primary"
-        class="mb-2"
+        class="mb-1"
         v-if="selectedMenu !== 'Dashboard'"
       >
         <v-tab
@@ -68,7 +68,7 @@ const handleRefresh = () => {
           :value="i"
         >
           <v-card
-            class="mt-4"
+            class="mt-1"
             elevation="0"
           >
             <component 
