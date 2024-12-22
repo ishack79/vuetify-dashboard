@@ -42,11 +42,8 @@ const handleRefresh = () => {
 </script>
 
 <template>
-  <v-main class="dashboard-content">
+  <div class="dashboard-content">
     <v-card class="mb-6" elevation="0">
-      <v-card-title class="text-h5 font-weight-bold pb-2">
-        {{ selectedMenu }}
-      </v-card-title>
       <v-tabs
         v-model="tab"
         color="primary"
@@ -90,10 +87,14 @@ const handleRefresh = () => {
 
       <AdminDashboard v-if="selectedMenu === 'Dashboard'" />
     </v-card>
-  </v-main>
+  </div>
 </template>
 
 <style scoped>
+.dashboard-content {
+  padding: 16px;
+}
+
 .v-menu__content--fixed {
   position: absolute !important;
 }
