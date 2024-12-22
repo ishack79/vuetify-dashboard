@@ -38,7 +38,8 @@ const classes = computed(() => ({
   font-size: 1rem;
   padding: 1rem 2rem;
   position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .main-tab:hover {
@@ -46,6 +47,11 @@ const classes = computed(() => ({
 }
 
 .main-tab--active {
+  background: rgba(35, 36, 36, 0.95);
   color: #dfdfdf;
+}
+
+.main-tab + .main-tab {
+  margin-left: 1px;
 }
 </style>

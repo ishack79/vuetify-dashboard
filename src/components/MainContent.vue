@@ -52,7 +52,7 @@ const handleTabSelect = (index) => {
       <TabGroup
         v-if="selectedMenu !== 'Dashboard'"
         variant="sub"
-        class="mb-4"
+        class="mb-1"
       >
         <SubTab
           v-for="(name, i) in getTabNames"

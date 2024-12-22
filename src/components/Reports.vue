@@ -15,18 +15,41 @@ const handleTabSelect = (tab) => {
 
 <template>
   <v-card flat>
-    <TabGroup variant="main">
-      <MainTab
-        v-for="title in tabTitles"
-        :key="title"
-        :title="title"
-        :is-active="selectedMenu === title"
-        @select="handleTabSelect(title)"
-      />
-    </TabGroup>
+    <div class="tab-container">
+      <TabGroup variant="main" class="main-tabs">
+        <MainTab
+          v-for="title in tabTitles"
+          :key="title"
+          :title="title"
+          :is-active="selectedMenu === title"
+          @select="handleTabSelect(title)"
+        />
+      </TabGroup>
+    </div>
 
-    <v-card-text>
+    <v-card-text class="pa-0">
       <MainContent :selected-menu="selectedMenu" />
     </v-card-text>
   </v-card>
 </template>
+
+<style scoped>
+.tab-container {
+  padding: 0 16px;
+  background: rgba(25, 26, 26, 0.95);
+}
+
+.main-tabs {
+  display: flex;
+  width: 100%;
+}
+
+:deep(.tab-group) {
+  width: 100%;
+}
+
+:deep(.main-tab) {
+  flex: 1;
+  min-width: fit-content;
+}
+</style>
