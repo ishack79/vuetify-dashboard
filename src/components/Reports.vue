@@ -1,20 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import MainContent from './MainContent.vue'
+import { TAB_MAPPINGS } from '../constants/tabMappings'
 
-const menuItems = [
-  { title: 'Towing'},
-  { title: 'Deicing'},
-  { title: 'LVP'},
-  { title: 'Delay'},
-  { title: 'Traffic'},
-  { title: 'Occupancy'},
-  { title: 'Total Traffic'},
-  { title: 'Taxi Time'},
-  { title: 'Snow'},
-  { title: 'Runway Maintenance'}
-]
+const tabTitles = computed(() => Object.keys(TAB_MAPPINGS))
 
+// Default selection
 const selectedMenu = ref('Towing')
 </script>
 
@@ -28,12 +19,12 @@ const selectedMenu = ref('Towing')
       show-arrows
     >
       <v-tab
-        v-for="item in menuItems"
-        :key="item.title"
-        :value="item.title"
+        v-for="title in tabTitles"
+        :key="title"
+        :value="title"
         class="text-none"
       >
-        {{ item.title }}
+        {{ title }}
       </v-tab>
     </v-tabs>
 
