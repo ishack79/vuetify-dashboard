@@ -1,41 +1,32 @@
 <script setup>
-import { ref, computed } from 'vue'
-import MainContent from './MainContent.vue'
-import { TAB_MAPPINGS } from '../constants/tabMappings'
+import { ref, computed } from 'vue';
+import MainContent from './MainContent.vue';
+import { TAB_MAPPINGS } from '../constants/tabMappings';
+import TabGroup from './tabs/TabGroup.vue';
+import MainTab from './tabs/MainTab.vue';
 
-const tabTitles = computed(() => Object.keys(TAB_MAPPINGS))
+const tabTitles = computed(() => Object.keys(TAB_MAPPINGS));
+const selectedMenu = ref('Towing');
 
-// Default selection
-const selectedMenu = ref('Towing')
+const handleTabSelect = (tab) => {
+  selectedMenu.value = tab;
+};
 </script>
 
 <template>
   <v-card flat>
-    <v-tabs
-      v-model="selectedMenu"
-      color="primary"
-      align-tabs="center"
-      fixed-tabs
-      show-arrows
-    >
-      <v-tab
+    <TabGroup variant="main">
+      <MainTab
         v-for="title in tabTitles"
         :key="title"
-        :value="title"
-        class="text-none"
-      >
-        {{ title }}
-      </v-tab>
-    </v-tabs>
+        :title="title"
+        :is-active="selectedMenu === title"
+        @select="handleTabSelect(title)"
+      />
+    </TabGroup>
 
     <v-card-text>
       <MainContent :selected-menu="selectedMenu" />
     </v-card-text>
   </v-card>
 </template>
-
-<style scoped>
-.v-tab {
-  min-width: 150px;
-}
-</style>

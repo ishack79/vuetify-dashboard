@@ -1,10 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue'
-import DataTable from './DataTable.vue'
-import AdminDashboard from './AdminDashboard.vue'
-import { getToolbarComponent } from './toolbars'
-import { TAB_MAPPINGS } from '../constants/tabMappings'
-import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData'
+import { ref, computed } from 'vue';
+import DataTable from './DataTable.vue';
+import AdminDashboard from './AdminDashboard.vue';
+import { getToolbarComponent } from './toolbars';
+import { TAB_MAPPINGS } from '../constants/tabMappings';
+import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData';
+import TabGroup from './tabs/TabGroup.vue';
+import SubTab from './tabs/SubTab.vue';
 
 const props = defineProps({
   selectedMenu: {
@@ -36,30 +38,30 @@ const currentToolbar = computed(() => {
 });
 
 const handleRefresh = () => {
-  // Implement refresh logic here
   console.log('Refreshing data...');
+};
+
+const handleTabSelect = (index) => {
+  tab.value = index;
 };
 </script>
 
 <template>
   <div class="dashboard-content">
     <v-card class="mb-1" elevation="0">
-      <v-tabs
-        v-model="tab"
-        color="primary"
-        slider-color="primary"
-        class="mb-1"
+      <TabGroup
         v-if="selectedMenu !== 'Dashboard'"
+        variant="sub"
+        class="mb-4"
       >
-        <v-tab
+        <SubTab
           v-for="(name, i) in getTabNames"
           :key="i"
-          :value="i"
-          class="text-none"
-        >
-          {{ name }}
-        </v-tab>
-      </v-tabs>
+          :title="name"
+          :is-active="tab === i"
+          @select="handleTabSelect(i)"
+        />
+      </TabGroup>
       
       <v-window v-model="tab" v-if="selectedMenu !== 'Dashboard'">
         <v-window-item
@@ -93,13 +95,5 @@ const handleRefresh = () => {
 <style scoped>
 .dashboard-content {
   padding: 16px;
-}
-
-.v-menu__content--fixed {
-  position: absolute !important;
-}
-
-.Datepicker {
-  max-width: 290px;
 }
 </style>
