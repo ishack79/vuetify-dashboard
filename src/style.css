@@ -46,6 +46,19 @@
   background: rgba(36, 36, 36, 0.95) !important;
 }
 
+/* Add alternating row colors */
+.v-data-table .v-data-table__tr:nth-child(odd) {
+  background-color: rgba(30, 30, 30, 0.95) !important;
+}
+
+.v-data-table .v-data-table__tr:nth-child(even) {
+  background-color: rgba(25, 25, 25, 0.95) !important;
+}
+
+.v-data-table .v-data-table__tr:hover {
+  background-color: rgba(45, 45, 45, 0.95) !important;
+}
+
 .v-navigation-drawer {
   background: rgba(35, 36, 36, 0.95) !important;
   border-right: 1px solid rgba(236, 236, 236, 0.1) !important;

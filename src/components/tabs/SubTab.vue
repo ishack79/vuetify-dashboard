@@ -33,7 +33,7 @@ const classes = computed(() => ({
 .sub-tab {
   background: transparent;
   border: none;
-  color: #666666;
+  color: #dfdfdf;
   cursor: pointer;
   font-size: 0.875rem;
   padding: 0.75rem 1.5rem;

@@ -33,7 +33,7 @@ const classes = computed(() => ({
 .main-tab {
   background: transparent;
   border: none;
-  color: #666666;
+  color: #dfdfdf;
   cursor: pointer;
   font-size: 1rem;
   padding: 1rem 2rem;
