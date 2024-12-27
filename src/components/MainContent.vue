@@ -18,6 +18,7 @@ const tab = ref(0);
 const fromDate = ref(new Date());
 const toDate = ref(new Date());
 const useMockData = ref(true);
+const showFilters = ref(false);
 
 const mockHeaders = computed(() => {
   return useMockData.value ? getFlightTableHeaders() : [];
@@ -41,6 +42,10 @@ const handleRefresh = () => {
 
 const handleTabSelect = (index) => {
   tab.value = index;
+};
+
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value;
 };
 </script>
 
@@ -75,10 +80,12 @@ const handleTabSelect = (index) => {
               v-model:fromDate="fromDate"
               v-model:toDate="toDate"
               @refresh="handleRefresh"
+              @toggleFilters="toggleFilters"
             />
             <DataTable
               :headers="mockHeaders"
               :items="mockData"
+              v-model:showFilters="showFilters"
             />
           </v-card>
         </v-window-item>

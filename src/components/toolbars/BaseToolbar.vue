@@ -12,14 +12,14 @@ defineProps({
   }
 });
 
-const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh']);
+const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh', 'toggleFilters']);
 </script>
 
 <template>
   <v-toolbar flat class="custom-toolbar">
     <v-tooltip text="Filter" location="top">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" icon>
+        <v-btn v-bind="props" icon @click="emit('toggleFilters')">
           <v-icon>mdi-filter</v-icon>
         </v-btn>
       </template>
