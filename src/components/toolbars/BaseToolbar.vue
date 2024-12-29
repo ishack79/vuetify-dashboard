@@ -61,6 +61,13 @@ const handleExport = () => {
     />
     <v-spacer />
     <slot name="actions">
+      <v-tooltip text="Info" location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn v-bind="props" icon>
+            <v-icon>mdi-information-outline</v-icon>
+          </v-btn>
+        </template>
+      </v-tooltip>
       <v-tooltip text="Refresh" location="top">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" icon @click="emit('refresh')">
@@ -68,17 +75,10 @@ const handleExport = () => {
           </v-btn>
         </template>
       </v-tooltip>
-      <v-tooltip text="Info" location="top">
-        <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" icon>
-            <v-icon color="info">mdi-information</v-icon>
-          </v-btn>
-        </template>
-      </v-tooltip>
       <v-tooltip text="Export to Excel" location="top">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" icon @click="handleExport">
-            <v-icon color="success">mdi-file-excel-box</v-icon>
+            <v-icon>mdi-upload-outline</v-icon>
           </v-btn>
         </template>
       </v-tooltip>
