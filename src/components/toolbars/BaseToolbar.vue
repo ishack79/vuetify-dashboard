@@ -18,14 +18,17 @@ const props = defineProps({
   items: {
     type: Array,
     default: () => []
+  },
+  excelFilename: {
+    type: String,
+    default: `export_${new Date().toISOString().split('T')[0]}.xlsx`
   }
 });
 
 const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh', 'toggleFilters']);
 
 const handleExport = () => {
-  const filename = `export_${new Date().toISOString().split('T')[0]}.xlsx`;
-  exportToExcel(props.headers, props.items, filename);
+  exportToExcel(props.headers, props.items, props.excelFilename);
 };
 </script>
 
