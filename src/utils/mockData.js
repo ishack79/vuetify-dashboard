@@ -27,17 +27,17 @@ export const generateMockFlightData = (count = 600) => {
 
 export const getFlightTableHeaders = () => {
   return [
-    { title: 'DATE', key: 'date', align: 'start' },
-    { title: 'CALLSIGN', key: 'flight', align: 'start' },
-    { title: 'G-H', key: 'groundHandler', align: 'center' },
-    { title: 'TYP', key: 'type', align: 'center' },
-    { title: 'I-C', key: 'ic', align: 'center' },
-    { title: 'ONBT', key: 'onbt', align: 'center' },
-    { title: 'OFBT', key: 'ofbt', align: 'center' },
-    { title: 'P-B', key: 'pb', align: 'center' },
-    { title: 'A-O', key: 'ao', align: 'center' },
-    { title: 'RWY', key: 'rwy', align: 'center' },
-    { title: 'ETD', key: 'time', align: 'end' },
-    { title: 'LVP', key: 'lvp', align: 'center' }
+    { title: 'DATE', key: 'date', align: 'start', filterColumn: false },
+    { title: 'CALLSIGN', key: 'flight', align: 'start', filterColumn: true },
+    { title: 'G-H', key: 'groundHandler', align: 'center', filterColumn: true },
+    { title: 'TYP', key: 'type', align: 'center', filterColumn: true },
+    { title: 'I-C', key: 'ic', align: 'center', filterColumn: false },
+    { title: 'ONBT', key: 'onbt', align: 'center', filterColumn: false },
+    { title: 'OFBT', key: 'ofbt', align: 'center', filterColumn: false },
+    { title: 'P-B', key: 'pb', align: 'center', filterColumn: false },
+    { title: 'A-O', key: 'ao', align: 'center', filterColumn: false },
+    { title: 'RWY', key: 'rwy', align: 'center', filterColumn: true },
+    { title: 'ETD', key: 'time', align: 'end', filterColumn: false },
+    { title: 'LVP', key: 'lvp', align: 'center', filterColumn: true }
   ];
 };

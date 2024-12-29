@@ -22,7 +22,10 @@ const filters = ref({});
 
 // Initialize filters for each column
 props.headers.forEach(header => {
-  filters.value[header.key] = '';
+  if (header.filterColumn) {
+    filters.value[header.key] = '';
+    console.log('Filter initialized for:', header.key);
+  }
 });
 
 // Filter the items based on all active filters
@@ -73,10 +76,10 @@ const clearFilters = () => {
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col v-for="header in headers" :key="header.key" cols="12" sm="6" md="4">
+            <v-col v-for="(value, key) in filters" :key="key" cols="12" sm="6" md="4">
               <v-text-field
-                v-model="filters[header.key]"
-                :label="header.title"
+                v-model="filters[key]"
+                :label="key"
                 density="compact"
                 variant="outlined"
                 hide-details
