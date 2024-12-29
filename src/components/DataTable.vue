@@ -16,7 +16,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:showFilters']);
+const emit = defineEmits(['update:showFilters', 'filteredDataChange']);
 
 const filters = ref({});
 
@@ -24,19 +24,22 @@ const filters = ref({});
 props.headers.forEach(header => {
   if (header.filterColumn) {
     filters.value[header.key] = '';
-    console.log('Filter initialized for:', header.key);
   }
 });
 
 // Filter the items based on all active filters
 const filteredItems = computed(() => {
-  return props.items.filter(item => {
+  const filtered = props.items.filter(item => {
     return Object.entries(filters.value).every(([key, filterValue]) => {
       if (!filterValue) return true;
       const itemValue = String(item[key]).toLowerCase();
       return itemValue.includes(filterValue.toLowerCase());
     });
   });
+  
+  // Emit the filtered data whenever it changes
+  emit('filteredDataChange', filtered);
+  return filtered;
 });
 
 // Define color mappings

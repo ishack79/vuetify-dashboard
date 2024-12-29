@@ -19,6 +19,7 @@ const fromDate = ref(new Date());
 const toDate = ref(new Date());
 const useMockData = ref(true);
 const showFilters = ref(false);
+const filteredData = ref([]);
 
 const mockHeaders = computed(() => {
   return useMockData.value ? getFlightTableHeaders() : [];
@@ -46,6 +47,10 @@ const handleTabSelect = (index) => {
 
 const toggleFilters = () => {
   showFilters.value = !showFilters.value;
+};
+
+const handleFilteredDataChange = (data) => {
+  filteredData.value = data;
 };
 </script>
 
@@ -79,6 +84,8 @@ const toggleFilters = () => {
               :is="currentToolbar"
               v-model:fromDate="fromDate"
               v-model:toDate="toDate"
+              :headers="mockHeaders"
+              :items="filteredData"
               @refresh="handleRefresh"
               @toggleFilters="toggleFilters"
             />
@@ -86,6 +93,7 @@ const toggleFilters = () => {
               :headers="mockHeaders"
               :items="mockData"
               v-model:showFilters="showFilters"
+              @filteredDataChange="handleFilteredDataChange"
             />
           </v-card>
         </v-window-item>

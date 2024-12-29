@@ -1,7 +1,8 @@
 <script setup>
 import Datepicker from '../Datepicker.vue';
+import { exportToExcel } from '../../utils/excelExport';
 
-defineProps({
+const props = defineProps({
   fromDate: {
     type: Date,
     required: true
@@ -9,10 +10,23 @@ defineProps({
   toDate: {
     type: Date,
     required: true
+  },
+  headers: {
+    type: Array,
+    default: () => []
+  },
+  items: {
+    type: Array,
+    default: () => []
   }
 });
 
 const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh', 'toggleFilters']);
+
+const handleExport = () => {
+  const filename = `export_${new Date().toISOString().split('T')[0]}.xlsx`;
+  exportToExcel(props.headers, props.items, filename);
+};
 </script>
 
 <template>
@@ -58,9 +72,9 @@ const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh', 'toggle
           </v-btn>
         </template>
       </v-tooltip>
-      <v-tooltip text="Excel" location="top">
+      <v-tooltip text="Export to Excel" location="top">
         <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" icon>
+          <v-btn v-bind="props" icon @click="handleExport">
             <v-icon color="success">mdi-file-excel-box</v-icon>
           </v-btn>
         </template>
