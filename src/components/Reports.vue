@@ -15,6 +15,13 @@ const handleTabSelect = (tab) => {
 
 <template>
   <v-card flat>
+    <!-- Title Bar -->
+    <div class="title-bar">
+      <div class="title-container">
+        <h1 class="text-h5 font-weight-medium font-weight-bold">Reports</h1>
+      </div>
+    </div>
+
     <div class="tab-container">
       <TabGroup variant="main" class="main-tabs">
         <MainTab
@@ -34,6 +41,19 @@ const handleTabSelect = (tab) => {
 </template>
 
 <style scoped>
+.title-bar {
+  padding: 0 16px;
+  background: rgba(25, 26, 26, 0.95);
+  border-bottom: 1px solid rgba(236, 236, 236, 0.1);
+}
+
+.title-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
 .tab-container {
   padding: 0 16px;
   background: rgba(25, 26, 26, 0.95);
