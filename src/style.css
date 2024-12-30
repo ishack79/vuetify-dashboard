@@ -42,6 +42,11 @@
   background: rgba(36, 36, 36, 0.95) !important;
 }
 
+/* Update table header background color */
+.v-data-table .v-data-table__header {
+  background-color: #3a3a3a !important;
+}
+
 /* Add alternating row colors */
 .v-data-table .v-data-table__tr:nth-child(odd) {
   background-color: rgba(30, 30, 30, 0.95) !important;
