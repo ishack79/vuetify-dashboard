@@ -56,7 +56,7 @@ const classes = computed(() => ({
   left: 0;
   width: 100%;
   height: 2px;
-  background: currentColor;
+  background: #248E88;
   transform: scaleX(1);
   transition: transform 0.3s ease;
 }
@@ -68,7 +68,7 @@ const classes = computed(() => ({
   left: 0;
   width: 100%;
   height: 2px;
-  background: currentColor;
+  background: #248E88;
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }

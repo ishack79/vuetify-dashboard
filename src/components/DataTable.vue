@@ -70,13 +70,12 @@ const clearFilters = () => {
       max-width="800px"
     >
       <v-card>
-        <v-card-title class="text-h5 pa-4">
-          Filters
-          <v-spacer></v-spacer>
+        <div class="filter-header">
+          <v-card-title class="text-h5">Filters</v-card-title>
           <v-btn icon @click="clearFilters">
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-        </v-card-title>
+        </div>
         <v-card-text>
           <v-row>
             <v-col v-for="(value, key) in filters" :key="key" cols="12" sm="6" md="4">
@@ -136,6 +135,17 @@ const clearFilters = () => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 0 16px;
+}
+
+.reset-button {
+  margin-right: 8px;
 }
 
 :deep(.v-data-table) {
