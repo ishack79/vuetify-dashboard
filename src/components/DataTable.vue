@@ -94,33 +94,67 @@ const clearFilters = () => {
       </v-card>
     </v-dialog>
 
-    <!-- DataTable -->
-    <v-data-table
-      :headers="headers"
-      :items="filteredItems"
-      :items-per-page="15"
-      hover
-      class="elevation-1 rounded-lg"
-    >
-      <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ item }">
-        <v-chip
-          v-if="shouldRenderChip(header.key) && item[header.key]"
-          :color="getChipColor(header.key, item[header.key])"
-          size="small"
-          label
-        >
-          {{ item[header.key] }}
-        </v-chip>
-        <template v-else>
-          {{ item[header.key] }}
+    <!-- DataTable Container -->
+    <div class="table-container">
+      <v-data-table
+        :headers="headers"
+        :items="filteredItems"
+        :items-per-page="30"
+        hover
+        class="elevation-1 rounded-lg"
+        fixed-header
+      >
+        <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ item }">
+          <v-chip
+            v-if="shouldRenderChip(header.key) && item[header.key]"
+            :color="getChipColor(header.key, item[header.key])"
+            size="small"
+            label
+          >
+            {{ item[header.key] }}
+          </v-chip>
+          <template v-else>
+            {{ item[header.key] }}
+          </template>
         </template>
-      </template>
-    </v-data-table>
+      </v-data-table>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .data-table-wrapper {
   position: relative;
+  height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column;
+}
+
+.table-container {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.v-data-table) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.v-data-table__wrapper) {
+  flex: 1;
+  overflow-y: auto;
+}
+
+:deep(.v-data-table-footer) {
+  flex-shrink: 0;
+  background: rgba(35, 36, 36, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
 }
 </style>
