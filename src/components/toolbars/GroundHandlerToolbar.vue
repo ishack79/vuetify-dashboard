@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import Datepicker from '../Datepicker.vue';
+import MonthPicker from '../MonthPicker.vue';
 
 const props = defineProps({
   fromDate: {
@@ -17,6 +17,7 @@ const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh']);
 
 // Reactive property to manage the active slide
 const activeSlide = ref('Month'); // Default to "Month"
+const selectedMonth = ref(new Date(new Date().getFullYear(), 0, 1));
 </script>
 
 <template>
@@ -45,24 +46,7 @@ const activeSlide = ref('Month'); // Default to "Month"
         </v-btn>
       </template>
     </v-tooltip>
-    <Datepicker
-      :model-value="props.fromDate"
-      :rules="[(v) => !!v || 'From date is required!']"
-      clearable
-      hide-details="auto"
-      color="primary"
-      label="From Date"
-      @update:model-value="(val) => emit('update:fromDate', val)"
-    />
-    <Datepicker
-      :model-value="props.toDate"
-      :rules="[(v) => !!v || 'To date is required!']"
-      clearable
-      hide-details="auto"
-      color="primary"
-      label="To Date"
-      @update:model-value="(val) => emit('update:toDate', val)"
-    />
+    <MonthPicker v-model="selectedMonth" />
     <v-spacer />
     <slot name="actions">
       <v-tooltip text="Refresh" location="top">

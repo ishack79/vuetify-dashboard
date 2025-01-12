@@ -1,6 +1,7 @@
 <script setup>
-import Datepicker from '../Datepicker.vue';
+import RangeDatepicker from '../RangeDatepicker.vue';
 import { exportToExcel } from '../../utils/excelExport';
+import { computed } from 'vue';
 
 const props = defineProps({
   fromDate: {
@@ -27,6 +28,17 @@ const props = defineProps({
 
 const emit = defineEmits(['update:fromDate', 'update:toDate', 'refresh', 'toggleFilters']);
 
+const dateRange = computed({
+  get: () => ({
+    start: props.fromDate,
+    end: props.toDate
+  }),
+  set: (value) => {
+    emit('update:fromDate', value.start);
+    emit('update:toDate', value.end);
+  }
+});
+
 const handleExport = () => {
   exportToExcel(props.headers, props.items, props.excelFilename);
 };
@@ -41,23 +53,11 @@ const handleExport = () => {
         </v-btn>
       </template>
     </v-tooltip>
-    <Datepicker
-      :model-value="fromDate"
-      :rules="[(v) => !!v || 'From date is required!']"
-      clearable
-      hide-details="auto"
+    <RangeDatepicker
+      v-model="dateRange"
+      label="Date Range"
       color="primary"
-      label="From Date"
-      @update:model-value="(val) => emit('update:fromDate', val)"
-    />
-    <Datepicker
-      :model-value="toDate"
-      :rules="[(v) => !!v || 'To date is required!']"
-      clearable
-      hide-details="auto"
-      color="primary"
-      label="To Date"
-      @update:model-value="(val) => emit('update:toDate', val)"
+      :rules="[(v) => (v && v.start && v.end) || 'Date range is required']"
     />
     <v-spacer />
     <slot name="actions">
