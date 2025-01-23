@@ -23,6 +23,10 @@ const props = defineProps({
   excelFilename: {
     type: String,
     default: `export_${new Date().toISOString().split('T')[0]}.xlsx`
+  },
+  isRefreshing: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -70,7 +74,12 @@ const handleExport = () => {
       </v-tooltip>
       <v-tooltip text="Refresh" location="top">
         <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" icon @click="emit('refresh')">
+          <v-btn 
+            v-bind="props" 
+            icon 
+            :loading="isRefreshing"
+            @click="emit('refresh')"
+          >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
         </template>

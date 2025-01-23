@@ -20,6 +20,7 @@ const toDate = ref(new Date());
 const useMockData = ref(true);
 const showFilters = ref(false);
 const filteredData = ref([]);
+const isRefreshing = ref(false);
 
 const mockHeaders = computed(() => {
   return useMockData.value ? getFlightTableHeaders() : [];
@@ -37,8 +38,15 @@ const currentToolbar = computed(() => {
   return getToolbarComponent(props.selectedMenu, getTabNames.value[tab.value]);
 });
 
-const handleRefresh = () => {
-  console.log('Refreshing data...');
+const handleRefresh = async () => {
+  isRefreshing.value = true;
+  try {
+    // Simulate API call with timeout
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Refresh logic here
+  } finally {
+    isRefreshing.value = false;
+  }
 };
 
 const handleTabSelect = (index) => {
@@ -86,12 +94,14 @@ const handleFilteredDataChange = (data) => {
               v-model:toDate="toDate"
               :headers="mockHeaders"
               :items="filteredData"
+              :is-refreshing="isRefreshing"
               @refresh="handleRefresh"
               @toggleFilters="toggleFilters"
             />
             <DataTable
               :headers="mockHeaders"
               :items="mockData"
+              :loading="isRefreshing"
               v-model:showFilters="showFilters"
               @filteredDataChange="handleFilteredDataChange"
             />

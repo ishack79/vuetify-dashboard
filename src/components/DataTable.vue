@@ -13,12 +13,20 @@ const props = defineProps({
   showFilters: {
     type: Boolean,
     required: true
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 });
 
 const emit = defineEmits(['update:showFilters', 'filteredDataChange']);
 
 const filters = ref({});
+const options = ref({
+  page: 1,
+  itemsPerPage: 30,
+});
 
 // Initialize filters for each column
 props.headers.forEach(header => {
@@ -95,10 +103,14 @@ const clearFilters = () => {
 
     <!-- DataTable Container -->
     <div class="table-container">
-      <v-data-table
+      <v-data-table-server
         :headers="headers"
         :items="filteredItems"
-        :items-per-page="30"
+        :items-length="filteredItems.length"
+        :loading="loading"
+        :items-per-page="options.itemsPerPage"
+        :page="options.page"
+        @update:options="options = $event"
         hover
         class="elevation-1 rounded-lg"
         fixed-header
@@ -116,7 +128,7 @@ const clearFilters = () => {
             {{ item[header.key] }}
           </template>
         </template>
-      </v-data-table>
+      </v-data-table-server>
     </div>
   </div>
 </template>
