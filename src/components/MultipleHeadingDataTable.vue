@@ -220,13 +220,12 @@ function formatData(field, value) {
                     v-show="showFilters"
                     v-model="filters[header.value]"
                     density="compact"
-                    variant="solo-filled"
-                    flat
+                    variant="outlined"
                     hide-details
                     single-line
                     :disabled="!header.filterable"
                     class="filter-field"
-                    bg-color="rgba(45, 45, 45, 0.95)"
+                    bg-color="transparent"
                   ></v-text-field>
                 </div>
               </th>
@@ -244,13 +243,12 @@ function formatData(field, value) {
                         v-show="showFilters"
                         v-model="filters[child.value]"
                         density="compact"
-                        variant="solo-filled"
-                        flat
+                        variant="outlined"
                         hide-details
                         single-line
                         :disabled="!child.filterable"
                         class="filter-field"
-                        bg-color="rgba(45, 45, 45, 0.95)"
+                        bg-color="transparent"
                       ></v-text-field>
                     </template>
                   </div>
@@ -326,6 +324,7 @@ function formatData(field, value) {
 .header-cell {
   padding: 8px !important;
   vertical-align: top !important;
+  background-color: rgba(35, 36, 36, 0.95) !important;
 }
 
 .header-content {
@@ -354,11 +353,24 @@ function formatData(field, value) {
   min-height: 32px !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  background-color: rgb(72, 72, 72) !important;
+  border: 1px solid rgb(0, 0, 0) !important;
+  border-radius: 4px !important;
+}
+
+:deep(.filter-field .v-field__input:disabled) {
+  background-color: rgb(48, 48, 48) !important;
+  opacity: 0.7;
 }
 
 :deep(.filter-field .v-field) {
-  border-radius: 8px !important;
-  background-color: rgba(45, 45, 45, 0.95) !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+:deep(.filter-field .v-field__outline) {
+  display: none !important;
 }
 
 :deep(.v-data-table__thead th) {
@@ -369,6 +381,11 @@ function formatData(field, value) {
 
 :deep(.v-data-table__tbody td) {
   text-align: center !important;
+  background-color: rgb(24, 24, 24) !important;
+}
+
+:deep(.v-data-table__tr:hover td) {
+  background-color: rgb(32, 32, 32) !important;
 }
 
 :deep(.gap-2) {
