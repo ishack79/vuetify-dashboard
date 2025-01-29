@@ -193,37 +193,6 @@ function formatData(field, value) {
 
 <template>
   <div class="data-table-wrapper">
-    <!-- Filter Dialog -->
-    <v-dialog
-      :model-value="showFilters"
-      @update:model-value="emit('update:showFilters', $event)"
-      max-width="800px"
-    >
-      <v-card>
-        <div class="filter-header">
-          <v-card-title class="text-h5">Filters</v-card-title>
-          <v-btn icon @click="clearFilters">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </div>
-        <v-card-text>
-          <v-row>
-            <v-col v-for="header in props.headers" :key="header.field" cols="12" sm="6" md="4">
-              <v-text-field
-                v-model="filters[header.field]"
-                :label="header.label"
-                :disabled="!header.searchable"
-                density="compact"
-                variant="outlined"
-                hide-details
-                class="mb-2"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
     <!-- MultipleHeadingDataTable Container -->
     <div class="table-container">
       <v-data-table
@@ -247,6 +216,7 @@ function formatData(field, value) {
                 <div class="header-content">
                   <div class="header-title">{{ header.title }}</div>
                   <v-text-field
+                    v-show="showFilters"
                     v-model="filters[header.value]"
                     density="compact"
                     variant="solo-filled"
@@ -270,6 +240,7 @@ function formatData(field, value) {
                   <div class="d-flex gap-2">
                     <template v-for="child in header.children" :key="child.value">
                       <v-text-field
+                        v-show="showFilters"
                         v-model="filters[child.value]"
                         density="compact"
                         variant="solo-filled"
@@ -327,17 +298,6 @@ function formatData(field, value) {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-.filter-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 16px 0 16px;
-}
-
-.reset-button {
-  margin-right: 8px;
 }
 
 :deep(.v-data-table) {
