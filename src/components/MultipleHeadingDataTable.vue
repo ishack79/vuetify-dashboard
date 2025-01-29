@@ -128,9 +128,7 @@ const flatHeaders = computed(() => {
 // Initialize filters for each column
 watch(() => props.headers, (newHeaders) => {
   newHeaders.forEach(header => {
-    if (header.searchable) {
-      filters.value[header.field] = '';
-    }
+    filters.value[header.field] = '';
   });
 }, { immediate: true });
 
@@ -145,6 +143,11 @@ const filteredItems = computed(() => {
   const filtered = props.items.filter(item => {
     return Object.entries(filters.value).every(([key, filterValue]) => {
       if (!filterValue) return true;
+      
+      // Only apply filtering for searchable columns
+      const header = props.headers.find(h => h.field === key);
+      if (!header?.searchable) return true;
+      
       const itemValue = String(item[key] || '').toLowerCase();
       return itemValue.includes(filterValue.toLowerCase());
     });
@@ -205,10 +208,11 @@ function formatData(field, value) {
         </div>
         <v-card-text>
           <v-row>
-            <v-col v-for="(_, key) in filters" :key="key" cols="12" sm="6" md="4">
+            <v-col v-for="header in props.headers" :key="header.field" cols="12" sm="6" md="4">
               <v-text-field
-                v-model="filters[key]"
-                :label="key"
+                v-model="filters[header.field]"
+                :label="header.label"
+                :disabled="!header.searchable"
                 density="compact"
                 variant="outlined"
                 hide-details
@@ -243,13 +247,13 @@ function formatData(field, value) {
                 <div class="header-content">
                   <div class="header-title">{{ header.title }}</div>
                   <v-text-field
-                    v-if="header.filterable"
                     v-model="filters[header.value]"
                     density="compact"
                     variant="solo-filled"
                     flat
                     hide-details
                     single-line
+                    :disabled="!header.filterable"
                     class="filter-field"
                     bg-color="rgba(45, 45, 45, 0.95)"
                   ></v-text-field>
@@ -266,13 +270,13 @@ function formatData(field, value) {
                   <div class="d-flex gap-2">
                     <template v-for="child in header.children" :key="child.value">
                       <v-text-field
-                        v-if="child.filterable"
                         v-model="filters[child.value]"
                         density="compact"
                         variant="solo-filled"
                         flat
                         hide-details
                         single-line
+                        :disabled="!child.filterable"
                         class="filter-field"
                         bg-color="rgba(45, 45, 45, 0.95)"
                       ></v-text-field>
@@ -389,7 +393,7 @@ function formatData(field, value) {
 }
 
 :deep(.filter-field .v-field) {
-  border-radius: 4px;
+  border-radius: 8px !important;
   background-color: rgba(45, 45, 45, 0.95) !important;
 }
 
