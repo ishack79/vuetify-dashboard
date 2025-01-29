@@ -66,7 +66,8 @@ const adaptedHeaders = computed(() => {
         value: h.field,
         sortable: h.searchable,
         mapping: h.mapping,
-        filterable: h.searchable
+        filterable: h.searchable,
+        align: 'center'
       });
     } else if (parts.length > 1) {
       const parentLabel = parts[0];
@@ -87,7 +88,8 @@ const adaptedHeaders = computed(() => {
         value: h.field,
         sortable: h.searchable,
         mapping: h.mapping,
-        filterable: h.searchable
+        filterable: h.searchable,
+        align: 'center'
       });
     } else {
       headers.push({
@@ -97,7 +99,8 @@ const adaptedHeaders = computed(() => {
         sortable: h.searchable,
         mapping: h.mapping,
         bold: h.bold,
-        filterable: h.searchable
+        filterable: h.searchable,
+        align: 'center'
       });
     }
   });
@@ -125,7 +128,6 @@ const flatHeaders = computed(() => {
   return flat;
 });
 
-// Initialize filters for each column
 watch(() => props.headers, (newHeaders) => {
   newHeaders.forEach(header => {
     filters.value[header.field] = '';
@@ -193,7 +195,6 @@ function formatData(field, value) {
 
 <template>
   <div class="data-table-wrapper">
-    <!-- MultipleHeadingDataTable Container -->
     <div class="table-container">
       <v-data-table
         :headers="adaptedHeaders"
@@ -214,7 +215,7 @@ function formatData(field, value) {
                 class="header-cell"
               >
                 <div class="header-content">
-                  <div class="header-title">{{ header.title }}</div>
+                  <div class="header-title text-center">{{ header.title }}</div>
                   <v-text-field
                     v-show="showFilters"
                     v-model="filters[header.value]"
@@ -236,7 +237,7 @@ function formatData(field, value) {
                 class="header-cell"
               >
                 <div class="header-content">
-                  <div class="header-title">{{ header.title }}</div>
+                  <div class="header-title text-center">{{ header.title }}</div>
                   <div class="d-flex gap-2">
                     <template v-for="child in header.children" :key="child.value">
                       <v-text-field
@@ -265,19 +266,21 @@ function formatData(field, value) {
           :key="header.title"
           #[`item.${header.value}`]="{ item }"
         >
-          <!-- Render chip if there is a color mapping; else show text -->
-          <v-chip
-            v-if="shouldRenderChip(header.value) && item[header.value]"
-            :color="getChipColor(header.value, item[header.value])"
-            size="small"
-            label
-          >
-            {{ item[header.value] }}
-          </v-chip>
-          <template v-else>
-            <strong v-if="header.bold">{{ formatData(header.value, item[header.value]) }}</strong>
-            <span v-else>{{ formatData(header.value, item[header.value]) }}</span>
-          </template>
+          <div class="text-center">
+            <!-- Render chip if there is a color mapping; else show text -->
+            <v-chip
+              v-if="shouldRenderChip(header.value) && item[header.value]"
+              :color="getChipColor(header.value, item[header.value])"
+              size="small"
+              label
+            >
+              {{ item[header.value] }}
+            </v-chip>
+            <template v-else>
+              <strong v-if="header.bold">{{ formatData(header.value, item[header.value]) }}</strong>
+              <span v-else>{{ formatData(header.value, item[header.value]) }}</span>
+            </template>
+          </div>
         </template>
       </v-data-table>
     </div>
@@ -340,6 +343,7 @@ function formatData(field, value) {
   text-overflow: ellipsis;
   line-height: 1.2;
   min-height: 1.2em;
+  text-align: center;
 }
 
 :deep(.filter-field) {
@@ -360,6 +364,11 @@ function formatData(field, value) {
 :deep(.v-data-table__thead th) {
   background-color: rgba(35, 36, 36, 0.95) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center !important;
+}
+
+:deep(.v-data-table__tbody td) {
+  text-align: center !important;
 }
 
 :deep(.gap-2) {
