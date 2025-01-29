@@ -62,9 +62,11 @@ const adaptedHeaders = computed(() => {
 
       parent.childMap[childLabel].children.push({
         title: grandChildLabel,
+        key: h.field,
         value: h.field,
         sortable: h.searchable,
-        mapping: h.mapping
+        mapping: h.mapping,
+        filterable: h.searchable
       });
     } else if (parts.length > 1) {
       const parentLabel = parts[0];
@@ -81,17 +83,21 @@ const adaptedHeaders = computed(() => {
 
       headerMap[parentLabel].children.push({
         title: childLabel,
+        key: h.field,
         value: h.field,
         sortable: h.searchable,
-        mapping: h.mapping
+        mapping: h.mapping,
+        filterable: h.searchable
       });
     } else {
       headers.push({
         title: h.label,
+        key: h.field,
         value: h.field,
         sortable: h.searchable,
         mapping: h.mapping,
-        bold: h.bold
+        bold: h.bold,
+        filterable: h.searchable
       });
     }
   });
@@ -100,23 +106,30 @@ const adaptedHeaders = computed(() => {
   return headers;
 });
 
-// Initialize filters for each column
-watch(adaptedHeaders, (newHeaders) => {
-  newHeaders.forEach(header => {
+// Get all leaf headers for filtering
+const flatHeaders = computed(() => {
+  const flat = [];
+  
+  const processHeader = (header) => {
     if (header.children) {
-      header.children.forEach(child => {
-        if (child.children) {
-          child.children.forEach(grandChild => {
-            if (grandChild.sortable) {
-              filters.value[grandChild.value] = '';
-            }
-          });
-        } else if (child.sortable) {
-          filters.value[child.value] = '';
-        }
+      header.children.forEach(child => processHeader(child));
+    } else if (header.value) {
+      flat.push({
+        ...header,
+        width: `${100 / props.headers.length}%`
       });
-    } else if (header.sortable) {
-      filters.value[header.value] = '';
+    }
+  };
+  
+  adaptedHeaders.value.forEach(header => processHeader(header));
+  return flat;
+});
+
+// Initialize filters for each column
+watch(() => props.headers, (newHeaders) => {
+  newHeaders.forEach(header => {
+    if (header.searchable) {
+      filters.value[header.field] = '';
     }
   });
 }, { immediate: true });
@@ -132,11 +145,10 @@ const filteredItems = computed(() => {
   const filtered = props.items.filter(item => {
     return Object.entries(filters.value).every(([key, filterValue]) => {
       if (!filterValue) return true;
-      const itemValue = String(item[key]).toLowerCase();
+      const itemValue = String(item[key] || '').toLowerCase();
       return itemValue.includes(filterValue.toLowerCase());
     });
   });
-  // Emit the filtered data whenever it changes
   emit('filteredDataChange', filtered);
   return filtered;
 });
@@ -146,14 +158,14 @@ const colorMappings = {
   lvp: (value) => value === 'Y' ? 'success' : 'warning'
 };
 
-function getChipColor(field, value){
+function getChipColor(field, value) {
   const fn = colorMappings[field];
   return typeof fn === 'function' ? fn(value) : fn;
-};
+}
 
 function shouldRenderChip(field) {
   return field in colorMappings;
-};
+}
 
 // Format data based on mapping rules
 function formatData(field, value) {
@@ -161,7 +173,7 @@ function formatData(field, value) {
   if (!header || !header.mapping) return value;
 
   if (header.mapping === 'yyyy-mm-dd-DAY') {
-    return value; // Already formatted in mock data
+    return value;
   }
 
   if (header.mapping === 'yyyy-mm-ddThh:mm:ss->hh:mm') {
@@ -180,9 +192,9 @@ function formatData(field, value) {
   <div class="data-table-wrapper">
     <!-- Filter Dialog -->
     <v-dialog
-        :model-value="showFilters"
-        @update:model-value="emit('update:showFilters', $event)"
-        max-width="800px"
+      :model-value="showFilters"
+      @update:model-value="emit('update:showFilters', $event)"
+      max-width="800px"
     >
       <v-card>
         <div class="filter-header">
@@ -219,6 +231,63 @@ function formatData(field, value) {
         fixed-header
         :loading="props.loading"
       >
+        <!-- Add filter row at the top of headers -->
+        <template #headers>
+          <tr>
+            <template v-for="(header, i) in adaptedHeaders" :key="i">
+              <th
+                v-if="!header.children"
+                :style="{ width: `${100 / adaptedHeaders.length}%` }"
+                class="header-cell"
+              >
+                <div class="header-content">
+                  <div class="header-title">{{ header.title }}</div>
+                  <v-text-field
+                    v-if="header.filterable"
+                    v-model="filters[header.value]"
+                    density="compact"
+                    :placeholder="`${header.title}`"
+                    prepend-inner-icon="mdi-magnify"
+                    variant="solo-filled"
+                    flat
+                    hide-details
+                    single-line
+                    class="filter-field"
+                    bg-color="rgba(45, 45, 45, 0.95)"
+                  ></v-text-field>
+                </div>
+              </th>
+              <th
+                v-else
+                :colspan="header.children.length"
+                :style="{ width: `${(100 / adaptedHeaders.length) * header.children.length}%` }"
+                class="header-cell"
+              >
+                <div class="header-content">
+                  <div class="header-title">{{ header.title }}</div>
+                  <div class="d-flex gap-2">
+                    <template v-for="child in header.children" :key="child.value">
+                      <v-text-field
+                        v-if="child.filterable"
+                        v-model="filters[child.value]"
+                        density="compact"
+                        :placeholder="`${child.title}`"
+                        prepend-inner-icon="mdi-magnify"
+                        variant="solo-filled"
+                        flat
+                        hide-details
+                        single-line
+                        class="filter-field"
+                        bg-color="rgba(45, 45, 45, 0.95)"
+                      ></v-text-field>
+                    </template>
+                  </div>
+                </div>
+              </th>
+            </template>
+          </tr>
+        </template>
+
         <!-- Dynamic slots for each header's label -->
         <template
           v-for="header in adaptedHeaders"
@@ -289,5 +358,51 @@ function formatData(field, value) {
   position: sticky;
   bottom: 0;
   z-index: 1;
+}
+
+.header-cell {
+  padding: 8px !important;
+  vertical-align: top !important;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  min-height: 1.2em;
+}
+
+:deep(.filter-field) {
+  min-width: 100px;
+}
+
+:deep(.filter-field .v-field__input) {
+  min-height: 32px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+:deep(.filter-field .v-field) {
+  border-radius: 4px;
+  background-color: rgba(45, 45, 45, 0.95) !important;
+}
+
+:deep(.v-data-table__thead th) {
+  background-color: rgba(35, 36, 36, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:deep(.gap-2) {
+  gap: 8px;
 }
 </style>
