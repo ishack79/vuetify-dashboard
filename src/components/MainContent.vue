@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import DataTable from './DataTable.vue';
+import MultipleHeadingDataTable from './MultipleHeadingDataTable.vue';
 import { getToolbarComponent } from './toolbars';
 import { TAB_MAPPINGS } from '../constants/tabMappings';
 import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData';
@@ -98,7 +98,7 @@ const handleFilteredDataChange = (data) => {
               @refresh="handleRefresh"
               @toggleFilters="toggleFilters"
             />
-            <DataTable
+            <MultipleHeadingDataTable
               :headers="mockHeaders"
               :items="mockData"
               :loading="isRefreshing"
