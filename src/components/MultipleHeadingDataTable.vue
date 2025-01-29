@@ -246,8 +246,6 @@ function formatData(field, value) {
                     v-if="header.filterable"
                     v-model="filters[header.value]"
                     density="compact"
-                    :placeholder="`${header.title}`"
-                    prepend-inner-icon="mdi-magnify"
                     variant="solo-filled"
                     flat
                     hide-details
@@ -271,8 +269,6 @@ function formatData(field, value) {
                         v-if="child.filterable"
                         v-model="filters[child.value]"
                         density="compact"
-                        :placeholder="`${child.title}`"
-                        prepend-inner-icon="mdi-magnify"
                         variant="solo-filled"
                         flat
                         hide-details
