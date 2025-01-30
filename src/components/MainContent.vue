@@ -27,7 +27,7 @@ const mockHeaders = computed(() => {
 });
 
 const mockData = computed(() => {
-  return useMockData.value ? generateMockFlightData() : [];
+  return useMockData.value ? generateMockFlightData(20) : [];
 });
 
 const getTabNames = computed(() => {
@@ -93,7 +93,7 @@ const handleFilteredDataChange = (data) => {
               v-model:fromDate="fromDate"
               v-model:toDate="toDate"
               :headers="mockHeaders"
-              :items="filteredData"
+              :items="filteredData.length ? filteredData : mockData"
               :is-refreshing="isRefreshing"
               @refresh="handleRefresh"
               @toggleFilters="toggleFilters"
@@ -102,7 +102,8 @@ const handleFilteredDataChange = (data) => {
               :headers="mockHeaders"
               :items="mockData"
               :loading="isRefreshing"
-              v-model:showFilters="showFilters"
+              :showFilters="showFilters"
+              @update:showFilters="showFilters = $event"
               @filteredDataChange="handleFilteredDataChange"
             />
           </v-card>
