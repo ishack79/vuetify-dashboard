@@ -27,80 +27,85 @@ const filters = ref({});
 // Convert server-style columns to Vuetify-style headers
 const adaptedHeaders = computed(() => {
   const headers = [];
-  const headerMap = {};
+  const headerMap = new Map();
 
   props.headers.forEach(h => {
-    const parts = h.label.split('|');
-    if (parts.length > 2) {
-      const parentLabel = parts[0];
-      const childLabel = parts[1];
-      const grandChildLabel = parts[2];
+    const parts = h.label.split('|').map(p => p.trim());
+    const field = h.label; // Use label instead of field for matching
+    
+    if (parts.length === 3) {
+      // Handle 3-level headers
+      const [level1, level2, level3] = parts;
+      
+      let level1Header = headerMap.get(level1);
+      if (!level1Header) {
+        level1Header = {
+          title: level1,
+          align: 'center',
+          children: [],
+          childMap: new Map()
+        };
+        headerMap.set(level1, level1Header);
+        headers.push(level1Header);
+      }
 
-      if (!headerMap[parentLabel]) {
-        headerMap[parentLabel] = {
-          title: parentLabel,
+      let level2Header = level1Header.childMap.get(level2);
+      if (!level2Header) {
+        level2Header = {
+          title: level2,
           align: 'center',
           children: []
         };
-        headers.push(headerMap[parentLabel]);
+        level1Header.childMap.set(level2, level2Header);
+        level1Header.children.push(level2Header);
       }
 
-      const parent = headerMap[parentLabel];
-      if (!parent.childMap) {
-        parent.childMap = {};
-      }
-
-      if (!parent.childMap[childLabel]) {
-        const child = {
-          title: childLabel,
-          align: 'center',
-          children: []
-        };
-        parent.children.push(child);
-        parent.childMap[childLabel] = child;
-      }
-
-      parent.childMap[childLabel].children.push({
-        title: grandChildLabel,
-        key: h.field,
-        value: h.field,
+      level2Header.children.push({
+        title: level3,
+        key: field,
+        value: field,
         sortable: h.searchable,
-        mapping: h.mapping,
         filterable: h.searchable,
-        align: 'center'
+        align: 'center',
+        bold: h.bold,
+        searchable: h.searchable
       });
-    } else if (parts.length > 1) {
-      const parentLabel = parts[0];
-      const childLabel = parts[1];
-
-      if (!headerMap[parentLabel]) {
-        headerMap[parentLabel] = {
-          title: parentLabel,
+    } else if (parts.length === 2) {
+      // Handle 2-level headers
+      const [level1, level2] = parts;
+      
+      let level1Header = headerMap.get(level1);
+      if (!level1Header) {
+        level1Header = {
+          title: level1,
           align: 'center',
           children: []
         };
-        headers.push(headerMap[parentLabel]);
+        headerMap.set(level1, level1Header);
+        headers.push(level1Header);
       }
 
-      headerMap[parentLabel].children.push({
-        title: childLabel,
-        key: h.field,
-        value: h.field,
+      level1Header.children.push({
+        title: level2,
+        key: field,
+        value: field,
         sortable: h.searchable,
-        mapping: h.mapping,
         filterable: h.searchable,
-        align: 'center'
+        align: 'center',
+        bold: h.bold,
+        searchable: h.searchable
       });
     } else {
+      // Handle single level headers
       headers.push({
-        title: h.label,
-        key: h.field,
-        value: h.field,
+        title: parts[0],
+        key: field,
+        value: field,
         sortable: h.searchable,
-        mapping: h.mapping,
-        bold: h.bold,
         filterable: h.searchable,
-        align: 'center'
+        align: 'center',
+        bold: h.bold,
+        searchable: h.searchable
       });
     }
   });
@@ -115,12 +120,15 @@ const flatHeaders = computed(() => {
   
   const processHeader = (header) => {
     if (header.children) {
-      header.children.forEach(child => processHeader(child));
-    } else if (header.value) {
-      flat.push({
-        ...header,
-        width: `${100 / props.headers.length}%`
+      header.children.forEach(child => {
+        if (child.children) {
+          child.children.forEach(grandChild => flat.push(grandChild));
+        } else {
+          flat.push(child);
+        }
       });
+    } else if (header.value) {
+      flat.push(header);
     }
   };
   
@@ -128,9 +136,27 @@ const flatHeaders = computed(() => {
   return flat;
 });
 
+// Calculate max header depth
+const headerDepth = computed(() => {
+  let maxDepth = 1;
+  adaptedHeaders.value.forEach(header => {
+    if (header.children) {
+      maxDepth = Math.max(maxDepth, 2);
+      header.children.forEach(child => {
+        if (child.children) {
+          maxDepth = Math.max(maxDepth, 3);
+        }
+      });
+    }
+  });
+  return maxDepth;
+});
+
 watch(() => props.headers, (newHeaders) => {
   newHeaders.forEach(header => {
-    filters.value[header.field] = '';
+    if (header.searchable) {
+      filters.value[header.label] = '';
+    }
   });
 }, { immediate: true });
 
@@ -145,11 +171,6 @@ const filteredItems = computed(() => {
   const filtered = props.items.filter(item => {
     return Object.entries(filters.value).every(([key, filterValue]) => {
       if (!filterValue) return true;
-      
-      // Only apply filtering for searchable columns
-      const header = props.headers.find(h => h.field === key);
-      if (!header?.searchable) return true;
-      
       const itemValue = String(item[key] || '').toLowerCase();
       return itemValue.includes(filterValue.toLowerCase());
     });
@@ -158,35 +179,13 @@ const filteredItems = computed(() => {
   return filtered;
 });
 
-// Define color mappings
-const colorMappings = {
-  lvp: (value) => value === 'Y' ? 'success' : 'warning'
-};
-
-function getChipColor(field, value) {
-  const fn = colorMappings[field];
-  return typeof fn === 'function' ? fn(value) : fn;
-}
-
-function shouldRenderChip(field) {
-  return field in colorMappings;
-}
-
 // Format data based on mapping rules
 function formatData(field, value) {
-  const header = props.headers.find((h) => h.field === field);
+  const header = props.headers.find((h) => h.label === field);
   if (!header || !header.mapping) return value;
 
   if (header.mapping === 'yyyy-mm-dd-DAY') {
     return value;
-  }
-
-  if (header.mapping === 'yyyy-mm-ddThh:mm:ss->hh:mm') {
-    return value ? value.split('T')[1].substring(0, 5) : '';
-  }
-
-  if (header.mapping === 'no-empty hh:mm') {
-    return value || '--:--';
   }
 
   return value;
@@ -205,79 +204,93 @@ function formatData(field, value) {
         fixed-header
         :loading="props.loading"
       >
-        <!-- Add filter row at the top of headers -->
+        <!-- Headers template -->
         <template #headers>
+          <!-- Level 1 headers -->
           <tr>
-            <template v-for="(header, i) in adaptedHeaders" :key="i">
+            <template v-for="header in adaptedHeaders" :key="header.title">
               <th
                 v-if="!header.children"
-                :style="{ width: `${100 / adaptedHeaders.length}%` }"
-                class="header-cell"
+                :rowspan="headerDepth"
+                class="header-cell text-center"
               >
-                <div class="header-content">
-                  <div class="header-title text-center">{{ header.title }}</div>
-                  <v-text-field
-                    v-show="showFilters"
-                    v-model="filters[header.value]"
-                    density="compact"
-                    variant="outlined"
-                    hide-details
-                    single-line
-                    :disabled="!header.filterable"
-                    class="filter-field"
-                    bg-color="transparent"
-                  ></v-text-field>
-                </div>
+                {{ header.title }}
               </th>
               <th
                 v-else
-                :colspan="header.children.length"
-                :style="{ width: `${(100 / adaptedHeaders.length) * header.children.length}%` }"
-                class="header-cell"
+                :colspan="header.children.reduce((acc, child) => acc + (child.children ? child.children.length : 1), 0)"
+                class="header-cell text-center"
               >
-                <div class="header-content">
-                  <div class="header-title text-center">{{ header.title }}</div>
-                  <div class="d-flex gap-2">
-                    <template v-for="child in header.children" :key="child.value">
-                      <v-text-field
-                        v-show="showFilters"
-                        v-model="filters[child.value]"
-                        density="compact"
-                        variant="outlined"
-                        hide-details
-                        single-line
-                        :disabled="!child.filterable"
-                        class="filter-field"
-                        bg-color="transparent"
-                      ></v-text-field>
-                    </template>
-                  </div>
-                </div>
+                {{ header.title }}
+              </th>
+            </template>
+          </tr>
+          
+          <!-- Level 2 headers -->
+          <tr v-if="headerDepth > 1">
+            <template v-for="header in adaptedHeaders" :key="`l2-${header.title}`">
+              <template v-if="header.children">
+                <template v-for="child in header.children" :key="`l2c-${child.title}`">
+                  <th
+                    :colspan="child.children ? child.children.length : 1"
+                    :rowspan="child.children ? 1 : (headerDepth - 1)"
+                    class="header-cell text-center"
+                  >
+                    {{ child.title }}
+                  </th>
+                </template>
+              </template>
+            </template>
+          </tr>
+          
+          <!-- Level 3 headers -->
+          <tr v-if="headerDepth > 2">
+            <template v-for="header in adaptedHeaders" :key="`l3-${header.title}`">
+              <template v-if="header.children">
+                <template v-for="child in header.children" :key="`l3c-${child.title}`">
+                  <template v-if="child.children">
+                    <th
+                      v-for="grandChild in child.children"
+                      :key="grandChild.title"
+                      class="header-cell text-center"
+                    >
+                      {{ grandChild.title }}
+                    </th>
+                  </template>
+                </template>
+              </template>
+            </template>
+          </tr>
+          
+          <!-- Filter row -->
+          <tr v-if="showFilters">
+            <template v-for="header in flatHeaders" :key="`filter-${header.value}`">
+              <th class="header-cell">
+                <v-text-field
+                  v-if="header.searchable"
+                  v-model="filters[header.value]"
+                  density="compact"
+                  variant="outlined"
+                  hide-details
+                  single-line
+                  class="filter-field"
+                  bg-color="transparent"
+                />
               </th>
             </template>
           </tr>
         </template>
 
-        <!-- Dynamic slots for each header's label -->
+        <!-- Data cells template -->
         <template
-          v-for="header in adaptedHeaders"
-          :key="header.title"
+          v-for="header in flatHeaders"
+          :key="`cell-${header.value}`"
           #[`item.${header.value}`]="{ item }"
         >
           <div class="text-center">
-            <!-- Render chip if there is a color mapping; else show text -->
-            <v-chip
-              v-if="shouldRenderChip(header.value) && item[header.value]"
-              :color="getChipColor(header.value, item[header.value])"
-              size="small"
-              label
-            >
-              {{ item[header.value] }}
-            </v-chip>
-            <template v-else>
-              <strong v-if="header.bold">{{ formatData(header.value, item[header.value]) }}</strong>
-              <span v-else>{{ formatData(header.value, item[header.value]) }}</span>
-            </template>
+            <span :class="{ 'font-weight-bold': header.bold }">
+              {{ formatData(header.value, item[header.value]) }}
+            </span>
           </div>
         </template>
       </v-data-table>
@@ -314,7 +327,7 @@ function formatData(field, value) {
 
 :deep(.v-data-table-footer) {
   flex-shrink: 0;
-  background: rgba(35, 36, 36, 0.95);
+  background: #232424;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   bottom: 0;
@@ -323,30 +336,13 @@ function formatData(field, value) {
 
 .header-cell {
   padding: 8px !important;
-  vertical-align: top !important;
-  background-color: rgba(35, 36, 36, 0.95) !important;
-}
-
-.header-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.header-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-  min-height: 1.2em;
-  text-align: center;
+  vertical-align: middle !important;
+  background-color: #232424 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 :deep(.filter-field) {
-  min-width: 100px;
+  min-width: 80px;
 }
 
 :deep(.filter-field .v-field__input) {
@@ -374,21 +370,23 @@ function formatData(field, value) {
 }
 
 :deep(.v-data-table__thead th) {
-  background-color: rgba(35, 36, 36, 0.95) !important;
+  background-color: #232424 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center !important;
+  color: #e2e8f0 !important;
 }
 
 :deep(.v-data-table__tbody td) {
   text-align: center !important;
   background-color: rgb(24, 24, 24) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 :deep(.v-data-table__tr:hover td) {
   background-color: rgb(32, 32, 32) !important;
 }
 
-:deep(.gap-2) {
-  gap: 8px;
+.font-weight-bold {
+  font-weight: bold !important;
 }
 </style>
