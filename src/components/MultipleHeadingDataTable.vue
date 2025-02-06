@@ -198,7 +198,7 @@ function formatData(field, value) {
       <v-data-table
         :headers="adaptedHeaders"
         :items="filteredItems"
-        :items-per-page="25"
+        :items-per-page="20"
         hover
         class="elevation-1 rounded-lg"
         fixed-header
