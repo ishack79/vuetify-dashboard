@@ -335,23 +335,30 @@ function formatData(field, value) {
 }
 
 .header-cell {
-  padding: 8px !important;
+  /* padding: 8px !important; */
   vertical-align: middle !important;
   background-color: #232424 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  width: 70px !important;
+}
+
+.header-cell .text-center {
+  width: 70px !important;
 }
 
 :deep(.filter-field) {
-  min-width: 80px;
+  min-width: 70px !important;
 }
 
 :deep(.filter-field .v-field__input) {
-  min-height: 32px !important;
+  /* min-height: 32px !important; */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background-color: rgb(72, 72, 72) !important;
   border: 1px solid rgb(0, 0, 0) !important;
   border-radius: 4px !important;
+  min-width: 70px !important;
+  /* max-width: 70% !important; */
 }
 
 :deep(.filter-field .v-field__input:disabled) {
