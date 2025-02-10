@@ -21,7 +21,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:showFilters', 'filteredDataChange', 'headersAdapted']);
-
+const currentPage = ref(1);
+const itemsPerPage = ref(8);
 const filters = ref({});
 
 // Convert server-style columns to Vuetify-style headers
@@ -31,10 +32,9 @@ const adaptedHeaders = computed(() => {
 
   props.headers.forEach(h => {
     const parts = h.label.split('|').map(p => p.trim());
-    const field = h.label; // Use label instead of field for matching
+    const field = h.label;
     
     if (parts.length === 3) {
-      // Handle 3-level headers
       const [level1, level2, level3] = parts;
       
       let level1Header = headerMap.get(level1);
@@ -71,7 +71,6 @@ const adaptedHeaders = computed(() => {
         searchable: h.searchable
       });
     } else if (parts.length === 2) {
-      // Handle 2-level headers
       const [level1, level2] = parts;
       
       let level1Header = headerMap.get(level1);
@@ -96,7 +95,6 @@ const adaptedHeaders = computed(() => {
         searchable: h.searchable
       });
     } else {
-      // Handle single level headers
       headers.push({
         title: parts[0],
         key: field,
@@ -152,6 +150,52 @@ const headerDepth = computed(() => {
   return maxDepth;
 });
 
+// Calculate total pages
+const totalPages = computed(() => Math.ceil(filteredItems.value.length / itemsPerPage.value));
+
+// Generate page numbers array with ellipsis
+const pageNumbers = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const delta = 1; // Number of pages to show before and after current page
+  
+  let pages = [];
+  
+  // Always show first page
+  pages.push(1);
+  
+  if (total <= 5) {
+    // If total pages is 5 or less, show all pages
+    for (let i = 2; i < total; i++) {
+      pages.push(i);
+    }
+  } else {
+    // Handle cases where we need ellipsis
+    if (current > 2 + delta) {
+      pages.push('...');
+    }
+    
+    // Pages around current page
+    const startPage = Math.max(2, current - delta);
+    const endPage = Math.min(total - 1, current + delta);
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    if (current < total - (1 + delta)) {
+      pages.push('...');
+    }
+  }
+  
+  // Always show last page if more than 1 page
+  if (total > 1) {
+    pages.push(total);
+  }
+  
+  return pages;
+});
+
 watch(() => props.headers, (newHeaders) => {
   newHeaders.forEach(header => {
     if (header.searchable) {
@@ -179,6 +223,25 @@ const filteredItems = computed(() => {
   return filtered;
 });
 
+// Navigation methods
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
 // Format data based on mapping rules
 function formatData(field, value) {
   const header = props.headers.find((h) => h.label === field);
@@ -198,11 +261,13 @@ function formatData(field, value) {
       <v-data-table
         :headers="adaptedHeaders"
         :items="filteredItems"
-        :items-per-page="20"
+        :items-per-page="itemsPerPage"
+        :page="currentPage"
         hover
         class="elevation-1 rounded-lg"
         fixed-header
         :loading="props.loading"
+        @update:page="currentPage = $event"
       >
         <!-- Headers template -->
         <template #headers>
@@ -293,6 +358,64 @@ function formatData(field, value) {
             </span>
           </div>
         </template>
+
+        <!-- Updated pagination template -->
+        <template #bottom>
+          <div class="custom-pagination">
+            <div class="pagination-wrapper">
+              <div class="pagination-controls">
+                <div class="items-per-page">
+                  <v-btn
+                    icon="mdi-minus"
+                    size="small"
+                    variant="text"
+                    :disabled="itemsPerPage <= 5"
+                    @click="itemsPerPage--"
+                  />
+                  <span class="items-per-page-value">{{ itemsPerPage }}</span>
+                  <v-btn
+                    icon="mdi-plus"
+                    size="small"
+                    variant="text"
+                    :disabled="itemsPerPage >= 100"
+                    @click="itemsPerPage++"
+                  />
+                </div>
+                <div class="page-navigation">
+                  <v-btn
+                    icon="mdi-chevron-left"
+                    size="small"
+                    variant="text"
+                    :disabled="currentPage <= 1"
+                    @click="prevPage"
+                  />
+                  <div class="page-numbers">
+                    <template v-for="(page, index) in pageNumbers" :key="index">
+                      <span v-if="page === '...'" class="ellipsis">...</span>
+                      <v-btn
+                        v-else
+                        size="small"
+                        variant="text"
+                        class="page-number"
+                        :class="{ active: page === currentPage }"
+                        @click="goToPage(page)"
+                      >
+                        {{ page }}
+                      </v-btn>
+                    </template>
+                  </div>
+                  <v-btn
+                    icon="mdi-chevron-right"
+                    size="small"
+                    variant="text"
+                    :disabled="currentPage >= totalPages"
+                    @click="nextPage"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </v-data-table>
     </div>
   </div>
@@ -335,7 +458,6 @@ function formatData(field, value) {
 }
 
 .header-cell {
-  /* padding: 8px !important; */
   vertical-align: middle !important;
   background-color: #232424 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -351,14 +473,12 @@ function formatData(field, value) {
 }
 
 :deep(.filter-field .v-field__input) {
-  /* min-height: 32px !important; */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background-color: rgb(72, 72, 72) !important;
   border: 1px solid rgb(0, 0, 0) !important;
   border-radius: 4px !important;
   min-width: 70px !important;
-  /* max-width: 70% !important; */
 }
 
 :deep(.filter-field .v-field__input:disabled) {
@@ -395,5 +515,148 @@ function formatData(field, value) {
 
 .font-weight-bold {
   font-weight: bold !important;
+}
+
+/* Custom pagination styles */
+.custom-pagination {
+  background: #232424;
+  padding: 8px 16px; /* Add horizontal padding */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end; /* Right align the content */
+  width: 100%;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  /* Remove max-width to allow natural content width */
+}
+
+/* Make the navigation section more compact */
+.page-navigation {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto; /* Push to the right if needed */
+}
+
+/* Ensure consistent width for the items per page section */
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-right: 16px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .custom-pagination {
+    padding: 8px; /* Reduce padding on small screens */
+  }
+  
+  .pagination-controls {
+    flex-wrap: wrap; /* Allow wrapping on very small screens */
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .items-per-page {
+    margin-right: 8px; /* Reduce margin on small screens */
+  }
+}
+
+/* Previous button styles remain unchanged */
+.items-per-page-value {
+  min-width: 36px; /* Match button width */
+  height: 36px; /* Match button height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2e8f0;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  background-color: #232424;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove gap */
+}
+
+/* Square button base styles */
+.page-number,
+:deep(.v-btn--icon.v-btn--size-small) {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid #000 !important;
+  border-radius: 0 !important;
+  color: #e2e8f0 !important;
+  background-color: #232424 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Hover state */
+.page-number:hover,
+:deep(.v-btn--icon.v-btn--size-small:hover) {
+  background-color: #2c2c2c !important;
+  border-color: #333 !important;
+}
+
+/* Active state */
+.page-number.active {
+  background-color: #2c2c2c !important;
+  border-color: #444 !important;
+  color: #fff !important;
+}
+
+/* Disabled state */
+:deep(.v-btn--icon.v-btn--size-small.v-btn--disabled) {
+  background-color: #1a1a1a !important;
+  border-color: #1a1a1a !important;
+  color: rgba(226, 232, 240, 0.3) !important;
+  opacity: 0.5 !important;
+}
+
+.ellipsis {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2e8f0;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  background-color: #232424;
+}
+
+/* Ensure icons are centered in buttons */
+:deep(.v-btn__content) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Override any Vuetify default button styles */
+:deep(.v-btn) {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  box-shadow: none !important;
 }
 </style>
