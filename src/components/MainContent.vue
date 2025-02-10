@@ -3,7 +3,12 @@ import { ref, computed } from 'vue';
 import MultipleHeadingDataTable from './MultipleHeadingDataTable.vue';
 import { getToolbarComponent } from './toolbars';
 import { TAB_MAPPINGS } from '../constants/tabMappings';
-import { generateMockFlightData, getFlightTableHeaders } from '../utils/mockData';
+import { 
+  generateMockFlightData, 
+  getFlightTableHeaders,
+  generateDeicingData,
+  getDeicingTableHeaders 
+} from '../utils/mockData';
 import TabGroup from './tabs/TabGroup.vue';
 import SubTab from './tabs/SubTab.vue';
 
@@ -23,10 +28,16 @@ const filteredData = ref([]);
 const isRefreshing = ref(false);
 
 const mockHeaders = computed(() => {
+  if (props.selectedMenu === 'Deicing') {
+    return getDeicingTableHeaders();
+  }
   return useMockData.value ? getFlightTableHeaders() : [];
 });
 
 const mockData = computed(() => {
+  if (props.selectedMenu === 'Deicing') {
+    return generateDeicingData(20);
+  }
   return useMockData.value ? generateMockFlightData(20) : [];
 });
 
