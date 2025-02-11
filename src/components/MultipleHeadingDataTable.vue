@@ -22,7 +22,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:showFilters', 'filteredDataChange', 'headersAdapted']);
 const currentPage = ref(1);
-const itemsPerPage = ref(8);
+const itemsPerPage = ref(10);
 const filters = ref({});
 
 // Convert server-style columns to Vuetify-style headers
@@ -164,7 +164,7 @@ const pageNumbers = computed(() => {
   // Always show first page
   pages.push(1);
   
-  if (total <= 5) {
+  if (total <= 4) {
     // If total pages is 5 or less, show all pages
     for (let i = 2; i < total; i++) {
       pages.push(i);
@@ -330,7 +330,7 @@ function formatData(field, value) {
           <!-- Filter row -->
           <tr v-if="showFilters">
             <template v-for="header in flatHeaders" :key="`filter-${header.value}`">
-              <th class="header-cell">
+              <th class="header-cell-filter">
                 <v-text-field
                   v-if="header.searchable"
                   v-model="filters[header.value]"
@@ -458,27 +458,47 @@ function formatData(field, value) {
 }
 
 .header-cell {
+  /* Main Header */
+  /* padding: 8px !important; */
   vertical-align: middle !important;
   background-color: #232424 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   width: 70px !important;
+  padding: 0px !important;
 }
 
-.header-cell .text-center {
+.header-cell-filter {
+  /* Filter row */
+  /* padding: 8px !important; */
+  vertical-align: middle !important;
+  background-color: #232424 !important;
+  border: 0px !important;
   width: 70px !important;
+  padding: 0px !important;
 }
 
-:deep(.filter-field) {
+/* .header-cell .text-center {
+  vertical-align: middle !important;
+  background-color: #232424 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  width: 70px !important;
+  padding: 0px !important;
+} */
+
+/* :deep(.filter-field) {
   min-width: 70px !important;
-}
+} */
 
 :deep(.filter-field .v-field__input) {
+  /* min-height: 32px !important; */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background-color: rgb(72, 72, 72) !important;
-  border: 1px solid rgb(0, 0, 0) !important;
-  border-radius: 4px !important;
-  min-width: 70px !important;
+  border: 1px solid rgb(255, 255, 255, 0.1) !important;
+  border-radius: 0px !important;
+  min-width: -webkit-fill-available !important;
+  min-height: -webkit-fill-available !important;
+  /* max-width: 70% !important; */
 }
 
 :deep(.filter-field .v-field__input:disabled) {
@@ -602,7 +622,7 @@ function formatData(field, value) {
   border: 1px solid #000 !important;
   border-radius: 0 !important;
   color: #e2e8f0 !important;
-  background-color: #232424 !important;
+  background-color: #101010 !important;
   position: relative !important;
   display: flex !important;
   align-items: center !important;
@@ -641,7 +661,7 @@ function formatData(field, value) {
   color: #e2e8f0;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  background-color: #232424;
+  background-color: #101010;
 }
 
 /* Ensure icons are centered in buttons */
