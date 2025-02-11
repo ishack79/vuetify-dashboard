@@ -364,6 +364,7 @@ function formatData(field, value) {
           <div class="custom-pagination">
             <div class="pagination-wrapper">
               <div class="pagination-controls">
+                <!-- Page navigation -->
                 <div class="page-navigation">
                   <v-btn
                     icon="mdi-chevron-left"
@@ -395,6 +396,11 @@ function formatData(field, value) {
                     @click="nextPage"
                   />
                 </div>
+
+                <!-- Vertical divider -->
+                <div class="vertical-divider"></div>
+
+                <!-- Items per page selector -->
                 <div class="items-per-page">
                   <v-btn
                     icon="mdi-minus"
@@ -458,8 +464,6 @@ function formatData(field, value) {
 }
 
 .header-cell {
-  /* Main Header */
-  /* padding: 8px !important; */
   vertical-align: middle !important;
   background-color: #232424 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -468,8 +472,6 @@ function formatData(field, value) {
 }
 
 .header-cell-filter {
-  /* Filter row */
-  /* padding: 8px !important; */
   vertical-align: middle !important;
   background-color: #232424 !important;
   border: 0px !important;
@@ -477,20 +479,7 @@ function formatData(field, value) {
   padding: 0px !important;
 }
 
-/* .header-cell .text-center {
-  vertical-align: middle !important;
-  background-color: #232424 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  width: 70px !important;
-  padding: 0px !important;
-} */
-
-/* :deep(.filter-field) {
-  min-width: 70px !important;
-} */
-
 :deep(.filter-field .v-field__input) {
-  /* min-height: 32px !important; */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background-color: rgb(72, 72, 72) !important;
@@ -498,7 +487,6 @@ function formatData(field, value) {
   border-radius: 0px !important;
   min-width: -webkit-fill-available !important;
   min-height: -webkit-fill-available !important;
-  /* max-width: 70% !important; */
 }
 
 :deep(.filter-field .v-field__input:disabled) {
@@ -540,14 +528,14 @@ function formatData(field, value) {
 /* Custom pagination styles */
 .custom-pagination {
   background: #232424;
-  padding: 8px 16px; /* Add horizontal padding */
+  padding: 8px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
 }
 
 .pagination-wrapper {
   display: flex;
-  justify-content: flex-end; /* Right align the content */
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -555,47 +543,53 @@ function formatData(field, value) {
   display: flex;
   align-items: center;
   gap: 0;
-  /* Remove max-width to allow natural content width */
 }
 
-/* Make the navigation section more compact */
+/* Updated pagination section styles */
 .page-navigation {
   display: flex;
   align-items: center;
   gap: 0;
-  margin-left: auto; /* Push to the right if needed */
 }
 
-/* Ensure consistent width for the items per page section */
 .items-per-page {
   display: flex;
   align-items: center;
   gap: 0;
-  margin-right: 16px;
-  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Vertical divider */
+.vertical-divider {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 0 16px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .custom-pagination {
-    padding: 8px; /* Reduce padding on small screens */
+    padding: 8px;
   }
   
   .pagination-controls {
-    flex-wrap: wrap; /* Allow wrapping on very small screens */
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px;
   }
   
   .items-per-page {
-    margin-right: 8px; /* Reduce margin on small screens */
+    padding-left: 8px;
+  }
+
+  .vertical-divider {
+    margin: 0 8px;
   }
 }
 
-/* Previous button styles remain unchanged */
 .items-per-page-value {
-  min-width: 36px; /* Match button width */
-  height: 36px; /* Match button height */
+  min-width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -608,7 +602,7 @@ function formatData(field, value) {
 .page-numbers {
   display: flex;
   align-items: center;
-  gap: 0; /* Remove gap */
+  gap: 0;
 }
 
 /* Square button base styles */
