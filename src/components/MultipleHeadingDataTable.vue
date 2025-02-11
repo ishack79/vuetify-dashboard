@@ -366,6 +366,16 @@ function formatData(field, value) {
               <div class="pagination-controls">
                 <!-- Page navigation -->
                 <div class="page-navigation">
+                  <!-- Previous button with separator -->
+                  <v-btn
+                    icon="mdi-chevron-left"
+                    size="small"
+                    variant="text"
+                    :disabled="currentPage <= 1"
+                    @click="prevPage"
+                    class="navigation-button"
+                  />                  
+                  <!-- Page numbers -->
                   <div class="page-numbers">
                     <template v-for="(page, index) in pageNumbers" :key="index">
                       <span v-if="page === '...'" class="ellipsis">...</span>
@@ -381,19 +391,15 @@ function formatData(field, value) {
                       </v-btn>
                     </template>
                   </div>
-                  <v-btn
-                    icon="mdi-chevron-left"
-                    size="small"
-                    variant="text"
-                    :disabled="currentPage <= 1"
-                    @click="prevPage"
-                  />
+                  
+                  <!-- Next button with separator -->
                   <v-btn
                     icon="mdi-chevron-right"
                     size="small"
                     variant="text"
                     :disabled="currentPage >= totalPages"
                     @click="nextPage"
+                    class="navigation-button"
                   />
                 </div>
 
@@ -552,6 +558,16 @@ function formatData(field, value) {
   gap: 0;
 }
 
+.navigation-button {
+  background-color: #1a1a1a !important;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
 .items-per-page {
   display: flex;
   align-items: center;
@@ -563,7 +579,7 @@ function formatData(field, value) {
   width: 1px;
   height: 24px;
   background-color: rgba(255, 255, 255, 0.1);
-  margin: 0 16px;
+  margin: 0 8px;
 }
 
 /* Responsive adjustments */
