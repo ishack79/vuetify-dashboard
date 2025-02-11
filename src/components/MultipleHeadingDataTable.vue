@@ -366,13 +366,6 @@ function formatData(field, value) {
               <div class="pagination-controls">
                 <!-- Page navigation -->
                 <div class="page-navigation">
-                  <v-btn
-                    icon="mdi-chevron-left"
-                    size="small"
-                    variant="text"
-                    :disabled="currentPage <= 1"
-                    @click="prevPage"
-                  />
                   <div class="page-numbers">
                     <template v-for="(page, index) in pageNumbers" :key="index">
                       <span v-if="page === '...'" class="ellipsis">...</span>
@@ -388,6 +381,13 @@ function formatData(field, value) {
                       </v-btn>
                     </template>
                   </div>
+                  <v-btn
+                    icon="mdi-chevron-left"
+                    size="small"
+                    variant="text"
+                    :disabled="currentPage <= 1"
+                    @click="prevPage"
+                  />
                   <v-btn
                     icon="mdi-chevron-right"
                     size="small"
