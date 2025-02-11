@@ -414,6 +414,7 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="itemsPerPage <= 5"
                     @click="itemsPerPage--"
+                    class="navigation-button"
                   />
                   <span class="items-per-page-value">{{ itemsPerPage }}</span>
                   <v-btn
@@ -422,6 +423,7 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="itemsPerPage >= 100"
                     @click="itemsPerPage++"
+                    class="navigation-button"
                   />
                 </div>
               </div>
@@ -559,7 +561,24 @@ function formatData(field, value) {
 }
 
 .navigation-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid #000 !important;
+  border-radius: 0 !important;
+  color: #e2e8f0 !important;
+  background-color: #232424 !important;
+}
+
+.navigation-button:hover {
   background-color: #2c2c2c !important;
+}
+
+.navigation-button:disabled {
+  background-color: #1a1a1a !important;
+  opacity: 0.5 !important;
 }
 
 .page-numbers {
@@ -630,9 +649,9 @@ function formatData(field, value) {
   padding: 0 !important;
   margin: 0 !important;
   border: 1px solid #000 !important;
-  border-radius: 0 !important;
+  border-radius: 4px !important;
   color: #e2e8f0 !important;
-  background-color: #101010 !important;
+  background-color: #101010;
   position: relative !important;
   display: flex !important;
   align-items: center !important;
@@ -650,8 +669,9 @@ function formatData(field, value) {
 /* Active state */
 .page-number.active {
   background-color: #2c2c2c !important;
-  border-color: #444 !important;
+  border-color: #000 !important;
   color: #fff !important;
+  font-weight: bold !important;
 }
 
 /* Disabled state */
