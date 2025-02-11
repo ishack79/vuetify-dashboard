@@ -366,7 +366,7 @@ function formatData(field, value) {
               <div class="pagination-controls">
                 <!-- Page navigation -->
                 <div class="page-navigation">
-                  <!-- Previous button with separator -->
+                  <!-- Previous button -->
                   <v-btn
                     icon="mdi-chevron-left"
                     size="small"
@@ -392,7 +392,7 @@ function formatData(field, value) {
                     </template>
                   </div>
                   
-                  <!-- Next button with separator -->
+                  <!-- Next button -->
                   <v-btn
                     icon="mdi-chevron-right"
                     size="small"
@@ -559,7 +559,7 @@ function formatData(field, value) {
 }
 
 .navigation-button {
-  background-color: #1a1a1a !important;
+  background-color: #2c2c2c !important;
 }
 
 .page-numbers {
