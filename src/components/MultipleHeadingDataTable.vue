@@ -364,23 +364,6 @@ function formatData(field, value) {
           <div class="custom-pagination">
             <div class="pagination-wrapper">
               <div class="pagination-controls">
-                <div class="items-per-page">
-                  <v-btn
-                    icon="mdi-minus"
-                    size="small"
-                    variant="text"
-                    :disabled="itemsPerPage <= 5"
-                    @click="itemsPerPage--"
-                  />
-                  <span class="items-per-page-value">{{ itemsPerPage }}</span>
-                  <v-btn
-                    icon="mdi-plus"
-                    size="small"
-                    variant="text"
-                    :disabled="itemsPerPage >= 100"
-                    @click="itemsPerPage++"
-                  />
-                </div>
                 <div class="page-navigation">
                   <v-btn
                     icon="mdi-chevron-left"
@@ -410,6 +393,23 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="currentPage >= totalPages"
                     @click="nextPage"
+                  />
+                </div>
+                <div class="items-per-page">
+                  <v-btn
+                    icon="mdi-minus"
+                    size="small"
+                    variant="text"
+                    :disabled="itemsPerPage <= 5"
+                    @click="itemsPerPage--"
+                  />
+                  <span class="items-per-page-value">{{ itemsPerPage }}</span>
+                  <v-btn
+                    icon="mdi-plus"
+                    size="small"
+                    variant="text"
+                    :disabled="itemsPerPage >= 100"
+                    @click="itemsPerPage++"
                   />
                 </div>
               </div>
