@@ -24,6 +24,7 @@ const emit = defineEmits(['update:showFilters', 'filteredDataChange', 'headersAd
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const filters = ref({});
+const sortBy = ref([]);
 
 // Convert server-style columns to Vuetify-style headers
 const adaptedHeaders = computed(() => {
@@ -64,7 +65,6 @@ const adaptedHeaders = computed(() => {
         title: level3,
         key: field,
         value: field,
-        sortable: h.searchable,
         filterable: h.searchable,
         align: 'center',
         bold: h.bold,
@@ -92,7 +92,6 @@ const adaptedHeaders = computed(() => {
         title: level2,
         key: field,
         value: field,
-        sortable: h.searchable,
         filterable: h.searchable,
         align: 'center',
         bold: h.bold,
@@ -107,7 +106,6 @@ const adaptedHeaders = computed(() => {
         title: parts[0],
         key: field,
         value: field,
-        sortable: h.searchable,
         filterable: h.searchable,
         align: 'center',
         bold: h.bold,
@@ -163,7 +161,7 @@ const headerDepth = computed(() => {
 });
 
 // Calculate total pages
-const totalPages = computed(() => Math.ceil(filteredItems.value.length / itemsPerPage.value));
+const totalPages = computed(() => Math.ceil(sortedItems.value.length / itemsPerPage.value));
 
 // Generate page numbers array with ellipsis
 const pageNumbers = computed(() => {
@@ -241,6 +239,43 @@ const filteredItems = computed(() => {
   return filtered;
 });
 
+// Sort the filtered items based on sortBy
+const sortedItems = computed(() => {
+  if (!sortBy.value.length) return filteredItems.value;
+  
+  return [...filteredItems.value].sort((a, b) => {
+    for (const sort of sortBy.value) {
+      const key = sort.key;
+      const order = sort.order === 'asc' ? 1 : -1;
+      
+      // Handle different data types
+      const valueA = a[key];
+      const valueB = b[key];
+      
+      // Skip if both values are undefined or null
+      if (valueA == null && valueB == null) continue;
+      
+      // Handle one value being undefined or null
+      if (valueA == null) return order;
+      if (valueB == null) return order;
+      
+      // Handle numeric values
+      if (!isNaN(valueA) && !isNaN(valueB)) {
+        const numA = Number(valueA);
+        const numB = Number(valueB);
+        if (numA !== numB) return (numA - numB) * order;
+        continue;
+      }
+      
+      // Handle string values
+      const strA = String(valueA).toLowerCase();
+      const strB = String(valueB).toLowerCase();
+      if (strA !== strB) return strA.localeCompare(strB) * order;
+    }
+    return 0;
+  });
+});
+
 // Navigation methods
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
@@ -271,6 +306,43 @@ function formatData(field, value) {
 
   return value;
 }
+
+// Handle sorting
+const handleSort = (column) => {
+  if (!column.searchable) return;
+  
+  const key = column.key;
+  const currentSort = sortBy.value.find(sort => sort.key === key);
+  
+  if (!currentSort) {
+    // First click - sort ascending
+    sortBy.value = [{ key, order: 'asc' }];
+  } else if (currentSort.order === 'asc') {
+    // Second click - sort descending
+    sortBy.value = [{ key, order: 'desc' }];
+  } else {
+    // Third click - remove sorting
+    sortBy.value = [];
+  }
+};
+
+// Get sort icon for column
+const getSortIcon = (column) => {
+  if (!column.searchable) return null;
+  
+  const currentSort = sortBy.value.find(sort => sort.key === column.key);
+  
+  if (!currentSort) return 'mdi-sort';
+  if (currentSort.order === 'asc') return 'mdi-sort-ascending';
+  if (currentSort.order === 'desc') return 'mdi-sort-descending';
+  
+  return 'mdi-sort';
+};
+
+// Check if column is currently sorted
+const isSorted = (column) => {
+  return sortBy.value.some(sort => sort.key === column.key);
+};
 </script>
 
 <template>
@@ -278,7 +350,7 @@ function formatData(field, value) {
     <div class="table-container">
       <v-data-table
         :headers="adaptedHeaders"
-        :items="filteredItems"
+        :items="sortedItems"
         :items-per-page="itemsPerPage"
         :page="currentPage"
         hover
@@ -286,6 +358,7 @@ function formatData(field, value) {
         fixed-header
         :loading="props.loading"
         @update:page="currentPage = $event"
+        :sort-by="sortBy"
       >
         <!-- Headers template -->
         <template #headers>
@@ -296,8 +369,18 @@ function formatData(field, value) {
                 v-if="!header.children"
                 :rowspan="headerDepth"
                 class="header-cell text-center"
+                :class="{ 'sortable-header': header.searchable }"
+                @click="handleSort(header)"
               >
-                {{ header.title }}
+                <div class="header-content">
+                  {{ header.title }}
+                  <v-icon
+                    v-if="header.searchable"
+                    size="small"
+                    :icon="getSortIcon(header)"
+                    :class="{ 'sort-icon': true, 'sort-active': isSorted(header) }"
+                  ></v-icon>
+                </div>
               </th>
               <th
                 v-else
@@ -318,8 +401,18 @@ function formatData(field, value) {
                     :colspan="child.children ? child.children.length : 1"
                     :rowspan="child.children ? 1 : (headerDepth - 1)"
                     class="header-cell text-center"
+                    :class="{ 'sortable-header': !child.children && child.searchable }"
+                    @click="!child.children && handleSort(child)"
                   >
-                    {{ child.title }}
+                    <div class="header-content">
+                      {{ child.title }}
+                      <v-icon
+                        v-if="!child.children && child.searchable"
+                        size="small"
+                        :icon="getSortIcon(child)"
+                        :class="{ 'sort-icon': true, 'sort-active': isSorted(child) }"
+                      ></v-icon>
+                    </div>
                   </th>
                 </template>
               </template>
@@ -336,8 +429,18 @@ function formatData(field, value) {
                       v-for="grandChild in child.children"
                       :key="grandChild.title"
                       class="header-cell text-center"
+                      :class="{ 'sortable-header': grandChild.searchable }"
+                      @click="handleSort(grandChild)"
                     >
-                      {{ grandChild.title }}
+                      <div class="header-content">
+                        {{ grandChild.title }}
+                        <v-icon
+                          v-if="grandChild.searchable"
+                          size="small"
+                          :icon="getSortIcon(grandChild)"
+                          :class="{ 'sort-icon': true, 'sort-active': isSorted(grandChild) }"
+                        ></v-icon>
+                      </div>
                     </th>
                   </template>
                 </template>
@@ -497,6 +600,36 @@ function formatData(field, value) {
   width: 70px !important;
   padding: 0px !important;
   color: #FFFFFF8C !important;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.sortable-header {
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+.sortable-header:hover {
+  background-color: #2a2a2a !important;
+}
+
+.sort-icon {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sortable-header:hover .sort-icon {
+  opacity: 0.7;
+}
+
+.sort-active {
+  opacity: 1 !important;
 }
 
 .header-cell-filter {
