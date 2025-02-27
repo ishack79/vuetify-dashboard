@@ -60,7 +60,7 @@ const adaptedHeaders = computed(() => {
         level1Header.children.push(level2Header);
       }
 
-      level2Header.children.push({
+      let child = {
         title: level3,
         key: field,
         value: field,
@@ -69,7 +69,11 @@ const adaptedHeaders = computed(() => {
         align: 'center',
         bold: h.bold,
         searchable: h.searchable
-      });
+      };
+      if (level3 === 'DATE') {
+        child.width = "120px";
+      }
+      level2Header.children.push(child);
     } else if (parts.length === 2) {
       const [level1, level2] = parts;
       
@@ -84,7 +88,7 @@ const adaptedHeaders = computed(() => {
         headers.push(level1Header);
       }
 
-      level1Header.children.push({
+      let child = {
         title: level2,
         key: field,
         value: field,
@@ -93,9 +97,13 @@ const adaptedHeaders = computed(() => {
         align: 'center',
         bold: h.bold,
         searchable: h.searchable
-      });
+      };
+      if (level2 === 'DATE') {
+        child.width = "120px";
+      }
+      level1Header.children.push(child);
     } else {
-      headers.push({
+      let baseHeader = {
         title: parts[0],
         key: field,
         value: field,
@@ -104,7 +112,11 @@ const adaptedHeaders = computed(() => {
         align: 'center',
         bold: h.bold,
         searchable: h.searchable
-      });
+      };
+      if (parts[0] === 'DATE') {
+        baseHeader.width = "120px";
+      }
+      headers.push(baseHeader);
     }
   });
 
@@ -165,7 +177,7 @@ const pageNumbers = computed(() => {
   pages.push(1);
   
   if (total <= 4) {
-    // If total pages is 5 or less, show all pages
+    // If total pages is 4 or less, show all pages
     for (let i = 2; i < total; i++) {
       pages.push(i);
     }
@@ -210,6 +222,12 @@ const clearFilters = () => {
   });
 };
 
+watch(() => props.showFilters, (newVal) => {
+  if (!newVal) {
+    clearFilters();
+  }
+});
+
 // Filter the items based on all active filters
 const filteredItems = computed(() => {
   const filtered = props.items.filter(item => {
@@ -247,7 +265,7 @@ function formatData(field, value) {
   const header = props.headers.find((h) => h.label === field);
   if (!header || !header.mapping) return value;
 
-  if (header.mapping === 'yyyy-mm-dd-DAY') {
+  if (header.mapping === 'yyyy-mm-dd') {
     return value;
   }
 
@@ -365,16 +383,7 @@ function formatData(field, value) {
             <div class="pagination-wrapper">
               <div class="pagination-controls">
                 <!-- Page navigation -->
-                <div class="page-navigation">
-                  <!-- Previous button -->
-                  <v-btn
-                    icon="mdi-chevron-left"
-                    size="small"
-                    variant="text"
-                    :disabled="currentPage <= 1"
-                    @click="prevPage"
-                    class="navigation-button"
-                  />                  
+                <div class="page-navigation">                  
                   <!-- Page numbers -->
                   <div class="page-numbers">
                     <template v-for="(page, index) in pageNumbers" :key="index">
@@ -391,7 +400,15 @@ function formatData(field, value) {
                       </v-btn>
                     </template>
                   </div>
-                  
+                  <!-- Previous button -->
+                  <v-btn
+                    icon="mdi-chevron-left"
+                    size="small"
+                    variant="text"
+                    :disabled="currentPage <= 1"
+                    @click="prevPage"
+                    class="page-number-button"
+                  />
                   <!-- Next button -->
                   <v-btn
                     icon="mdi-chevron-right"
@@ -399,7 +416,7 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="currentPage >= totalPages"
                     @click="nextPage"
-                    class="navigation-button"
+                    class="page-number-button"
                   />
                 </div>
 
@@ -414,7 +431,7 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="itemsPerPage <= 5"
                     @click="itemsPerPage--"
-                    class="navigation-button"
+                    class="navigation-button-left"
                   />
                   <span class="items-per-page-value">{{ itemsPerPage }}</span>
                   <v-btn
@@ -423,7 +440,7 @@ function formatData(field, value) {
                     variant="text"
                     :disabled="itemsPerPage >= 100"
                     @click="itemsPerPage++"
-                    class="navigation-button"
+                    class="navigation-button-right"
                   />
                 </div>
               </div>
@@ -438,7 +455,7 @@ function formatData(field, value) {
 <style scoped>
 .data-table-wrapper {
   position: relative;
-  height: calc(100vh - 300px);
+  height: calc(80vh);
   display: flex;
   flex-direction: column;
 }
@@ -473,28 +490,31 @@ function formatData(field, value) {
 
 .header-cell {
   vertical-align: middle !important;
-  background-color: #232424 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #1f1f1f !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
   width: 70px !important;
   padding: 0px !important;
+  color: #FFFFFF8C !important;
 }
 
 .header-cell-filter {
   vertical-align: middle !important;
-  background-color: #232424 !important;
+  background-color: #1f1f1f !important;
   border: 0px !important;
   width: 70px !important;
   padding: 0px !important;
 }
 
 :deep(.filter-field .v-field__input) {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  background-color: rgb(72, 72, 72) !important;
-  border: 1px solid rgb(255, 255, 255, 0.1) !important;
-  border-radius: 0px !important;
+  padding: 0px !important;
+  background-color: #333333 !important;
+  border: 1px solid #000 !important;
+  border-radius: 6px !important;
   min-width: -webkit-fill-available !important;
-  min-height: -webkit-fill-available !important;
+  text-align: center !important;
+  margin: 2px !important;
 }
 
 :deep(.filter-field .v-field__input:disabled) {
@@ -503,7 +523,7 @@ function formatData(field, value) {
 }
 
 :deep(.filter-field .v-field) {
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   background-color: transparent !important;
   border: none !important;
 }
@@ -513,8 +533,7 @@ function formatData(field, value) {
 }
 
 :deep(.v-data-table__thead th) {
-  background-color: #232424 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1f1f1f !important;
   text-align: center !important;
   color: #e2e8f0 !important;
 }
@@ -522,11 +541,12 @@ function formatData(field, value) {
 :deep(.v-data-table__tbody td) {
   text-align: center !important;
   background-color: rgb(24, 24, 24) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
 }
 
 :deep(.v-data-table__tr:hover td) {
   background-color: rgb(32, 32, 32) !important;
+  border: none !important;
 }
 
 .font-weight-bold {
@@ -535,7 +555,6 @@ function formatData(field, value) {
 
 /* Custom pagination styles */
 .custom-pagination {
-  background: #232424;
   padding: 8px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
@@ -560,31 +579,73 @@ function formatData(field, value) {
   gap: 0;
 }
 
-.navigation-button {
+.navigation-button-right {
   width: 36px !important;
   height: 36px !important;
   min-width: 36px !important;
   padding: 0 !important;
   margin: 0 !important;
   border: 1px solid #000 !important;
-  border-radius: 0 !important;
-  color: #e2e8f0 !important;
-  background-color: #232424 !important;
+  border-radius: 0 8px 8px 0 !important;
+  color: #FFFFFF8C !important;
+  background-color: #333333 !important;
 }
 
-.navigation-button:hover {
+.navigation-button-right:hover {
   background-color: #2c2c2c !important;
+  border: 1px solid #000 !important;
 }
 
-.navigation-button:disabled {
+.navigation-button-right:disabled {
   background-color: #1a1a1a !important;
+  border: 1px solid #000 !important;
   opacity: 0.5 !important;
 }
 
-.page-numbers {
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
+.navigation-button-left {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid #000 !important;
+  border-radius: 8px 0 0 8px !important;
+  color: #FFFFFF8C !important;
+  background-color: #333333 !important;
+}
+
+.navigation-button-left:hover {
+  background-color: #2c2c2c !important;
+  border: 1px solid #000 !important;
+}
+
+.navigation-button-left:disabled {
+  background-color: #1a1a1a !important;
+  opacity: 0.5 !important;
+  border: 1px solid #000 !important;
+}
+
+.page-number-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid #000 !important;
+  border-radius: 6px !important;
+  color: #FFFFFF8C !important;
+  background-color: #333333 !important;
+}
+
+.page-number-button:hover {
+  background-color: #2c2c2c !important;
+  border: 1px solid #000 !important;
+}
+
+.page-number-button:disabled {
+  background-color: #1a1a1a !important;
+  opacity: 0.5 !important;
+  border: 1px solid #000 !important;
 }
 
 .items-per-page {
@@ -598,7 +659,7 @@ function formatData(field, value) {
   width: 1px;
   height: 24px;
   background-color: rgba(255, 255, 255, 0.1);
-  margin: 0 8px;
+  margin: 0 16px;
 }
 
 /* Responsive adjustments */
@@ -628,35 +689,37 @@ function formatData(field, value) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e2e8f0;
+  color: #ffffff;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  background-color: #232424;
+  background-color: #333333;
 }
 
 .page-numbers {
   display: flex;
   align-items: center;
   gap: 0;
+  padding: 0 8px;
 }
 
 /* Square button base styles */
 .page-number,
 :deep(.v-btn--icon.v-btn--size-small) {
-  width: 36px !important;
   height: 36px !important;
-  min-width: 36px !important;
-  padding: 0 !important;
+  min-width: 42px !important;
+  max-width: auto !important;
+  padding: 0 8px !important;
   margin: 0 !important;
-  border: 1px solid #000 !important;
-  border-radius: 4px !important;
-  color: #e2e8f0 !important;
+  border-radius: 0px !important;
   background-color: #101010;
   position: relative !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.2s ease !important;
+  font-size: 1rem !important;
+  color: #ffffff;
+  border: 1px solid #000 !important;
 }
 
 /* Hover state */
@@ -664,14 +727,16 @@ function formatData(field, value) {
 :deep(.v-btn--icon.v-btn--size-small:hover) {
   background-color: #2c2c2c !important;
   border-color: #333 !important;
+  border: 1px solid #000 !important;
 }
 
 /* Active state */
 .page-number.active {
-  background-color: #2c2c2c !important;
+  background-color: #333333 !important;
   border-color: #000 !important;
-  color: #fff !important;
+  color: #ffffff !important;
   font-weight: bold !important;
+  border: 1px solid #000 !important;
 }
 
 /* Disabled state */
@@ -688,7 +753,7 @@ function formatData(field, value) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e2e8f0;
+  color: #ffffff;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
   background-color: #101010;
@@ -708,5 +773,23 @@ function formatData(field, value) {
   text-transform: none !important;
   letter-spacing: normal !important;
   box-shadow: none !important;
+}
+
+:deep(.v-table .v-table__wrapper>table>tbody>tr:not(:last-child)>td,
+      .v-table .v-table__wrapper>table>tbody>tr:not(:last-child)>th) {
+  border-bottom: none !important;
+}
+
+:deep(.v-table > .v-table__wrapper > table) {
+    border: 1px rgba(255, 255, 255, 0.1) solid;
+    border-radius: 6px !important;
+}
+
+:deep(.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > td) {
+  height: 48px !important;
+}
+
+.v-table.v-table--fixed-header>.v-table__wrapper>table>thead>tr>th {
+  height: 48px !important;
 }
 </style>
